@@ -1,9 +1,10 @@
 package pe.com.utp.estructuras.colas;
 
 import pe.com.utp.estructuras.listas.NodoPaciente;
+import pe.com.utp.interfaces.TADColaPacientes;
 import pe.com.utp.modelo.persona.Paciente;
 
-public class ColaPacientes {
+public class ColaPacientes implements TADColaPacientes {
 
     /*
      * Cola de pacientes implementada con nodos enlazados.
@@ -27,6 +28,7 @@ public class ColaPacientes {
     }
 
     // Agrega un paciente al final de la cola.
+    @Override
     public void encolar(Paciente paciente) {
         // Si no llega un paciente valido, no se modifica la estructura.
         if (paciente == null) {
@@ -53,6 +55,7 @@ public class ColaPacientes {
     }
 
     // Retira al paciente ubicado en el frente de la cola.
+    @Override
     public Paciente desencolar() {
         if (estaVacia()) {
             System.out.println("Cola de espera vacia.");
@@ -76,6 +79,7 @@ public class ColaPacientes {
     }
 
     // Consulta el paciente del frente sin retirarlo de la cola.
+    @Override
     public Paciente verFrente() {
         if (estaVacia()) {
             return null;
@@ -84,12 +88,14 @@ public class ColaPacientes {
     }
 
     // La cola esta vacia cuando no existe nodo al frente.
+    @Override
     public boolean estaVacia() {
         return frente == null;
     }
 
 
     // Recorre la cola desde el frente hasta llegar al ultimo nodo.
+    @Override
     public void mostrarCola() {
         if (estaVacia()) {
             System.out.println("Cola de espera vacia");
