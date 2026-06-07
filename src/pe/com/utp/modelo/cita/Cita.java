@@ -11,20 +11,20 @@ import java.time.format.DateTimeFormatter;
 
 public class Cita {
 
-    // Codigo unico usado para buscar la cita dentro del arreglo de CitaService.
+    // Codigo usado para identificar y buscar la cita.
     private String codigo;
 
-    // Relaciones principales del dominio clinico.
+    // Paciente y doctor asociados a la atencion.
     private Paciente paciente;
     private Doctor doctor;
 
-    // Datos propios de la atencion programada.
+    // Datos principales de la cita programada.
     private LocalDate fecha;
     private LocalTime hora;
     private EstadoCita estado;
     private String motivo;
 
-    // Fecha y hora en que el objeto Cita fue creado en el sistema.
+    // Momento en que la cita se registro en memoria.
     private final LocalDateTime fechaRegistro;
 
     public Cita(String codigo, Paciente paciente, Doctor doctor, LocalDate fecha, LocalTime hora, EstadoCita estado, String motivo) {
@@ -59,7 +59,7 @@ public class Cita {
         this.estado = EstadoCita.CANCELADA;
     }
 
-    // Reprogramar modifica fecha y hora, y deja evidencia del cambio de estado.
+    // Reprograma la cita y actualiza su estado.
     public void reprogramar(LocalDate nuevaFecha, LocalTime nuevaHora) {
         this.fecha = nuevaFecha;
         this.hora = nuevaHora;

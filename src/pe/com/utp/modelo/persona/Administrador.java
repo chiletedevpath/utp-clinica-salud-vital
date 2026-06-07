@@ -1,17 +1,17 @@
 package pe.com.utp.modelo.persona;
 
 /*
- * Clase hija de Persona.
- * Representa a los administradores del sistema clinico.
+ * Representa a un administrador del sistema.
+ * Hereda los datos generales de Persona y agrega el cargo.
  */
 public class Administrador extends Persona {
 
-    // Atributo propio
+    // Dato propio del administrador.
     private String cargo;
 
     /*
-     * Constructor de la clase Administrador.
-     * Inicializa atributos heredados y propios.
+     * super() inicializa los datos generales.
+     * cargo se asigna aqui porque solo pertenece al administrador.
      */
     public Administrador(String codigo, String dni, String nombres, String apellidos, String telefono, String correo, String cargo) {
         super(codigo, dni, nombres, apellidos, telefono, correo);
@@ -19,8 +19,8 @@ public class Administrador extends Persona {
     }
 
     /*
-     * Implementacion del metodo abstracto heredado.
-     * Permite mostrar información específica del administrador.
+     * Implementacion del metodo abstracto.
+     * Muestra los datos comunes y el cargo administrativo.
      */
     @Override
     public void mostrarDatos() {
@@ -35,7 +35,7 @@ public class Administrador extends Persona {
         System.out.println("Cargo: " + cargo);
     }
 
-    // Metodos de acceso y modificacion de atributos
+    // Metodos de acceso del atributo propio.
     public String getCargo() {
         return cargo;
     }

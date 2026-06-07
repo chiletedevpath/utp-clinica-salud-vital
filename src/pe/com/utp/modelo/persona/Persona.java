@@ -1,12 +1,12 @@
 package pe.com.utp.modelo.persona;
 
 /*
- * Clase abstracta base del sistema
- * Centraliza los atributos y comportamientos comunes de todas las personas registradas en la clinica
+ * Clase base para las personas del sistema.
+ * Centraliza los datos comunes de pacientes, doctores y administradores.
  */
 public abstract class Persona {
 
-    // Atributos comunes de la clase Persona
+    // Datos comunes que comparten las clases hijas.
     private String codigo;
     private String dni;
     private String nombres;
@@ -15,8 +15,8 @@ public abstract class Persona {
     private String correo;
 
     /*
-     * Constructor principal utilizado por las clases hijas.
-     * Permite inicializar los datos comunes de una persona.
+     * Constructor usado por las clases hijas mediante super().
+     * Recibe los datos generales de cualquier persona registrada.
      */
     public Persona(String codigo, String dni, String nombres, String apellidos, String telefono, String correo) {
 
@@ -29,14 +29,12 @@ public abstract class Persona {
     }
 
     /*
-     * Metodo abstracto obligatorio.
-     * Cada clase hija debera definir como mostrar sus datos.
+     * Metodo obligatorio para las clases hijas.
+     * Cada tipo de persona muestra sus datos segun su propio contexto.
      */
     public abstract void mostrarDatos();
 
-    // Getters y Setters
-    // Metodos de acceso y modificación de atributos.
-    // Se aplica encapsulamiento mediante getters y setters.
+    // Metodos de acceso y modificacion usados para aplicar encapsulamiento.
     public String getCodigo() {
         return codigo;
     }

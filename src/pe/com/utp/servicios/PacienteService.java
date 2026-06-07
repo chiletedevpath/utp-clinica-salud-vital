@@ -2,104 +2,98 @@ package pe.com.utp.servicios;
 
 import pe.com.utp.modelo.persona.Paciente;
 
-//Clase encargada de gestionar las operaciones relacionadas con los pacientes del sistema
+// Servicio que administra pacientes usando un arreglo de tamaño fijo.
 public class PacienteService {
 
-    // Capacidad maxima del arreglo de pacientes
+    // Limite maximo de pacientes que se pueden guardar en memoria.
     private static final int CAPACIDAD = 100;
 
-    // Arreglo unidimensional de objetos Paciente
-    // Permite almacenar pacientes en memoria
+    // Arreglo principal donde se almacenan los objetos Paciente.
     private Paciente[] pacientes;
 
-    // Controla la cantidad real de pacientes registrados
-    // Evita recorrer posiciones vacias del arreglo
+    // Cantidad real de posiciones ocupadas dentro del arreglo.
     private int totalPacientes;
 
-    // Constructor de la clase.
-    // Inicializa el arreglo y el contador.
+    // Al iniciar el servicio, el arreglo esta vacio y el contador queda en cero.
     public PacienteService() {
         pacientes = new Paciente[CAPACIDAD];
         totalPacientes = 0;
     }
 
-    // Registra un nuevo paciente en el arreglo. El paciente se almacena en la siguiente posición disponible
+    // Guarda un paciente en la siguiente posicion libre del arreglo.
     public void registrarPaciente(Paciente paciente) {
-        // Verifica si el arreglo llegó a su capacidad máxima
+        // Si el arreglo esta lleno, no se puede registrar otro paciente.
         if (totalPacientes >= CAPACIDAD) {
             System.out.println("No hay espacio disponible para registrar más pacientes");
             return;
         }
 
-        // Inserta el objeto paciente en la posición actual
+        // totalPacientes indica la proxima posicion disponible.
         pacientes[totalPacientes] = paciente;
 
-        // Incrementa la cantidad logica de pacientes registrados
+        // Luego del registro, aumenta la cantidad real de pacientes.
         totalPacientes++;
 
         System.out.println("Paciente registrado correctamente");
     }
 
-    // Muestra todos los pacientes registrados. Recorre únicamente las posiciones ocupadas del arreglo
+    // Muestra solo las posiciones que tienen pacientes registrados.
     public void mostrarPacientes() {
 
-        // Verifica si existen pacientes registrados
+        // Si el contador esta en cero, el arreglo no tiene datos utiles.
         if (totalPacientes == 0) {
             System.out.println("No existen pacientes registrados");
             return;
         }
-        System.out.println("===== LISTA DE PACIENTES =====");
+        System.out.println("==== LISTA DE PACIENTES ====");
 
-        // Recorre el arreglo desde la posición 0 hasta la última posición lógica ocupada.
+        // El recorrido termina antes de las posiciones vacias del arreglo.
         for (int i = 0; i < totalPacientes; i++) {
             System.out.println();
-            // Muestra los datos del paciente actual
             pacientes[i].mostrarDatos();
         }
     }
 
-    // Busca un paciente mediante su DNI
+    // Busca un paciente por DNI usando recorrido lineal.
     public Paciente buscarPacientePorDni(String dni) {
 
-        // Recorre únicamente las posiciones ocupadas
+        // Solo se revisan las posiciones ocupadas.
         for (int i = 0; i < totalPacientes; i++) {
 
-            // Compara el DNI ingresado con el DNI del paciente almacenado en la posición actual
+            // El DNI permite identificar al paciente dentro del arreglo.
             if (pacientes[i].getDni().equals(dni)) {
-                // Retorna el objeto encontrado
                 return pacientes[i];
             }
         }
-        // Retorna null si el paciente no existe
+
+        // null indica que no se encontro ninguna coincidencia.
         return null;
     }
 
-    // Actualiza el teléfono y correo de un paciente
-    // Primero busca el paciente mediante su DNI
+    // Actualiza telefono y correo despues de ubicar al paciente por DNI.
     public void actualizarPaciente(String dni, String nuevoTelefono, String nuevoCorreo) {
 
-        // Busca el paciente en el arreglo
+        // Se reutiliza la busqueda para no duplicar el recorrido.
         Paciente pacienteEncontrado = buscarPacientePorDni(dni);
 
-        // Verifica si el paciente existe
+        // Si no existe, no hay objeto que modificar.
         if (pacienteEncontrado == null) {
             System.out.println("Paciente no encontrado.");
             return;
         }
 
-        // Modifica directamente los atributos del objeto almacenado en memoria.
+        // Se modifican los datos del mismo objeto guardado en el arreglo.
         pacienteEncontrado.setTelefono(nuevoTelefono);
         pacienteEncontrado.setCorreo(nuevoCorreo);
 
         System.out.println("Paciente actualizado correctamente");
     }
 
-    // Elimina un paciente mediante su DNI
-    // Los elementos posteriores se desplazan una posición hacia la izquierda
+    // Elimina un paciente por DNI y compacta el arreglo.
     public void eliminarPaciente(String dni) {
         int posicion = -1;
 
-        // Busca la posición del paciente dentro del arreglo
+        // Primero se busca la posicion donde esta el paciente.
         for (int i = 0; i < totalPacientes; i++) {
             if (pacientes[i].getDni().equals(dni)) {
                 posicion = i;
@@ -107,21 +101,21 @@ public class PacienteService {
             }
         }
 
-        // Verifica si el paciente existe
+        // Si la posicion sigue en -1, el paciente no fue encontrado.
         if (posicion == -1) {
             System.out.println("Paciente no encontrado.");
             return;
         }
 
-        // Desplaza los elementos posteriores para cubrir el espacio eliminado
+        // Los elementos posteriores avanzan una posicion hacia la izquierda.
         for (int i = posicion; i < totalPacientes - 1; i++) {
             pacientes[i] = pacientes[i + 1];
         }
 
-        // Limpia la última posición lógica del arreglo
+        // La ultima posicion logica queda libre despues del desplazamiento.
         pacientes[totalPacientes - 1] = null;
 
-        // Reduce la cantidad lógica de pacientes
+        // Se reduce la cantidad real de pacientes registrados.
         totalPacientes--;
 
         System.out.println("Paciente eliminado correctamente.");

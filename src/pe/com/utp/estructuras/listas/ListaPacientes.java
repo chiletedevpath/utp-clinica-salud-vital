@@ -5,76 +5,76 @@ import pe.com.utp.modelo.persona.Paciente;
 
 public class ListaPacientes implements TADListaPacientes {
 
-    // Referencia al primer nodo de la lista enlazada.
-    private Nodo inicio;
+    // Primer nodo de la lista. Desde aqui empieza el recorrido.
+    private NodoPaciente inicio;
 
-    // Contador logico de nodos; evita recorrer toda la lista solo para contar.
+    // Cantidad real de nodos guardados en la lista.
     private int tamanioListaPacientes;
 
-    // La lista inicia vacia: no existe primer nodo y el contador empieza en cero.
+    // La lista inicia sin nodos y con contador en cero.
     public ListaPacientes() {
         inicio = null;
         this.tamanioListaPacientes = 0;
     }
 
-    // Inserta un nuevo paciente al final de la lista enlazada simple.
+    // Inserta un paciente al final de la lista enlazada simple.
     @Override
     public void insertarPaciente(Paciente paciente) {
 
-        // El paciente se encapsula dentro de un nodo para poder enlazarlo.
-        Nodo nuevoNodo = new Nodo(paciente);
+        // El paciente se guarda dentro de un nodo para poder enlazarlo.
+        NodoPaciente nuevoNodoPaciente = new NodoPaciente(paciente);
 
-        // Caso 1: lista vacia. El nuevo nodo pasa a ser el inicio.
+        // Caso 1: si la lista esta vacia, el nuevo nodo sera el inicio.
         if (inicio == null) {
-            inicio = nuevoNodo;
+            inicio = nuevoNodoPaciente;
         } else {
-            // Caso 2: lista con datos. Se recorre hasta el ultimo nodo.
-            Nodo actual = inicio;
+            // Caso 2: si hay nodos, se avanza hasta el ultimo.
+            NodoPaciente actual = inicio;
 
             while (actual.getSiguiente() != null) {
                 actual = actual.getSiguiente();
             }
 
-            // El ultimo nodo apunta al nuevo nodo, quedando insertado al final.
-            actual.setSiguiente(nuevoNodo);
+            // El ultimo nodo queda enlazado con el nuevo.
+            actual.setSiguiente(nuevoNodoPaciente);
         }
         tamanioListaPacientes++;
         System.out.println("Paciente insertado correctamente en la lista");
     }
 
-    // Busca un paciente por DNI recorriendo secuencialmente los nodos.
+    // Busca un paciente por DNI recorriendo nodo por nodo.
     @Override
     public Paciente buscarPacientePorDni(String DNI) {
 
-        // actual apunta al nodo que se evalua en cada iteracion.
-        Nodo actual = inicio;
+        // actual representa el nodo que se revisa en cada vuelta.
+        NodoPaciente actual = inicio;
 
         while (actual != null) {
 
-            // El DNI funciona como criterio de busqueda del paciente.
+            // El DNI es el dato usado para comparar.
             if (actual.getPaciente().getDni().equals(DNI)) {
                 return actual.getPaciente();
             }
 
-            // Si no coincide, se avanza al siguiente nodo.
+            // Si no coincide, se pasa al siguiente nodo.
             actual = actual.getSiguiente();
         }
 
-        // Si se llega a null, el paciente no existe en la lista.
+        // Llegar a null significa que se recorrio toda la lista sin encontrarlo.
         return null;
     }
 
-    // Elimina un paciente por DNI, actualizando los enlaces entre nodos.
+    // Elimina un paciente por DNI ajustando los enlaces de la lista.
     @Override
     public void eliminarPaciente(String dni) {
 
-        // No se puede eliminar si no hay nodos.
+        // Sin nodos no existe nada que eliminar.
         if (estaVacia()) {
             System.out.println("La lista esta vacia");
             return;
         }
 
-        // Caso especial: el nodo a eliminar es el primero.
+        // Caso especial: el paciente esta en el primer nodo.
         if (inicio.getPaciente().getDni().equals(dni)) {
             inicio = inicio.getSiguiente();
             tamanioListaPacientes--;
@@ -82,23 +82,23 @@ public class ListaPacientes implements TADListaPacientes {
             return;
         }
 
-        // anterior conserva el nodo previo; actual representa el nodo evaluado.
-        Nodo actual = inicio;
-        Nodo anterior = null;
+        // anterior queda detras de actual para poder cambiar el enlace.
+        NodoPaciente actual = inicio;
+        NodoPaciente anterior = null;
 
-        // Se avanza hasta encontrar el DNI o llegar al final de la lista.
+        // Se avanza hasta encontrar el DNI o terminar la lista.
         while (actual != null && !actual.getPaciente().getDni().equals(dni)) {
             anterior = actual;
             actual = actual.getSiguiente();
         }
 
-        // Si actual es null, no se encontro el paciente.
+        // Si actual es null, no hubo coincidencia.
         if (actual == null) {
             System.out.println("Paciente no encontrado");
             return;
         }
 
-        // Cambio principal de memoria: anterior salta el nodo actual.
+        // anterior salta al nodo eliminado y apunta al siguiente.
         anterior.setSiguiente(actual.getSiguiente());
         tamanioListaPacientes--;
         System.out.println("Paciente eliminado correctamente");
@@ -114,11 +114,11 @@ public class ListaPacientes implements TADListaPacientes {
         return tamanioListaPacientes;
     }
 
-    // Recorre la lista y muestra cada paciente almacenado en sus nodos.
+    // Muestra los pacientes recorriendo la lista desde el inicio.
     @Override
     public void mostrarPacientes() {
 
-        // Si inicio es null, no hay nodos para mostrar.
+        // Si no hay inicio, la lista esta vacia.
         if (estaVacia()) {
             System.out.println("La lista de pacientes esta vacia");
             return;
@@ -126,13 +126,13 @@ public class ListaPacientes implements TADListaPacientes {
 
         System.out.println("LISTA ENLAZADA DE PACIENTES");
 
-        // Recorrido desde el primer nodo hasta llegar a null.
-        Nodo actual = inicio;
+        // Se avanza nodo por nodo hasta llegar a null.
+        NodoPaciente actual = inicio;
 
         while (actual != null) {
             System.out.println();
 
-            // El nodo delega la visualizacion al objeto Paciente almacenado.
+            // Cada nodo contiene un paciente que sabe mostrar sus datos.
             actual.getPaciente().mostrarDatos();
 
             actual = actual.getSiguiente();

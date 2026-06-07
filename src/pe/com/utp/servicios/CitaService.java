@@ -5,18 +5,18 @@ import pe.com.utp.modelo.cita.Cita;
 
 public class CitaService {
 
-    // Capacidad maxima del arreglo unidimensional de citas.
+    // Limite maximo de citas guardadas en el arreglo.
     private static final int CAPACIDAD = 20;
 
     private Cita[] citas;
     private MatrizHorarios matrizHorarios;
 
-    // Cantidad real de citas registradas; evita recorrer posiciones vacias.
+    // Cantidad real de citas registradas.
     private int totalCitas;
 
     /*
-     * El servicio recibe una matriz ya configurada con sus medicos.
-     * Asi se mantiene coherencia entre las citas registradas y los horarios.
+     * La matriz llega configurada con sus doctores.
+     * Asi las citas y los reportes de horarios trabajan sobre la misma agenda.
      */
     public CitaService(MatrizHorarios matrizHorarios) {
         this.citas = new Cita[CAPACIDAD];
@@ -24,27 +24,27 @@ public class CitaService {
         this.totalCitas = 0;
     }
 
-    // Registra una cita en el arreglo y actualiza la matriz de horarios.
+    // Registra una cita y suma su posicion dentro de la matriz.
     public void registrarCita(Cita nuevaCita, int columnaDia) {
 
-        // La fila se obtiene desde el doctor asociado a la cita.
+        // El doctor de la cita determina la fila dentro de la matriz.
         String codigoDoctor = nuevaCita.getDoctor().getCodigo();
         int filaEncontrada = matrizHorarios.buscarFilaPorCodigoMedico(codigoDoctor);
 
-        // Si el medico no pertenece a la agenda, se rechaza el registro.
+        // Si el doctor no esta en la matriz, la cita no se registra.
         if (filaEncontrada == -1) {
             System.out.println("\nMedico no asignado");
             return;
         }
 
-        // Antes de almacenar se valida capacidad del arreglo y posicion de matriz.
+        // Primero se valida que el arreglo todavia tenga espacio.
         if (totalCitas < CAPACIDAD) {
 
             if (matrizHorarios.esPosicionValida(filaEncontrada, columnaDia - 1)) {
                 citas[totalCitas] = nuevaCita;
                 totalCitas++;
 
-                // Contabiliza la cita en la fila del medico encontrado.
+                // La matriz cuenta la cita en la fila del doctor y columna del dia.
                 matrizHorarios.registrarCitaEnMatriz(filaEncontrada, columnaDia - 1);
                 System.out.println("\nCita registrada correctamente");
             } else {
@@ -56,7 +56,7 @@ public class CitaService {
     }
 
     public Cita buscarCitaPorCodigo(String codigoABuscar) {
-        // Busqueda lineal sobre las posiciones ocupadas del arreglo.
+        // Busqueda lineal sobre las citas realmente registradas.
         for (int i = 0; i < totalCitas; i++) {
             if (citas[i].getCodigo().equalsIgnoreCase(codigoABuscar)) {
                 return citas[i];
@@ -66,8 +66,8 @@ public class CitaService {
         return null;
     }
 
-    // Cancela la cita encontrada cambiando su estado dentro del objeto Cita.
-    // La actualizacion de la matriz al cancelar se integrara en una mejora posterior.
+    // Cancela la cita encontrada cambiando solo su estado.
+    // Por ahora no descuenta la cita dentro de la matriz de horarios.
     public Cita cancelarCita(String codigoABuscar) {
         for (int i = 0; i < totalCitas; i++) {
             if (citas[i].getCodigo().equalsIgnoreCase(codigoABuscar)) {
@@ -93,7 +93,7 @@ public class CitaService {
         }
     }
 
-    // Metodos de consulta que delegan los reportes a la matriz de horarios.
+    // Reportes delegados a la matriz de horarios.
     public void mostrarMatrizHorarios() {
         matrizHorarios.mostrarMatriz();
     }

@@ -4,19 +4,19 @@ import pe.com.utp.modelo.enums.Especialidad;
 import pe.com.utp.modelo.enums.TurnoConsultaAmbulatoria;
 
 /*
- * Clase hija de Persona.
- * Representa a los doctores registrados en la clinica.
+ * Representa a un doctor de la clinica.
+ * Hereda Persona y agrega CMP, especialidad y horario.
  */
 public class Doctor extends Persona {
 
-    // Atributos especificos del doctor
+    // Datos propios del doctor.
     private String cmp;
     private Especialidad especialidad;
     private TurnoConsultaAmbulatoria horario;
 
     /*
-     * Constructor de la clase Doctor.
-     * Inicializa atributos heredados y propios.
+     * super() inicializa los datos generales.
+     * Los demas atributos pertenecen al perfil medico.
      */
     public Doctor(String codigo, String dni, String nombres, String apellidos, String telefono, String cmp, String correo, Especialidad especialidad, TurnoConsultaAmbulatoria horario) {
         super(codigo, dni, nombres, apellidos, telefono, correo);
@@ -26,8 +26,8 @@ public class Doctor extends Persona {
     }
 
     /*
-     * Implementacion del metodo abstracto heredado.
-     * Permite mostrar informacion especifica del doctor.
+     * Implementacion del metodo abstracto.
+     * Incluye los datos medicos que no existen en Persona.
      */
     @Override
     public void mostrarDatos() {
@@ -43,7 +43,7 @@ public class Doctor extends Persona {
         System.out.println("Horario: " + horario);
     }
 
-    // Metodos de acceso y modificacion de atributos
+    // Metodos de acceso de los atributos propios del doctor.
     public Especialidad getEspecialidad() {
         return especialidad;
     }

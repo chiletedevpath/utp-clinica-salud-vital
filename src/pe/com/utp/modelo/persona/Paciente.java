@@ -1,17 +1,17 @@
 package pe.com.utp.modelo.persona;
 
 /*
- * Clase hija de Persona.
- * Representa a los pacientes registrados en la clinica.
+ * Representa a un paciente de la clinica.
+ * Hereda los datos generales de Persona y agrega la edad.
  */
 public class Paciente extends Persona {
 
-    // Atributos especificos del paciente
+    // Dato propio del paciente.
     private int edad;
 
     /*
-     * Constructor de la clase Paciente.
-     * Utiliza super() para inicializar los atributos heredados.
+     * super() inicializa los datos heredados de Persona.
+     * edad se inicializa aqui porque pertenece solo a Paciente.
      */
     public Paciente(String codigo, String dni, String nombres, String apellidos, String telefono, String correo,
                     int edad) {
@@ -20,8 +20,8 @@ public class Paciente extends Persona {
     }
 
     /*
-     * Sobrescritura del metodo abstracto heredado de Persona.
-     * Cada tipo de persona mostrará información diferente.
+     * Implementacion del metodo abstracto.
+     * Muestra los datos generales y el dato propio del paciente.
      */
     @Override
     public void mostrarDatos() {
@@ -35,7 +35,7 @@ public class Paciente extends Persona {
         System.out.println("Edad: " + edad);
     }
 
-    // Metodos de acceso y modificacion de atributos
+    // Metodos de acceso del atributo propio.
     public int getEdad() {
         return edad;
     }
