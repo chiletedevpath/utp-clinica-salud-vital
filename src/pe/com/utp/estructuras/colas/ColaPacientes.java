@@ -102,8 +102,6 @@ public class ColaPacientes implements TADColaPacientes {
             return;
         }
 
-        System.out.println("==== PACIENTES EN COLA DE ESPERA ====");
-
         // Nodo auxiliar usado para recorrer sin mover el frente real de la cola.
         NodoPaciente actual = frente;
         int posicion = 1;

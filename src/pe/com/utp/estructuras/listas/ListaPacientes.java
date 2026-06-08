@@ -124,8 +124,6 @@ public class ListaPacientes implements TADListaPacientes {
             return;
         }
 
-        System.out.println("LISTA ENLAZADA DE PACIENTES");
-
         // Se avanza nodo por nodo hasta llegar a null.
         NodoPaciente actual = inicio;
 

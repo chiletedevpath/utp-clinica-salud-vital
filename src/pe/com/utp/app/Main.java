@@ -3,6 +3,7 @@ package pe.com.utp.app;
 import pe.com.utp.estructuras.colas.ColaPacientes;
 import pe.com.utp.estructuras.listas.ListaPacientes;
 import pe.com.utp.estructuras.matrices.MatrizHorarios;
+import pe.com.utp.estructuras.pilas.PilaHistorial;
 import pe.com.utp.modelo.cita.Cita;
 import pe.com.utp.modelo.enums.Especialidad;
 import pe.com.utp.modelo.enums.EstadoCita;
@@ -17,7 +18,7 @@ import java.time.LocalTime;
 
 /*
  * Clase principal del sistema.
- * Reune pruebas simples de pacientes, citas, matriz de horarios y cola de espera.
+ * Reune pruebas simples de pacientes, citas, matriz, cola y pila.
  * La idea es mostrar las estructuras vistas en clase con datos de la clinica.
  */
 
@@ -62,6 +63,7 @@ public class Main {
         listaPacientes.insertarPaciente(paciente4);
 
         // Se recorre la lista desde el primer nodo hasta llegar a null.
+        System.out.println("\n==== LISTA ENLAZADA DE PACIENTES ====");
         listaPacientes.mostrarPacientes();
 
         // Busqueda dentro de la lista enlazada usando el DNI como criterio.
@@ -78,6 +80,7 @@ public class Main {
 
         // Al eliminar, se actualizan los enlaces entre nodos.
         listaPacientes.eliminarPaciente(paciente4.getDni());
+        System.out.println("\n==== LISTA ENLAZADA DESPUES DE ELIMINAR ====");
         listaPacientes.mostrarPacientes();
 
         // =============================
@@ -88,7 +91,7 @@ public class Main {
         String dniABuscar = "73748381";
         Paciente pacienteEncontrado = pacienteService.buscarPacientePorDni(dniABuscar);
 
-        System.out.println("==== BUSQUEDA DE PACIENTES POR DNI ====");
+        System.out.println("\n==== BUSQUEDA DE PACIENTES POR DNI ====");
         if (pacienteEncontrado != null) {
             System.out.println("Paciente encontrado con éxito");
             pacienteEncontrado.mostrarDatos();
@@ -112,7 +115,7 @@ public class Main {
         // =============================
 
         // Primero se confirma la busqueda; luego se modifican los datos del objeto.
-        System.out.println("==== ACTUALIZACION DE DATOS DE UN PACIENTE ====");
+        System.out.println("\n==== ACTUALIZACION DE DATOS DE UN PACIENTE ====");
 
         if (pacienteEncontrado == null) {
             System.out.println("Paciente no encontrado");
@@ -123,7 +126,7 @@ public class Main {
         }
 
         // Al eliminar, el arreglo desplaza elementos para no dejar espacios logicos.
-        System.out.println("==== ELIMINACION DE DATOS DE UN PACIENTE POR DNI====");
+        System.out.println("\n==== ELIMINACION DE DATOS DE UN PACIENTE POR DNI ====");
         pacienteService.eliminarPaciente(dniABuscar);
         pacienteService.mostrarPacientes();
 
@@ -171,12 +174,43 @@ public class Main {
         colaPacientes.encolar(paciente2);
         colaPacientes.encolar(paciente3);
 
+        System.out.println("\nPacientes en espera:");
         colaPacientes.mostrarCola();
 
         // Desencolamiento: Simulación de atención al primer elemento de la estructura
         colaPacientes.desencolar();
 
+        System.out.println("\nPacientes en espera despues de atender:");
         colaPacientes.mostrarCola();
+
+        // =============================
+        // 7. Pila de historial
+        // =============================
+
+        System.out.println("\n==== HISTORIAL DE CITAS (ESTRUCTURA PILA) ====");
+
+        PilaHistorial pilaHistorial = new PilaHistorial();
+
+        pilaHistorial.apilar(cita1);
+        pilaHistorial.apilar(cita2);
+        pilaHistorial.apilar(cita3);
+
+        System.out.println("\nCitas apiladas desde la mas reciente:");
+        pilaHistorial.mostrarPila();
+
+        System.out.println("\nCita ubicada en la cima:");
+        Cita citaEnLaCima = pilaHistorial.verCima();
+        if (citaEnLaCima != null) {
+            citaEnLaCima.mostrarDatos();
+        } else {
+            System.out.println("Cita no encontrada");
+        }
+
+        System.out.println("\nSe retira la cita mas reciente del historial:");
+        pilaHistorial.desapilar();
+
+        System.out.println("\nHistorial despues de desapilar:");
+        pilaHistorial.mostrarPila();
 
     }
 }
