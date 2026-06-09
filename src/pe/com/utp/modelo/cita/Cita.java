@@ -39,7 +39,7 @@ public class Cita {
     }
 
     public void mostrarDatos() {
-        DateTimeFormatter formatoFechaPeru = DateTimeFormatter.ofPattern("EEEE dd/MM/yyy");
+        DateTimeFormatter formatoFechaPeru = DateTimeFormatter.ofPattern("EEEE dd/MM/yyyy");
         DateTimeFormatter formatoHoraConSegundos = DateTimeFormatter.ofPattern("HH:mm:ss");
         DateTimeFormatter formatoHoraRegistro = DateTimeFormatter.ofPattern("EEEE dd/MM/yyyy HH:mm:ss");
 

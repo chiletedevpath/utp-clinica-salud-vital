@@ -44,7 +44,7 @@ public class ListaPacientes implements TADListaPacientes {
 
     // Busca un paciente por DNI recorriendo nodo por nodo.
     @Override
-    public Paciente buscarPacientePorDni(String DNI) {
+    public Paciente buscarPacientePorDni(String dni) {
 
         // actual representa el nodo que se revisa en cada vuelta.
         NodoPaciente actual = inicio;
@@ -52,7 +52,7 @@ public class ListaPacientes implements TADListaPacientes {
         while (actual != null) {
 
             // El DNI es el dato usado para comparar.
-            if (actual.getPaciente().getDni().equals(DNI)) {
+            if (actual.getPaciente().getDni().equals(dni)) {
                 return actual.getPaciente();
             }
 

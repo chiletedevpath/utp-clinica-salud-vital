@@ -6,7 +6,7 @@ import pe.com.utp.modelo.persona.Paciente;
 public class PacienteService {
 
     // Limite maximo de pacientes que se pueden guardar en memoria.
-    private static final int CAPACIDAD = 100;
+    private static final int CAPACIDAD_MAXIMA_PACIENTES = 100;
 
     // Arreglo principal donde se almacenan los objetos Paciente.
     private Paciente[] pacientes;
@@ -16,14 +16,14 @@ public class PacienteService {
 
     // Al iniciar el servicio, el arreglo esta vacio y el contador queda en cero.
     public PacienteService() {
-        pacientes = new Paciente[CAPACIDAD];
+        pacientes = new Paciente[CAPACIDAD_MAXIMA_PACIENTES];
         totalPacientes = 0;
     }
 
     // Guarda un paciente en la siguiente posicion libre del arreglo.
     public void registrarPaciente(Paciente paciente) {
         // Si el arreglo esta lleno, no se puede registrar otro paciente.
-        if (totalPacientes >= CAPACIDAD) {
+        if (totalPacientes >= CAPACIDAD_MAXIMA_PACIENTES) {
             System.out.println("No hay espacio disponible para registrar mas pacientes");
             return;
         }

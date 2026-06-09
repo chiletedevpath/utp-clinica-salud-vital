@@ -8,29 +8,29 @@ import pe.com.utp.modelo.persona.Doctor;
  */
 public class MatrizHorarios {
 
-    private static final int FILAS = 3;        // Tres doctores para la prueba.
-    private static final int COLUMNAS = 5;     // Cinco dias laborales.
+    private static final int TOTAL_DOCTORES = 3;        // Tres doctores para la prueba.
+    private static final int TOTAL_DIAS = 5;             // Cinco dias laborales.
 
     private int[][] matrizCitas;
-    private Doctor[] medicosAsignados;
+    private Doctor[] doctoresAsignados;
 
     /*
-     * Cada posicion de medicosAsignados corresponde a una fila de matrizCitas.
-     * Ejemplo: medicosAsignados[1] trabaja con matrizCitas[1][...].
+     * Cada posicion de doctoresAsignados corresponde a una fila de matrizCitas.
+     * Ejemplo: doctoresAsignados[1] trabaja con matrizCitas[1][...].
      */
-    public MatrizHorarios(Doctor medicoFila1, Doctor medicoFila2, Doctor medicoFila3) {
-        matrizCitas = new int[FILAS][COLUMNAS];
-        this.medicosAsignados = new Doctor[FILAS];
-        medicosAsignados[0] = medicoFila1;
-        medicosAsignados[1] = medicoFila2;
-        medicosAsignados[2] = medicoFila3;
+    public MatrizHorarios(Doctor doctorFila1, Doctor doctorFila2, Doctor doctorFila3) {
+        matrizCitas = new int[TOTAL_DOCTORES][TOTAL_DIAS];
+        this.doctoresAsignados = new Doctor[TOTAL_DOCTORES];
+        doctoresAsignados[0] = doctorFila1;
+        doctoresAsignados[1] = doctorFila2;
+        doctoresAsignados[2] = doctorFila3;
     }
 
-    public int buscarFilaPorCodigoMedico(String codigo) {
+    public int buscarFilaPorCodigoDoctor(String codigoDoctor) {
         // Se busca al doctor para conocer que fila ocupa en la matriz.
-        for (int i = 0; i < medicosAsignados.length; i++) {
-            if (medicosAsignados[i].getCodigo().equalsIgnoreCase(codigo)) {
-                return i;
+        for (int filaDoctor = 0; filaDoctor < doctoresAsignados.length; filaDoctor++) {
+            if (doctoresAsignados[filaDoctor].getCodigo().equalsIgnoreCase(codigoDoctor)) {
+                return filaDoctor;
             }
         }
 
@@ -41,9 +41,9 @@ public class MatrizHorarios {
     // Muestra la matriz como tabla numerica.
     public void mostrarMatriz() {
         System.out.println("\n MATRIZ DE CITAS MEDICAS ");
-        for (int i = 0; i < FILAS; i++) {
-            for (int j = 0; j < COLUMNAS; j++) {
-                System.out.print(matrizCitas[i][j] + "\t");
+        for (int filaDoctor = 0; filaDoctor < TOTAL_DOCTORES; filaDoctor++) {
+            for (int columnaDia = 0; columnaDia < TOTAL_DIAS; columnaDia++) {
+                System.out.print(matrizCitas[filaDoctor][columnaDia] + "\t");
             }
             System.out.println();
         }
@@ -52,31 +52,31 @@ public class MatrizHorarios {
     // Suma por filas para obtener el total de citas por doctor.
     public void mostrarTotalPorDoctor() {
         System.out.println("\n TOTAL DE CITAS POR DOCTOR ");
-        for (int i = 0; i < FILAS; i++) {
-            int suma = 0;
-            for (int j = 0; j < COLUMNAS; j++) {
-                suma += matrizCitas[i][j];
+        for (int filaDoctor = 0; filaDoctor < TOTAL_DOCTORES; filaDoctor++) {
+            int totalPorDoctor = 0;
+            for (int columnaDia = 0; columnaDia < TOTAL_DIAS; columnaDia++) {
+                totalPorDoctor += matrizCitas[filaDoctor][columnaDia];
             }
-            System.out.println("Doctor " + (i + 1) + ": " + suma + " citas");
+            System.out.println("Doctor " + (filaDoctor + 1) + ": " + totalPorDoctor + " citas");
         }
     }
 
     // Suma por columnas para obtener el total de citas por dia.
     public void mostrarTotalPorDia() {
         System.out.println("\n TOTAL DE CITAS POR DIA ");
-        for (int j = 0; j < COLUMNAS; j++) {
-            int suma = 0;
+        for (int columnaDia = 0; columnaDia < TOTAL_DIAS; columnaDia++) {
+            int totalPorDia = 0;
 
-            for (int i = 0; i < FILAS; i++) {
-                suma += matrizCitas[i][j];
+            for (int filaDoctor = 0; filaDoctor < TOTAL_DOCTORES; filaDoctor++) {
+                totalPorDia += matrizCitas[filaDoctor][columnaDia];
             }
-            System.out.println("Dia " + (j + 1) + ": " + suma + " citas");
+            System.out.println("Dia " + (columnaDia + 1) + ": " + totalPorDia + " citas");
         }
     }
 
     public void registrarCitaEnMatriz(int filaDoctor, int columnaDia) {
         // Se valida la posicion antes de modificar la matriz.
-        if (filaDoctor >= 0 && filaDoctor < FILAS && columnaDia >= 0 && columnaDia < COLUMNAS) {
+        if (filaDoctor >= 0 && filaDoctor < TOTAL_DOCTORES && columnaDia >= 0 && columnaDia < TOTAL_DIAS) {
             matrizCitas[filaDoctor][columnaDia]++;
         } else {
             System.out.println("\n Error: indices de matriz fuera de rango.");
@@ -84,6 +84,6 @@ public class MatrizHorarios {
     }
 
     public boolean esPosicionValida(int filaDoctor, int columnaDia) {
-        return filaDoctor >= 0 && filaDoctor < FILAS && columnaDia >= 0 && columnaDia < COLUMNAS;
+        return filaDoctor >= 0 && filaDoctor < TOTAL_DOCTORES && columnaDia >= 0 && columnaDia < TOTAL_DIAS;
     }
 }

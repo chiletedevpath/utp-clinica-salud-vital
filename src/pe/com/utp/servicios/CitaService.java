@@ -6,7 +6,7 @@ import pe.com.utp.modelo.cita.Cita;
 public class CitaService {
 
     // Limite maximo de citas guardadas en el arreglo.
-    private static final int CAPACIDAD = 20;
+    private static final int CAPACIDAD_MAXIMA_CITAS = 20;
 
     private Cita[] citas;
     private MatrizHorarios matrizHorarios;
@@ -19,7 +19,7 @@ public class CitaService {
      * Asi las citas y los reportes de horarios trabajan sobre la misma agenda.
      */
     public CitaService(MatrizHorarios matrizHorarios) {
-        this.citas = new Cita[CAPACIDAD];
+        this.citas = new Cita[CAPACIDAD_MAXIMA_CITAS];
         this.matrizHorarios = matrizHorarios;
         this.totalCitas = 0;
     }
@@ -29,23 +29,23 @@ public class CitaService {
 
         // El doctor de la cita determina la fila dentro de la matriz.
         String codigoDoctor = nuevaCita.getDoctor().getCodigo();
-        int filaEncontrada = matrizHorarios.buscarFilaPorCodigoMedico(codigoDoctor);
+        int filaDoctor = matrizHorarios.buscarFilaPorCodigoDoctor(codigoDoctor);
 
         // Si el doctor no esta en la matriz, la cita no se registra.
-        if (filaEncontrada == -1) {
+        if (filaDoctor == -1) {
             System.out.println("\nMedico no asignado");
             return;
         }
 
         // Primero se valida que el arreglo todavia tenga espacio.
-        if (totalCitas < CAPACIDAD) {
+        if (totalCitas < CAPACIDAD_MAXIMA_CITAS) {
 
-            if (matrizHorarios.esPosicionValida(filaEncontrada, columnaDia - 1)) {
+            if (matrizHorarios.esPosicionValida(filaDoctor, columnaDia - 1)) {
                 citas[totalCitas] = nuevaCita;
                 totalCitas++;
 
                 // La matriz cuenta la cita en la fila del doctor y columna del dia.
-                matrizHorarios.registrarCitaEnMatriz(filaEncontrada, columnaDia - 1);
+                matrizHorarios.registrarCitaEnMatriz(filaDoctor, columnaDia - 1);
                 System.out.println("\nCita registrada correctamente");
             } else {
                 System.out.println("\nPosicion incorrecta");
@@ -55,29 +55,29 @@ public class CitaService {
         }
     }
 
-    public Cita buscarCitaPorCodigo(String codigoABuscar) {
+    public Cita buscarCitaPorCodigo(String codigoBuscado) {
         // Busqueda lineal sobre las citas realmente registradas.
         for (int i = 0; i < totalCitas; i++) {
-            if (citas[i].getCodigo().equalsIgnoreCase(codigoABuscar)) {
+            if (citas[i].getCodigo().equalsIgnoreCase(codigoBuscado)) {
                 return citas[i];
             }
         }
-        System.out.println("\nLa cita con codigo " + codigoABuscar + " no ha sido encontrada");
+        System.out.println("\nLa cita con codigo " + codigoBuscado + " no ha sido encontrada");
         return null;
     }
 
     // Cancela la cita encontrada cambiando solo su estado.
     // Por ahora no descuenta la cita dentro de la matriz de horarios.
-    public Cita cancelarCita(String codigoABuscar) {
+    public Cita cancelarCita(String codigoBuscado) {
         for (int i = 0; i < totalCitas; i++) {
-            if (citas[i].getCodigo().equalsIgnoreCase(codigoABuscar)) {
+            if (citas[i].getCodigo().equalsIgnoreCase(codigoBuscado)) {
                 citas[i].cancelar();
                 System.out.println("Su cita ha sido cancelada");
                 return citas[i];
             }
         }
 
-        System.out.println("No se encontro la cita con codigo: " + codigoABuscar);
+        System.out.println("No se encontro la cita con codigo: " + codigoBuscado);
         return null;
     }
 

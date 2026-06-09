@@ -1,4 +1,7 @@
 package pe.com.utp.modelo.enums;
 
-public class TipoPago {
+public enum TipoPago {
+    EFECTIVO,
+    TARJETA,
+    TRANSFERENCIA
 }
