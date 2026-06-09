@@ -1,9 +1,10 @@
 package pe.com.utp.app;
 
+import pe.com.utp.algoritmos.ordenamiento.BubbleSortPacientes;
 import pe.com.utp.estructuras.colas.ColaPacientes;
 import pe.com.utp.estructuras.listas.ListaPacientes;
 import pe.com.utp.estructuras.matrices.MatrizHorarios;
-import pe.com.utp.estructuras.pilas.PilaHistorial;
+import pe.com.utp.estructuras.pilas.PilaHistorialCitas;
 import pe.com.utp.modelo.cita.Cita;
 import pe.com.utp.modelo.enums.Especialidad;
 import pe.com.utp.modelo.enums.EstadoCita;
@@ -38,12 +39,15 @@ public class Main {
         Paciente paciente2 = new Paciente("PAC-002", "25830900", "Wilmer", "Soto", "985000677", "wilmer.soto@gmail.com", 20);
         Paciente paciente3 = new Paciente("PAC-003", "20005900", "Yenifer", "Alcantara", "983330677", "yenifer.nera@gmail.com", 17);
         Paciente paciente4 = new Paciente("PAC-004", "21001010", "Xiomara", "Rojas", "983741677", "xiomara.nera@gmail.com", 21);
+        Paciente paciente5 = new Paciente("PAC-005", "807001010", "Jorge", "Flores", "999652000", "jorge.flores@gmail.com", 35);
 
         // Cada registro ocupa la siguiente posicion disponible del arreglo.
         System.out.println("\n==== REGISTRO DE PACIENTES =====");
         pacienteService.registrarPaciente(paciente1);
         pacienteService.registrarPaciente(paciente2);
         pacienteService.registrarPaciente(paciente3);
+        pacienteService.registrarPaciente(paciente4);
+        pacienteService.registrarPaciente(paciente5);
         System.out.println("=======================\n");
 
         // Recorrido del arreglo hasta la cantidad real de pacientes registrados.
@@ -61,6 +65,7 @@ public class Main {
         listaPacientes.insertarPaciente(paciente2);
         listaPacientes.insertarPaciente(paciente3);
         listaPacientes.insertarPaciente(paciente4);
+        listaPacientes.insertarPaciente(paciente5);
 
         // Se recorre la lista desde el primer nodo hasta llegar a null.
         System.out.println("\n==== LISTA ENLAZADA DE PACIENTES ====");
@@ -93,10 +98,10 @@ public class Main {
 
         System.out.println("\n==== BUSQUEDA DE PACIENTES POR DNI ====");
         if (pacienteEncontrado != null) {
-            System.out.println("Paciente encontrado con éxito");
+            System.out.println("Paciente encontrado con exito");
             pacienteEncontrado.mostrarDatos();
         } else {
-            System.out.println("No se encontró ningún paciente con el DNI: " + dniABuscar);
+            System.out.println("No se encontro ningun paciente con el DNI: " + dniABuscar);
         }
 
         // Caso 2: DNI que no existe. Sirve para validar el retorno null.
@@ -104,10 +109,10 @@ public class Main {
         Paciente pacienteNoEncontrado = pacienteService.buscarPacientePorDni(dniNoEncontrado);
 
         if (pacienteNoEncontrado != null) {
-            System.out.println("Paciente encontrado con éxito");
+            System.out.println("Paciente encontrado con exito");
             pacienteNoEncontrado.mostrarDatos();
         } else {
-            System.out.println("No se encontró ningún paciente con el DNI: " + dniNoEncontrado);
+            System.out.println("No se encontro ningun paciente con el DNI: " + dniNoEncontrado);
         }
 
         // =============================
@@ -146,6 +151,8 @@ public class Main {
         Cita cita1 = new Cita("CIT-001", paciente2, doctor1, LocalDate.now(), LocalTime.now(), EstadoCita.PROGRAMADA, "Dolor de cuello");
         Cita cita2 = new Cita("CIT-002", paciente2, doctor2, LocalDate.now(), LocalTime.now(), EstadoCita.PROGRAMADA, "Presencia de fiebre");
         Cita cita3 = new Cita("CIT-003", paciente3, doctor3, LocalDate.now(), LocalTime.now(), EstadoCita.PROGRAMADA, "Control medico");
+        Cita cita4 = new Cita("CIT-004", paciente4, doctor2, LocalDate.now(), LocalTime.now(), EstadoCita.PROGRAMADA, "Control medico");
+        Cita cita5 = new Cita("CIT-005", paciente5, doctor1, LocalDate.now(), LocalTime.now(), EstadoCita.PROGRAMADA, "Control medico");
 
         // El servicio de citas actualiza tambien la matriz de horarios.
         CitaService citaService = new CitaService(matrizHorarios);
@@ -154,6 +161,8 @@ public class Main {
         citaService.registrarCita(cita1, 1);
         citaService.registrarCita(cita2, 5);
         citaService.registrarCita(cita3, 1);
+        citaService.registrarCita(cita4, 2);
+        citaService.registrarCita(cita5, 3);
 
         // Muestra las citas registradas y luego el resumen en matriz.
         citaService.mostrarCitas();
@@ -167,39 +176,40 @@ public class Main {
 
         System.out.println("\n==== SALA DE ESPERA DE PACIENTES (ESTRUCTURA COLA) ====");
 
-        // Inicialización de la cola dinámica para el triaje u orden de atención
+        // La cola representa orden de llegada para triaje o atencion.
         ColaPacientes colaPacientes = new ColaPacientes();
 
-        // Encolamiento secuencial de los pacientes disponibles (Orden de llegada)
+        // Cada paciente entra al final de la cola.
         colaPacientes.encolar(paciente2);
         colaPacientes.encolar(paciente3);
 
         System.out.println("\nPacientes en espera:");
         colaPacientes.mostrarCola();
 
-        // Desencolamiento: Simulación de atención al primer elemento de la estructura
+        // Se atiende al primer paciente que ingreso.
         colaPacientes.desencolar();
 
         System.out.println("\nPacientes en espera despues de atender:");
         colaPacientes.mostrarCola();
 
         // =============================
-        // 7. Pila de historial
+        // 7. Pila de historial reciente
         // =============================
 
-        System.out.println("\n==== HISTORIAL DE CITAS (ESTRUCTURA PILA) ====");
+        System.out.println("\n==== HISTORIAL RECIENTE DE CITAS (ESTRUCTURA PILA) ====");
 
-        PilaHistorial pilaHistorial = new PilaHistorial();
+        // La pila no atiende pacientes; solo conserva las citas mas recientes.
+        PilaHistorialCitas pilaHistorialCitas = new PilaHistorialCitas();
 
-        pilaHistorial.apilar(cita1);
-        pilaHistorial.apilar(cita2);
-        pilaHistorial.apilar(cita3);
+        pilaHistorialCitas.apilar(cita1);
+        pilaHistorialCitas.apilar(cita2);
+        pilaHistorialCitas.apilar(cita3);
 
         System.out.println("\nCitas apiladas desde la mas reciente:");
-        pilaHistorial.mostrarPila();
+        pilaHistorialCitas.mostrarPila();
 
         System.out.println("\nCita ubicada en la cima:");
-        Cita citaEnLaCima = pilaHistorial.verCima();
+        Cita citaEnLaCima = pilaHistorialCitas.verCima();
         if (citaEnLaCima != null) {
             citaEnLaCima.mostrarDatos();
         } else {
@@ -207,10 +217,26 @@ public class Main {
         }
 
         System.out.println("\nSe retira la cita mas reciente del historial:");
-        pilaHistorial.desapilar();
+        pilaHistorialCitas.desapilar();
 
         System.out.println("\nHistorial despues de desapilar:");
-        pilaHistorial.mostrarPila();
+        pilaHistorialCitas.mostrarPila();
+
+        // =============================
+        // 8. Ordenamiento por apellido
+        // =============================
+
+        System.out.println("\n==== ORDENAMIENTO POR ORDEN ALFABETICO (BUBBLE SORT) ====");
+
+        System.out.println("\nPacientes antes de ordenar:");
+        pacienteService.mostrarPacientes();
+
+        BubbleSortPacientes ordenamiento = new BubbleSortPacientes();
+
+        ordenamiento.ordenarPorApellido(pacienteService.getPacientes(), pacienteService.getTotalPacientes());
+
+        System.out.println("\nPacientes despues de ordenar por apellido:");
+        pacienteService.mostrarPacientes();
 
     }
 }

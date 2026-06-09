@@ -2,7 +2,7 @@ package pe.com.utp.servicios;
 
 import pe.com.utp.modelo.persona.Paciente;
 
-// Servicio que administra pacientes usando un arreglo de tamaño fijo.
+// Servicio que administra pacientes usando un arreglo de tamanio fijo.
 public class PacienteService {
 
     // Limite maximo de pacientes que se pueden guardar en memoria.
@@ -24,7 +24,7 @@ public class PacienteService {
     public void registrarPaciente(Paciente paciente) {
         // Si el arreglo esta lleno, no se puede registrar otro paciente.
         if (totalPacientes >= CAPACIDAD) {
-            System.out.println("No hay espacio disponible para registrar más pacientes");
+            System.out.println("No hay espacio disponible para registrar mas pacientes");
             return;
         }
 
@@ -119,5 +119,14 @@ public class PacienteService {
         totalPacientes--;
 
         System.out.println("Paciente eliminado correctamente.");
+    }
+
+    public Paciente[] getPacientes() {
+        return pacientes;
+    }
+
+    // Permite trabajar solo con las posiciones ocupadas del arreglo.
+    public int getTotalPacientes() {
+        return totalPacientes;
     }
 }

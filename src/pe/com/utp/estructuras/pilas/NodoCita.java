@@ -3,8 +3,8 @@ package pe.com.utp.estructuras.pilas;
 import pe.com.utp.modelo.cita.Cita;
 
 /*
- * Nodo usado por la pila de historial.
- * Guarda una cita y la referencia al siguiente nodo de la pila.
+ * Nodo usado por la pila de citas recientes.
+ * Guarda una cita y la referencia al nodo que queda debajo.
  */
 public class NodoCita {
 

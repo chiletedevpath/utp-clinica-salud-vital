@@ -26,11 +26,11 @@ public class Paciente extends Persona {
     @Override
     public void mostrarDatos() {
         System.out.println("----- DATOS DEL PACIENTE -----");
-        System.out.println("Código: " + getCodigo());
+        System.out.println("Codigo: " + getCodigo());
         System.out.println("DNI: " + getDni());
         System.out.println("Nombres: " + getNombres());
         System.out.println("Apellidos: " + getApellidos());
-        System.out.println("Teléfono: " + getTelefono());
+        System.out.println("Telefono: " + getTelefono());
         System.out.println("Correo: " + getCorreo());
         System.out.println("Edad: " + edad);
     }

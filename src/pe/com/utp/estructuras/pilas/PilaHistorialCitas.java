@@ -1,28 +1,29 @@
 package pe.com.utp.estructuras.pilas;
 
-import pe.com.utp.interfaces.TADPilaHistorial;
+import pe.com.utp.interfaces.TADPilaHistorialCitas;
 import pe.com.utp.modelo.cita.Cita;
 
-public class PilaHistorial implements TADPilaHistorial {
+public class PilaHistorialCitas implements TADPilaHistorialCitas {
 
     /*
-     * Pila de citas implementada con nodos enlazados.
-     * Se aplica LIFO: la ultima cita registrada es la primera en salir.
+     * Pila de citas recientes implementada con nodos enlazados.
+     * No representa orden de atencion; para eso se usa la cola de pacientes.
+     * Aqui se aplica LIFO: la ultima cita guardada queda disponible primero.
      */
 
     // Nodo superior de la pila.
     private NodoCita cima;
 
-    // Cantidad real de citas dentro del historial.
+    // Cantidad real de citas dentro de la pila.
     private int tamanio;
 
     // La pila inicia vacia: no hay cima y el contador empieza en cero.
-    public PilaHistorial() {
+    public PilaHistorialCitas() {
         cima = null;
         tamanio = 0;
     }
 
-    // Agrega una cita a la cima del historial.
+    // Agrega una cita a la cima del historial reciente.
     @Override
     public void apilar(Cita cita) {
         if (cita == null) {
@@ -39,7 +40,7 @@ public class PilaHistorial implements TADPilaHistorial {
         cima = nodo;
 
         tamanio++;
-        System.out.println("Cita " + cita.getCodigo() + " agregada al historial");
+        System.out.println("Cita " + cita.getCodigo() + " agregada al historial reciente");
     }
 
     // Retira la cita ubicada en la cima de la pila.
@@ -56,7 +57,7 @@ public class PilaHistorial implements TADPilaHistorial {
         cima = cima.getSiguiente();
         tamanio--;
 
-        System.out.println("Cita " + citaRemovida.getCodigo() + " retirada del historial");
+        System.out.println("Cita " + citaRemovida.getCodigo() + " retirada del historial reciente");
         return citaRemovida;
     }
 
@@ -76,7 +77,7 @@ public class PilaHistorial implements TADPilaHistorial {
         return cima == null;
     }
 
-    // Recorre el historial desde la cima hasta llegar a null.
+    // Recorre el historial reciente desde la cima hasta llegar a null.
     @Override
     public void mostrarPila() {
         if (estaVacia()) {
@@ -88,7 +89,7 @@ public class PilaHistorial implements TADPilaHistorial {
         int posicion = 1;
 
         while (actual != null) {
-            // Se muestra cada cita en orden LIFO.
+            // Se muestra cada cita desde la mas reciente hacia la mas antigua.
             String codigo = actual.getCita().getCodigo();
             String estado = actual.getCita().getEstado().toString();
             System.out.println(posicion + ". " + codigo + " - " + estado);

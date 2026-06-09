@@ -32,11 +32,11 @@ public class Doctor extends Persona {
     @Override
     public void mostrarDatos() {
         System.out.println("----- DATOS DEL DOCTOR -----");
-        System.out.println("Código: " + getCodigo());
+        System.out.println("Codigo: " + getCodigo());
         System.out.println("DNI: " + getDni());
         System.out.println("Nombres: " + getNombres());
         System.out.println("Apellidos: " + getApellidos());
-        System.out.println("Teléfono: " + getTelefono());
+        System.out.println("Telefono: " + getTelefono());
         System.out.println("CMP: " + cmp);
         System.out.println("Correo: " + getCorreo());
         System.out.println("Especialidad: " + especialidad);

@@ -26,11 +26,11 @@ public class Administrador extends Persona {
     public void mostrarDatos() {
 
         System.out.println("----- DATOS DEL ADMINISTRADOR -----");
-        System.out.println("Código: " + getCodigo());
+        System.out.println("Codigo: " + getCodigo());
         System.out.println("DNI: " + getDni());
         System.out.println("Nombres: " + getNombres());
         System.out.println("Apellidos: " + getApellidos());
-        System.out.println("Teléfono: " + getTelefono());
+        System.out.println("Telefono: " + getTelefono());
         System.out.println("Correo: " + getCorreo());
         System.out.println("Cargo: " + cargo);
     }
