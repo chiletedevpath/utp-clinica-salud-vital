@@ -2,7 +2,7 @@ package pe.com.utp.servicios;
 
 import pe.com.utp.modelo.persona.Paciente;
 
-// Servicio que administra pacientes usando un arreglo de tamanio fijo.
+// Servicio que administra pacientes usando un arreglo unidimensional de tamanio fijo.
 public class PacienteService {
 
     // Limite maximo de pacientes que se pueden guardar en memoria.
@@ -20,7 +20,7 @@ public class PacienteService {
         totalPacientes = 0;
     }
 
-    // Guarda un paciente en la siguiente posicion libre del arreglo.
+    // Inserta un paciente en la siguiente posicion libre del arreglo.
     public void registrarPaciente(Paciente paciente) {
         // Si el arreglo esta lleno, no se puede registrar otro paciente.
         if (totalPacientes >= CAPACIDAD_MAXIMA_PACIENTES) {
@@ -89,7 +89,7 @@ public class PacienteService {
         System.out.println("Paciente actualizado correctamente");
     }
 
-    // Elimina un paciente por DNI y compacta el arreglo.
+    // Elimina un paciente por DNI y compacta el arreglo mediante desplazamiento.
     public void eliminarPaciente(String dni) {
         int posicion = -1;
 

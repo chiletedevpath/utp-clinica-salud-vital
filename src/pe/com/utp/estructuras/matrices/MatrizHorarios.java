@@ -3,7 +3,7 @@ package pe.com.utp.estructuras.matrices;
 import pe.com.utp.modelo.persona.Doctor;
 
 /*
- * Matriz de horarios de la clinica.
+ * Arreglo bidimensional para horarios de la clinica.
  * Cada fila representa un doctor y cada columna representa un dia laboral.
  */
 public class MatrizHorarios {
@@ -38,7 +38,7 @@ public class MatrizHorarios {
         return -1;
     }
 
-    // Muestra la matriz como tabla numerica.
+    // Recorre la matriz por filas y columnas para mostrar sus valores.
     public void mostrarMatriz() {
         System.out.println("\n MATRIZ DE CITAS MEDICAS ");
         for (int filaDoctor = 0; filaDoctor < TOTAL_DOCTORES; filaDoctor++) {
@@ -49,7 +49,7 @@ public class MatrizHorarios {
         }
     }
 
-    // Suma por filas para obtener el total de citas por doctor.
+    // Recorre cada fila para calcular el total de citas por doctor.
     public void mostrarTotalPorDoctor() {
         System.out.println("\n TOTAL DE CITAS POR DOCTOR ");
         for (int filaDoctor = 0; filaDoctor < TOTAL_DOCTORES; filaDoctor++) {
@@ -61,7 +61,7 @@ public class MatrizHorarios {
         }
     }
 
-    // Suma por columnas para obtener el total de citas por dia.
+    // Recorre cada columna para calcular el total de citas por dia.
     public void mostrarTotalPorDia() {
         System.out.println("\n TOTAL DE CITAS POR DIA ");
         for (int columnaDia = 0; columnaDia < TOTAL_DIAS; columnaDia++) {
@@ -75,7 +75,7 @@ public class MatrizHorarios {
     }
 
     public void registrarCitaEnMatriz(int filaDoctor, int columnaDia) {
-        // Se valida la posicion antes de modificar la matriz.
+        // Se valida la posicion antes de modificar una celda de la matriz.
         if (filaDoctor >= 0 && filaDoctor < TOTAL_DOCTORES && columnaDia >= 0 && columnaDia < TOTAL_DIAS) {
             matrizCitas[filaDoctor][columnaDia]++;
         } else {

@@ -5,10 +5,13 @@ import pe.com.utp.modelo.cita.Cita;
 
 public class CitaService {
 
-    // Limite maximo de citas guardadas en el arreglo.
+    // Capacidad estatica del arreglo unidimensional de citas.
     private static final int CAPACIDAD_MAXIMA_CITAS = 20;
 
+    // Arreglo usado para almacenar citas en memoria principal.
     private Cita[] citas;
+
+    // Matriz bidimensional usada para contar citas por doctor y dia.
     private MatrizHorarios matrizHorarios;
 
     // Cantidad real de citas registradas.
@@ -24,7 +27,7 @@ public class CitaService {
         this.totalCitas = 0;
     }
 
-    // Registra una cita y suma su posicion dentro de la matriz.
+    // Registra una cita en el arreglo y actualiza su posicion en la matriz.
     public void registrarCita(Cita nuevaCita, int columnaDia) {
 
         // El doctor de la cita determina la fila dentro de la matriz.
@@ -66,8 +69,10 @@ public class CitaService {
         return null;
     }
 
-    // Cancela la cita encontrada cambiando solo su estado.
-    // Por ahora no descuenta la cita dentro de la matriz de horarios.
+    /*
+     * Cancela la cita encontrada cambiando solo su estado.
+     * Por ahora no descuenta la cita dentro de la matriz de horarios.
+     */
     public Cita cancelarCita(String codigoBuscado) {
         for (int i = 0; i < totalCitas; i++) {
             if (citas[i].getCodigo().equalsIgnoreCase(codigoBuscado)) {

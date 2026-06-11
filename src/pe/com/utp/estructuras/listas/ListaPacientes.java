@@ -5,6 +5,11 @@ import pe.com.utp.modelo.persona.Paciente;
 
 public class ListaPacientes implements TADListaPacientes {
 
+    /*
+     * Lista enlazada simple de pacientes.
+     * Cada nodo guarda un paciente y una referencia al siguiente nodo.
+     */
+
     // Primer nodo de la lista. Desde aqui empieza el recorrido.
     private NodoPaciente inicio;
 
@@ -42,7 +47,7 @@ public class ListaPacientes implements TADListaPacientes {
         System.out.println("Paciente insertado correctamente en la lista");
     }
 
-    // Busca un paciente por DNI recorriendo nodo por nodo.
+    // Busca un paciente por DNI mediante recorrido secuencial de nodos.
     @Override
     public Paciente buscarPacientePorDni(String dni) {
 

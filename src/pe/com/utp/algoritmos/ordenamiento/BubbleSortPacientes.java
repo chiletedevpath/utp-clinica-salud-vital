@@ -5,8 +5,8 @@ import pe.com.utp.modelo.persona.Paciente;
 public class BubbleSortPacientes {
 
     /*
-     * Ordena pacientes por apellido usando Bubble Sort.
-     * Solo recorre las posiciones ocupadas del arreglo.
+     * Ordenamiento Bubble Sort aplicado a un arreglo de pacientes.
+     * Compara elementos vecinos e intercambia cuando el apellido esta fuera de orden.
      */
     public void ordenarPorApellido(Paciente[] pacientes, int totalPacientes) {
 
@@ -15,7 +15,7 @@ public class BubbleSortPacientes {
             // En cada pasada, el apellido mayor queda al final del tramo evaluado.
             for (int j = 0; j < totalPacientes - 1 - i; j++) {
 
-                // Se comparan dos pacientes vecinos dentro del arreglo.
+                // Se comparan dos posiciones vecinas del arreglo.
                 String apellidoPacienteActual = pacientes[j].getApellidos();
                 String apellidoPacienteSiguiente = pacientes[j + 1].getApellidos();
 

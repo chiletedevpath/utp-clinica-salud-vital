@@ -7,7 +7,7 @@ import pe.com.utp.modelo.persona.Paciente;
 public class ColaPacientes implements TADColaPacientes {
 
     /*
-     * Cola de pacientes implementada con nodos enlazados.
+     * Cola dinamica de pacientes implementada con nodos enlazados.
      * Se aplica FIFO: el primer paciente que ingresa es el primero en salir.
      */
 
@@ -27,7 +27,7 @@ public class ColaPacientes implements TADColaPacientes {
         this.tamanio = 0;
     }
 
-    // Agrega un paciente al final de la cola.
+    // Enqueue: agrega un paciente al final de la cola.
     @Override
     public void encolar(Paciente paciente) {
         // Si no llega un paciente valido, no se modifica la estructura.
@@ -54,7 +54,7 @@ public class ColaPacientes implements TADColaPacientes {
         System.out.println("Paciente " + paciente.getNombres() + " en cola de espera");
     }
 
-    // Retira al paciente ubicado en el frente de la cola.
+    // Dequeue: retira al paciente ubicado en el frente de la cola.
     @Override
     public Paciente desencolar() {
         if (estaVacia()) {

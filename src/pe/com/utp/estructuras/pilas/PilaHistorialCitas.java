@@ -6,9 +6,9 @@ import pe.com.utp.modelo.cita.Cita;
 public class PilaHistorialCitas implements TADPilaHistorialCitas {
 
     /*
-     * Pila de citas recientes implementada con nodos enlazados.
+     * Pila dinamica de citas recientes implementada con nodos enlazados.
      * No representa orden de atencion; para eso se usa la cola de pacientes.
-     * Aqui se aplica LIFO: la ultima cita guardada queda disponible primero.
+     * Se aplica LIFO: la ultima cita apilada queda disponible en la cima.
      */
 
     // Nodo superior de la pila.
@@ -23,7 +23,7 @@ public class PilaHistorialCitas implements TADPilaHistorialCitas {
         tamanio = 0;
     }
 
-    // Agrega una cita a la cima del historial reciente.
+    // Push: agrega una cita a la cima del historial reciente.
     @Override
     public void apilar(Cita cita) {
         if (cita == null) {
@@ -43,7 +43,7 @@ public class PilaHistorialCitas implements TADPilaHistorialCitas {
         System.out.println("Cita " + cita.getCodigo() + " agregada al historial reciente");
     }
 
-    // Retira la cita ubicada en la cima de la pila.
+    // Pop: retira la cita ubicada en la cima de la pila.
     @Override
     public Cita desapilar() {
         if (estaVacia()) {
@@ -61,7 +61,7 @@ public class PilaHistorialCitas implements TADPilaHistorialCitas {
         return citaRemovida;
     }
 
-    // Consulta la cita mas reciente sin retirarla.
+    // Peek: consulta la cita mas reciente sin retirarla.
     @Override
     public Cita verCima() {
         if (estaVacia()) {
