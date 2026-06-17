@@ -1,6 +1,7 @@
 package pe.com.utp.app;
 
 import pe.com.utp.algoritmos.ordenamiento.BubbleSortPacientes;
+import pe.com.utp.estructuras.arboles.ArbolDoctoresBusqueda;
 import pe.com.utp.estructuras.colas.ColaPacientes;
 import pe.com.utp.estructuras.listas.ListaPacientes;
 import pe.com.utp.estructuras.matrices.MatrizHorarios;
@@ -27,9 +28,10 @@ public class Main {
 
     public static void main(String[] args) {
 
-        // =============================
-        // 1. Pacientes en arreglo
-        // =============================
+        /*
+         * 1. Arreglo unidimensional.
+         * Se registra, recorre, actualiza y elimina pacientes usando posiciones.
+         */
 
         // Servicio que guarda pacientes en un arreglo unidimensional.
         PacienteService pacienteService = new PacienteService();
@@ -53,9 +55,10 @@ public class Main {
         // Recorrido del arreglo hasta la cantidad real de pacientes registrados.
         pacienteService.mostrarPacientes();
 
-        // =============================
-        // 2. Lista enlazada de pacientes
-        // =============================
+        /*
+         * 2. Lista enlazada simple.
+         * Cada paciente se guarda en un nodo conectado al siguiente.
+         */
 
         // La lista enlazada trabaja con nodos y no depende del arreglo anterior.
         ListaPacientes listaPacientes = new ListaPacientes();
@@ -88,9 +91,10 @@ public class Main {
         System.out.println("\n==== LISTA ENLAZADA DESPUES DE ELIMINAR ====");
         listaPacientes.mostrarPacientes();
 
-        // =============================
-        // 3. Busqueda lineal
-        // =============================
+        /*
+         * 3. Busqueda lineal.
+         * Se recorre el arreglo desde la primera posicion ocupada hasta encontrar el DNI.
+         */
 
         // Caso 1: DNI que si existe dentro del arreglo.
         String dniABuscar = "73748381";
@@ -115,9 +119,10 @@ public class Main {
             System.out.println("No se encontro ningun paciente con el DNI: " + dniNoEncontrado);
         }
 
-        // =============================
-        // 4. Actualizacion y eliminacion
-        // =============================
+        /*
+         * 4. Operaciones sobre arreglo.
+         * La actualizacion modifica el objeto encontrado y la eliminacion compacta posiciones.
+         */
 
         // Primero se confirma la busqueda; luego se modifican los datos del objeto.
         System.out.println("\n==== ACTUALIZACION DE DATOS DE UN PACIENTE ====");
@@ -135,9 +140,10 @@ public class Main {
         pacienteService.eliminarPaciente(dniABuscar);
         pacienteService.mostrarPacientes();
 
-        // =============================
-        // 5. Citas y matriz de horarios
-        // =============================
+        /*
+         * 5. Arreglo bidimensional.
+         * La matriz relaciona doctores por fila y dias de atencion por columna.
+         */
 
         // Cada doctor queda asociado a una fila de la matriz.
         Doctor doctor1 = new Doctor("DOC-001", "25413651", "Juan Carlos", "Lozano Leon", "925587412", "000555", "doctor1@gmail.com", Especialidad.MEDICINA_GENERAL, TurnoConsultaAmbulatoria.MANANA);
@@ -170,9 +176,10 @@ public class Main {
         System.out.println("\n==== MAPA BIDIMENSIONAL DE DISPONIBILIDAD ====");
         matrizHorarios.mostrarMatriz();
 
-        // =============================
-        // 6. Cola de espera
-        // =============================
+        /*
+         * 6. Cola dinamica.
+         * Se aplica FIFO: el primer paciente en entrar es el primero en salir.
+         */
 
         System.out.println("\n==== SALA DE ESPERA DE PACIENTES (ESTRUCTURA COLA) ====");
 
@@ -192,9 +199,10 @@ public class Main {
         System.out.println("\nPacientes en espera despues de atender:");
         colaPacientes.mostrarCola();
 
-        // =============================
-        // 7. Pila de historial reciente
-        // =============================
+        /*
+         * 7. Pila dinamica.
+         * Se aplica LIFO: la ultima cita apilada queda en la cima.
+         */
 
         System.out.println("\n==== HISTORIAL RECIENTE DE CITAS (ESTRUCTURA PILA) ====");
 
@@ -222,9 +230,10 @@ public class Main {
         System.out.println("\nHistorial despues de desapilar:");
         pilaHistorialCitas.mostrarPila();
 
-        // =============================
-        // 8. Ordenamiento por apellido
-        // =============================
+        /*
+         * 8. Ordenamiento por intercambio.
+         * Bubble Sort compara pacientes vecinos y los intercambia por apellido.
+         */
 
         System.out.println("\n==== ORDENAMIENTO POR ORDEN ALFABETICO (BUBBLE SORT) ====");
 
@@ -237,6 +246,43 @@ public class Main {
 
         System.out.println("\nPacientes despues de ordenar por apellido:");
         pacienteService.mostrarPacientes();
+
+        /*
+         * 9. Arbol binario de busqueda.
+         * Organiza doctores por codigo y permite insertar, buscar, recorrer y eliminar.
+         */
+
+        System.out.println("\n==== ARBOL BINARIO DE BUSQUEDA DE DOCTORES ====");
+
+        // El arbol es una estructura no lineal; organiza doctores por codigo.
+        ArbolDoctoresBusqueda arbolDoctores = new ArbolDoctoresBusqueda();
+
+        arbolDoctores.insertarDoctor(doctor2);
+        arbolDoctores.insertarDoctor(doctor1);
+        arbolDoctores.insertarDoctor(doctor3);
+
+        System.out.println("\nRecorrido preorden del arbol:");
+        arbolDoctores.recorrerPreOrden();
+
+        System.out.println("\nRecorrido inorden por codigo de doctor:");
+        arbolDoctores.recorrerInOrden();
+
+        System.out.println("\nRecorrido postorden del arbol:");
+        arbolDoctores.recorrerPostOrden();
+
+        System.out.println("\nBusqueda en arbol por codigo:");
+        Doctor doctorEncontradoEnArbol = arbolDoctores.buscarDoctorPorCodigo("DOC-002");
+        if (doctorEncontradoEnArbol != null) {
+            doctorEncontradoEnArbol.mostrarDatos();
+        } else {
+            System.out.println("Doctor no encontrado");
+        }
+
+        System.out.println("\nEliminacion de un nodo del arbol:");
+        arbolDoctores.eliminarDoctorPorCodigo("DOC-001");
+
+        System.out.println("\nArbol despues de eliminar:");
+        arbolDoctores.recorrerInOrden();
 
     }
 }
