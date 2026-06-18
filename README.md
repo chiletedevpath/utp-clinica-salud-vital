@@ -55,6 +55,8 @@ El objetivo principal no es reemplazar un sistema clinico real, sino demostrar c
 - MergeSort.
 - Persistencia simple mediante archivos CSV.
 
+Para una explicacion breve de cada concepto aplicado, revisar el [glosario tecnico](GLOSARIO.md).
+
 ## Arquitectura del proyecto
 
 El codigo se organiza por responsabilidad para separar dominio, estructuras, algoritmos, servicios, persistencia y utilidades.
@@ -70,6 +72,7 @@ utp-clinica-salud-vital/
 |   |-- persistencia/     # Exportacion simple a CSV
 |   |-- servicios/        # Logica de aplicacion
 |   `-- util/             # Apoyo para consola, fechas, codigos y validaciones
+|-- GLOSARIO.md
 |-- README.md
 `-- .gitignore
 ```
