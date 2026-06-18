@@ -7,6 +7,7 @@ import pe.com.utp.algoritmos.ordenamiento.QuickSort;
 import pe.com.utp.algoritmos.recursividad.ReporteRecursivo;
 import pe.com.utp.estructuras.arboles.ArbolDoctoresBusqueda;
 import pe.com.utp.estructuras.colas.ColaPacientes;
+import pe.com.utp.estructuras.listas.ListaCitas;
 import pe.com.utp.estructuras.listas.ListaPacientes;
 import pe.com.utp.estructuras.matrices.MatrizHorarios;
 import pe.com.utp.estructuras.pilas.PilaHistorialCitas;
@@ -14,6 +15,7 @@ import pe.com.utp.interfaces.Pagable;
 import pe.com.utp.interfaces.Registrable;
 import pe.com.utp.interfaces.Reportable;
 import pe.com.utp.modelo.cita.Cita;
+import pe.com.utp.modelo.cita.HistorialCita;
 import pe.com.utp.modelo.enums.Especialidad;
 import pe.com.utp.modelo.enums.EstadoCita;
 import pe.com.utp.modelo.enums.TipoPago;
@@ -21,6 +23,7 @@ import pe.com.utp.modelo.enums.TurnoConsultaAmbulatoria;
 import pe.com.utp.modelo.pago.Boleta;
 import pe.com.utp.modelo.pago.Factura;
 import pe.com.utp.modelo.pago.Pago;
+import pe.com.utp.modelo.persona.Administrador;
 import pe.com.utp.modelo.persona.Doctor;
 import pe.com.utp.modelo.persona.Paciente;
 import pe.com.utp.modelo.tratamiento.Receta;
@@ -29,8 +32,8 @@ import pe.com.utp.persistencia.ArchivoCita;
 import pe.com.utp.persistencia.ArchivoPaciente;
 import pe.com.utp.persistencia.ArchivoPago;
 import pe.com.utp.servicios.CitaService;
-import pe.com.utp.servicios.PagoService;
 import pe.com.utp.servicios.PacienteService;
+import pe.com.utp.servicios.PagoService;
 import pe.com.utp.servicios.ReporteService;
 import pe.com.utp.util.Consola;
 import pe.com.utp.util.GeneradorCodigo;
@@ -39,171 +42,178 @@ import pe.com.utp.util.Validador;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Scanner;
 
 /*
  * Clase principal del sistema.
- * Reune pruebas simples de pacientes, citas, matriz, cola y pila.
- * La idea es mostrar las estructuras vistas en clase con datos de la clinica.
+ * Presenta un menu por consola para ejecutar las estructuras y algoritmos AED.
  */
-
 public class Main {
 
     public static void main(String[] args) {
+        System.out.println("\nCargando datos base del sistema...");
+        DatosSistema datos = new DatosSistema();
+        Scanner scanner = new Scanner(System.in);
+        int opcion;
 
-        /*
-         * 1. Arreglo unidimensional.
-         * Se registra, recorre, actualiza y elimina pacientes usando posiciones.
-         */
+        do {
+            mostrarMenu();
+            opcion = leerOpcion(scanner);
+            ejecutarOpcion(opcion, datos);
+        } while (opcion != 0);
 
-        // Servicio que guarda pacientes en un arreglo unidimensional.
-        PacienteService pacienteService = new PacienteService();
-        Registrable<Paciente> registroPacientes = pacienteService;
+        scanner.close();
+    }
 
-        // Datos de prueba usados durante la ejecucion del sistema.
-        Paciente paciente1 = new Paciente("PAC-001", "73748381", "Adrian", "Pisco", "945834043", "adrian.pisco@gmail.com", 28);
-        Paciente paciente2 = new Paciente("PAC-002", "25830900", "Wilmer", "Soto", "985000677", "wilmer.soto@gmail.com", 20);
-        Paciente paciente3 = new Paciente("PAC-003", "20005900", "Yenifer", "Alcantara", "983330677", "yenifer.nera@gmail.com", 17);
-        Paciente paciente4 = new Paciente("PAC-004", "21001010", "Xiomara", "Rojas", "983741677", "xiomara.nera@gmail.com", 21);
-        Paciente paciente5 = new Paciente("PAC-005", "80701010", "Jorge", "Flores", "999652000", "jorge.flores@gmail.com", 35);
+    private static void mostrarMenu() {
+        System.out.println("\n========== CLINICA SALUD VITAL ==========");
+        System.out.println("1. Gestion de pacientes con arreglo");
+        System.out.println("2. Busqueda, actualizacion y eliminacion");
+        System.out.println("3. Listas enlazadas de pacientes y citas");
+        System.out.println("4. Matriz de horarios y citas medicas");
+        System.out.println("5. Busqueda lineal de doctores");
+        System.out.println("6. Cola de pacientes");
+        System.out.println("7. Pila e historial reciente de citas");
+        System.out.println("8. Bubble Sort de pacientes");
+        System.out.println("9. Arbol binario de doctores");
+        System.out.println("10. Reporte recursivo");
+        System.out.println("11. QuickSort de citas");
+        System.out.println("12. Tratamiento, receta e historial clinico");
+        System.out.println("13. Pagos, herencia y MergeSort");
+        System.out.println("14. Persistencia CSV y reportes");
+        System.out.println("15. Utilidades y datos administrativos");
+        System.out.println("16. Ejecutar demostracion completa");
+        System.out.println("0. Salir");
+        System.out.print("Seleccione una opcion: ");
+    }
 
-        // Cada registro ocupa la siguiente posicion disponible del arreglo.
-        System.out.println("\n==== REGISTRO DE PACIENTES =====");
-        registroPacientes.registrar(paciente1);
-        registroPacientes.registrar(paciente2);
-        registroPacientes.registrar(paciente3);
-        registroPacientes.registrar(paciente4);
-        registroPacientes.registrar(paciente5);
-        System.out.println("=======================\n");
-
-        // Recorrido del arreglo hasta la cantidad real de pacientes registrados.
-        pacienteService.mostrarPacientes();
-
-        /*
-         * 2. Lista enlazada simple.
-         * Cada paciente se guarda en un nodo conectado al siguiente.
-         */
-
-        // La lista enlazada trabaja con nodos y no depende del arreglo anterior.
-        ListaPacientes listaPacientes = new ListaPacientes();
-
-        // Cada paciente se inserta al final de la lista.
-        listaPacientes.insertarPaciente(paciente1);
-        listaPacientes.insertarPaciente(paciente2);
-        listaPacientes.insertarPaciente(paciente3);
-        listaPacientes.insertarPaciente(paciente4);
-        listaPacientes.insertarPaciente(paciente5);
-
-        // Se recorre la lista desde el primer nodo hasta llegar a null.
-        System.out.println("\n==== LISTA ENLAZADA DE PACIENTES ====");
-        listaPacientes.mostrarPacientes();
-
-        // Busqueda dentro de la lista enlazada usando el DNI como criterio.
-        Paciente pacienteEnLista = listaPacientes.buscarPacientePorDni(paciente2.getDni());
-        if (pacienteEnLista != null) {
-            System.out.println("\nPaciente encontrado en lista enlazada:");
-            pacienteEnLista.mostrarDatos();
-        } else {
-            System.out.println("\nPaciente no encontrado en lista enlazada");
+    private static int leerOpcion(Scanner scanner) {
+        try {
+            return Integer.parseInt(scanner.nextLine());
+        } catch (NumberFormatException e) {
+            return -1;
         }
+    }
 
-        // El contador logico evita recorrer toda la lista solo para saber su tamanio.
-        System.out.println("\nTotal de pacientes en lista: " + listaPacientes.contarPacientes());
+    private static void ejecutarOpcion(int opcion, DatosSistema datos) {
+        switch (opcion) {
+            case 1:
+                mostrarPacientes(datos);
+                break;
+            case 2:
+                demostrarBusquedaActualizacionEliminacion(datos);
+                break;
+            case 3:
+                demostrarListasEnlazadas(datos);
+                break;
+            case 4:
+                demostrarMatrizYCitas(datos);
+                break;
+            case 5:
+                demostrarBusquedaDoctores(datos);
+                break;
+            case 6:
+                demostrarCola(datos);
+                break;
+            case 7:
+                demostrarPila(datos);
+                break;
+            case 8:
+                demostrarBubbleSort(datos);
+                break;
+            case 9:
+                demostrarArbol(datos);
+                break;
+            case 10:
+                demostrarRecursividad(datos);
+                break;
+            case 11:
+                demostrarQuickSort(datos);
+                break;
+            case 12:
+                demostrarTratamientoReceta(datos);
+                break;
+            case 13:
+                demostrarPagos(datos);
+                break;
+            case 14:
+                demostrarPersistenciaYReportes(datos);
+                break;
+            case 15:
+                demostrarUtilidades(datos);
+                break;
+            case 16:
+                ejecutarDemostracionCompleta(datos);
+                break;
+            case 0:
+                System.out.println("\nSistema finalizado correctamente.");
+                break;
+            default:
+                System.out.println("\nOpcion no valida.");
+                break;
+        }
+    }
 
-        // Al eliminar, se actualizan los enlaces entre nodos.
-        listaPacientes.eliminarPaciente(paciente4.getDni());
-        System.out.println("\n==== LISTA ENLAZADA DESPUES DE ELIMINAR ====");
-        listaPacientes.mostrarPacientes();
+    private static void mostrarPacientes(DatosSistema datos) {
+        datos.consola.mostrarTitulo("GESTION DE PACIENTES CON ARREGLO");
+        datos.pacienteService.mostrarPacientes();
+    }
 
-        /*
-         * 3. Busqueda lineal.
-         * Se recorre el arreglo desde la primera posicion ocupada hasta encontrar el DNI.
-         */
+    private static void demostrarBusquedaActualizacionEliminacion(DatosSistema datos) {
+        datos.consola.mostrarTitulo("BUSQUEDA, ACTUALIZACION Y ELIMINACION");
 
-        // Caso 1: DNI que si existe dentro del arreglo.
+        // Se usa una copia temporal para no alterar los datos base del menu.
+        PacienteService servicioTemporal = new PacienteService();
+        Registrable<Paciente> registroTemporal = servicioTemporal;
+        registroTemporal.registrar(datos.paciente1);
+        registroTemporal.registrar(datos.paciente2);
+        registroTemporal.registrar(datos.paciente3);
+
         String dniABuscar = "73748381";
-        Paciente pacienteEncontrado = pacienteService.buscarPacientePorDni(dniABuscar);
+        Paciente pacienteEncontrado = servicioTemporal.buscarPacientePorDni(dniABuscar);
 
-        System.out.println("\n==== BUSQUEDA DE PACIENTES POR DNI ====");
         if (pacienteEncontrado != null) {
             System.out.println("Paciente encontrado con exito");
             pacienteEncontrado.mostrarDatos();
+            servicioTemporal.actualizarPaciente(dniABuscar, "111222333", "nuevo.correo@gmail.com");
         } else {
             System.out.println("No se encontro ningun paciente con el DNI: " + dniABuscar);
         }
 
-        // Caso 2: DNI que no existe. Sirve para validar el retorno null.
-        String dniNoEncontrado = "00520052";
-        Paciente pacienteNoEncontrado = pacienteService.buscarPacientePorDni(dniNoEncontrado);
+        servicioTemporal.eliminarPaciente(datos.paciente3.getDni());
+        servicioTemporal.mostrarPacientes();
+    }
 
-        if (pacienteNoEncontrado != null) {
-            System.out.println("Paciente encontrado con exito");
-            pacienteNoEncontrado.mostrarDatos();
-        } else {
-            System.out.println("No se encontro ningun paciente con el DNI: " + dniNoEncontrado);
+    private static void demostrarListasEnlazadas(DatosSistema datos) {
+        datos.consola.mostrarTitulo("LISTAS ENLAZADAS");
+
+        System.out.println("\nLista enlazada de pacientes:");
+        datos.listaPacientes.mostrarPacientes();
+
+        System.out.println("\nTotal de pacientes en lista: " + datos.listaPacientes.contarPacientes());
+
+        System.out.println("\nLista enlazada de citas:");
+        datos.listaCitas.mostrarCitas();
+
+        Cita citaEncontrada = datos.listaCitas.buscarCitaPorCodigo("CIT-003");
+        if (citaEncontrada != null) {
+            System.out.println("\nCita encontrada en lista enlazada:");
+            citaEncontrada.mostrarDatos();
         }
+    }
 
-        /*
-         * 4. Operaciones sobre arreglo.
-         * La actualizacion modifica el objeto encontrado y la eliminacion compacta posiciones.
-         */
+    private static void demostrarMatrizYCitas(DatosSistema datos) {
+        datos.consola.mostrarTitulo("MATRIZ DE HORARIOS Y CITAS");
+        datos.citaService.mostrarCitas();
+        datos.citaService.mostrarMatrizHorarios();
+        datos.citaService.mostrarTotalCitasPorDoctor();
+        datos.citaService.mostrarTotalCitasPorDia();
+    }
 
-        // Primero se confirma la busqueda; luego se modifican los datos del objeto.
-        System.out.println("\n==== ACTUALIZACION DE DATOS DE UN PACIENTE ====");
-
-        if (pacienteEncontrado == null) {
-            System.out.println("Paciente no encontrado");
-        } else {
-            // El DNI se usa como criterio para ubicar al paciente a actualizar.
-            pacienteService.actualizarPaciente(dniABuscar, "111222333", "nuevo.correo@gmail.com");
-            pacienteService.mostrarPacientes();
-        }
-
-        // Al eliminar, el arreglo desplaza elementos para no dejar espacios logicos.
-        System.out.println("\n==== ELIMINACION DE DATOS DE UN PACIENTE POR DNI ====");
-        pacienteService.eliminarPaciente(dniABuscar);
-        pacienteService.mostrarPacientes();
-
-        /*
-         * 5. Arreglo bidimensional.
-         * La matriz relaciona doctores por fila y dias de atencion por columna.
-         */
-
-        // Cada doctor queda asociado a una fila de la matriz.
-        Doctor doctor1 = new Doctor("DOC-001", "25413651", "Juan Carlos", "Lozano Leon", "925587412", "000555", "doctor1@gmail.com", Especialidad.MEDICINA_GENERAL, TurnoConsultaAmbulatoria.MANANA);
-        Doctor doctor2 = new Doctor("DOC-002", "02578933", "Carlos Elvis", "Tapia Silva", "925587412", "000556", "doctor2@gmail.com", Especialidad.DERMATOLOGIA, TurnoConsultaAmbulatoria.TARDE);
-        Doctor doctor3 = new Doctor("DOC-003", "73740025", "David", "Moncada Teran", "925357891", "000557", "doctor3@gmail.com", Especialidad.TRAUMATOLOGIA, TurnoConsultaAmbulatoria.MANANA);
-        Doctor[] doctores = {doctor1, doctor2, doctor3};
-
-        // La matriz trabaja con 3 doctores y 5 dias de atencion.
-        MatrizHorarios matrizHorarios = new MatrizHorarios(doctor1, doctor2, doctor3);
-
-        // Cada cita relaciona paciente, doctor, fecha, hora, estado y motivo.
-        Cita cita1 = new Cita("CIT-001", paciente2, doctor1, LocalDate.now(), LocalTime.now(), EstadoCita.PROGRAMADA, "Dolor de cuello");
-        Cita cita2 = new Cita("CIT-002", paciente2, doctor2, LocalDate.now(), LocalTime.now(), EstadoCita.PROGRAMADA, "Presencia de fiebre");
-        Cita cita3 = new Cita("CIT-003", paciente3, doctor3, LocalDate.now(), LocalTime.now(), EstadoCita.PROGRAMADA, "Control medico");
-        Cita cita4 = new Cita("CIT-004", paciente4, doctor2, LocalDate.now(), LocalTime.now(), EstadoCita.PROGRAMADA, "Control medico");
-        Cita cita5 = new Cita("CIT-005", paciente5, doctor1, LocalDate.now(), LocalTime.now(), EstadoCita.PROGRAMADA, "Control medico");
-
-        // El servicio de citas actualiza tambien la matriz de horarios.
-        CitaService citaService = new CitaService(matrizHorarios);
-
-        // La columna indica el dia laboral donde se registra cada cita.
-        citaService.registrarCita(cita1, 1);
-        citaService.registrarCita(cita2, 5);
-        citaService.registrarCita(cita3, 1);
-        citaService.registrarCita(cita4, 2);
-        citaService.registrarCita(cita5, 3);
-
-        // Muestra las citas registradas y luego el resumen en matriz.
-        citaService.mostrarCitas();
-
-        System.out.println("\n==== MAPA BIDIMENSIONAL DE DISPONIBILIDAD ====");
-        matrizHorarios.mostrarMatriz();
-
-        // Busqueda lineal en arreglo de doctores usando el codigo como clave.
-        System.out.println("\n==== BUSQUEDA LINEAL DE DOCTORES ====");
+    private static void demostrarBusquedaDoctores(DatosSistema datos) {
+        datos.consola.mostrarTitulo("BUSQUEDA LINEAL DE DOCTORES");
         BusquedaDoctor busquedaDoctor = new BusquedaDoctor();
-        Doctor doctorEncontrado = busquedaDoctor.buscarPorCodigo(doctores, doctores.length, "DOC-002");
+        Doctor doctorEncontrado = busquedaDoctor.buscarPorCodigo(datos.doctores, datos.doctores.length, "DOC-002");
 
         if (doctorEncontrado != null) {
             System.out.println("Doctor encontrado con exito");
@@ -211,151 +221,98 @@ public class Main {
         } else {
             System.out.println("Doctor no encontrado");
         }
+    }
 
-        /*
-         * 6. Cola dinamica.
-         * Se aplica FIFO: el primer paciente en entrar es el primero en salir.
-         */
-
-        System.out.println("\n==== SALA DE ESPERA DE PACIENTES (ESTRUCTURA COLA) ====");
-
-        // La cola representa orden de llegada para triaje o atencion.
-        ColaPacientes colaPacientes = new ColaPacientes();
-
-        // Cada paciente entra al final de la cola.
-        colaPacientes.encolar(paciente2);
-        colaPacientes.encolar(paciente3);
+    private static void demostrarCola(DatosSistema datos) {
+        datos.consola.mostrarTitulo("SALA DE ESPERA DE PACIENTES");
 
         System.out.println("\nPacientes en espera:");
-        colaPacientes.mostrarCola();
+        datos.colaPacientes.mostrarCola();
 
-        // Se atiende al primer paciente que ingreso.
-        colaPacientes.desencolar();
+        System.out.println("\nPaciente ubicado al frente:");
+        Paciente pacienteFrente = datos.colaPacientes.verFrente();
+        if (pacienteFrente != null) {
+            pacienteFrente.mostrarDatos();
+        }
+    }
 
-        System.out.println("\nPacientes en espera despues de atender:");
-        colaPacientes.mostrarCola();
-
-        /*
-         * 7. Pila dinamica.
-         * Se aplica LIFO: la ultima cita apilada queda en la cima.
-         */
-
-        System.out.println("\n==== HISTORIAL RECIENTE DE CITAS (ESTRUCTURA PILA) ====");
-
-        // La pila no atiende pacientes; solo conserva las citas mas recientes.
-        PilaHistorialCitas pilaHistorialCitas = new PilaHistorialCitas();
-
-        pilaHistorialCitas.apilar(cita1);
-        pilaHistorialCitas.apilar(cita2);
-        pilaHistorialCitas.apilar(cita3);
+    private static void demostrarPila(DatosSistema datos) {
+        datos.consola.mostrarTitulo("HISTORIAL RECIENTE DE CITAS");
 
         System.out.println("\nCitas apiladas desde la mas reciente:");
-        pilaHistorialCitas.mostrarPila();
+        datos.pilaHistorialCitas.mostrarPila();
 
         System.out.println("\nCita ubicada en la cima:");
-        Cita citaEnLaCima = pilaHistorialCitas.verCima();
+        Cita citaEnLaCima = datos.pilaHistorialCitas.verCima();
         if (citaEnLaCima != null) {
             citaEnLaCima.mostrarDatos();
-        } else {
-            System.out.println("Cita no encontrada");
         }
+    }
 
-        System.out.println("\nSe retira la cita mas reciente del historial:");
-        pilaHistorialCitas.desapilar();
-
-        System.out.println("\nHistorial despues de desapilar:");
-        pilaHistorialCitas.mostrarPila();
-
-        /*
-         * 8. Ordenamiento por intercambio.
-         * Bubble Sort compara pacientes vecinos y los intercambia por apellido.
-         */
-
-        System.out.println("\n==== ORDENAMIENTO POR ORDEN ALFABETICO (BUBBLE SORT) ====");
+    private static void demostrarBubbleSort(DatosSistema datos) {
+        datos.consola.mostrarTitulo("ORDENAMIENTO POR APELLIDO - BUBBLE SORT");
 
         System.out.println("\nPacientes antes de ordenar:");
-        pacienteService.mostrarPacientes();
+        datos.pacienteService.mostrarPacientes();
 
         BubbleSortPacientes ordenamiento = new BubbleSortPacientes();
-
-        ordenamiento.ordenarPorApellido(pacienteService.getPacientes(), pacienteService.getTotalPacientes());
+        ordenamiento.ordenarPorApellido(datos.pacienteService.getPacientes(), datos.pacienteService.getTotalPacientes());
 
         System.out.println("\nPacientes despues de ordenar por apellido:");
-        pacienteService.mostrarPacientes();
+        datos.pacienteService.mostrarPacientes();
+    }
 
-        /*
-         * 9. Arbol binario de busqueda.
-         * Organiza doctores por codigo y permite insertar, buscar, recorrer y eliminar.
-         */
+    private static void demostrarArbol(DatosSistema datos) {
+        datos.consola.mostrarTitulo("ARBOL BINARIO DE BUSQUEDA DE DOCTORES");
 
-        System.out.println("\n==== ARBOL BINARIO DE BUSQUEDA DE DOCTORES ====");
+        System.out.println("\nRecorrido preorden:");
+        datos.arbolDoctores.recorrerPreOrden();
 
-        // El arbol es una estructura no lineal; organiza doctores por codigo.
-        ArbolDoctoresBusqueda arbolDoctores = new ArbolDoctoresBusqueda();
+        System.out.println("\nRecorrido inorden:");
+        datos.arbolDoctores.recorrerInOrden();
 
-        arbolDoctores.insertarDoctor(doctor2);
-        arbolDoctores.insertarDoctor(doctor1);
-        arbolDoctores.insertarDoctor(doctor3);
-
-        System.out.println("\nRecorrido preorden del arbol:");
-        arbolDoctores.recorrerPreOrden();
-
-        System.out.println("\nRecorrido inorden por codigo de doctor:");
-        arbolDoctores.recorrerInOrden();
-
-        System.out.println("\nRecorrido postorden del arbol:");
-        arbolDoctores.recorrerPostOrden();
+        System.out.println("\nRecorrido postorden:");
+        datos.arbolDoctores.recorrerPostOrden();
 
         System.out.println("\nBusqueda en arbol por codigo:");
-        Doctor doctorEncontradoEnArbol = arbolDoctores.buscarDoctorPorCodigo("DOC-002");
-        if (doctorEncontradoEnArbol != null) {
-            doctorEncontradoEnArbol.mostrarDatos();
-        } else {
-            System.out.println("Doctor no encontrado");
+        Doctor doctorEncontrado = datos.arbolDoctores.buscarDoctorPorCodigo("DOC-002");
+        if (doctorEncontrado != null) {
+            doctorEncontrado.mostrarDatos();
         }
+    }
 
-        System.out.println("\nEliminacion de un nodo del arbol:");
-        arbolDoctores.eliminarDoctorPorCodigo("DOC-001");
-
-        System.out.println("\nArbol despues de eliminar:");
-        arbolDoctores.recorrerInOrden();
-
-        /*
-         * 10. Recursividad.
-         * El reporte avanza posicion por posicion hasta llegar al caso base.
-         */
-
-        System.out.println("\n==== REPORTE RECURSIVO ====");
+    private static void demostrarRecursividad(DatosSistema datos) {
+        datos.consola.mostrarTitulo("REPORTE RECURSIVO");
 
         ReporteRecursivo reporteRecursivo = new ReporteRecursivo();
 
         System.out.println("\nPacientes mostrados con recursion:");
-        reporteRecursivo.mostrarPacientes(pacienteService.getPacientes(), 0, pacienteService.getTotalPacientes());
+        reporteRecursivo.mostrarPacientes(datos.pacienteService.getPacientes(), 0, datos.pacienteService.getTotalPacientes());
 
         System.out.println("\nCitas mostradas con recursion:");
-        reporteRecursivo.mostrarCitas(citaService.getCitas(), 0, citaService.getTotalCitas());
+        reporteRecursivo.mostrarCitas(datos.citaService.getCitas(), 0, datos.citaService.getTotalCitas());
 
-        int totalPacientesRecursivo = reporteRecursivo.contarElementos(0, pacienteService.getTotalPacientes());
-        int totalCitasRecursivo = reporteRecursivo.contarElementos(0, citaService.getTotalCitas());
+        System.out.println("\nTotal de pacientes contado con recursion: "
+                + reporteRecursivo.contarElementos(0, datos.pacienteService.getTotalPacientes()));
+        System.out.println("Total de citas contado con recursion: "
+                + reporteRecursivo.contarElementos(0, datos.citaService.getTotalCitas()));
+    }
 
-        System.out.println("\nTotal de pacientes contado con recursion: " + totalPacientesRecursivo);
-        System.out.println("Total de citas contado con recursion: " + totalCitasRecursivo);
+    private static void demostrarQuickSort(DatosSistema datos) {
+        datos.consola.mostrarTitulo("ORDENAMIENTO DE CITAS - QUICKSORT");
 
-        /*
-         * 11. QuickSort generico.
-         * El algoritmo ordena arreglos usando el criterio enviado por Comparator.
-         */
-
-        System.out.println("\n==== ORDENAMIENTO DE CITAS (QUICKSORT) ====");
-
-        Cita[] citasParaOrdenar = {cita3, cita1, cita5, cita2, cita4};
-        QuickSort quickSort = new QuickSort();
+        Cita[] citasParaOrdenar = {
+                datos.cita3,
+                datos.cita1,
+                datos.cita5,
+                datos.cita2,
+                datos.cita4
+        };
 
         System.out.println("\nCitas antes de ordenar por codigo:");
-        for (int i = 0; i < citasParaOrdenar.length; i++) {
-            System.out.println(citasParaOrdenar[i].getCodigo());
-        }
+        mostrarCodigosCitas(citasParaOrdenar);
 
+        QuickSort quickSort = new QuickSort();
         quickSort.ordenar(
                 citasParaOrdenar,
                 0,
@@ -364,100 +321,198 @@ public class Main {
         );
 
         System.out.println("\nCitas despues de ordenar por codigo:");
-        for (int i = 0; i < citasParaOrdenar.length; i++) {
-            System.out.println(citasParaOrdenar[i].getCodigo());
+        mostrarCodigosCitas(citasParaOrdenar);
+    }
+
+    private static void mostrarCodigosCitas(Cita[] citas) {
+        for (int i = 0; i < citas.length; i++) {
+            System.out.println(citas[i].getCodigo());
         }
+    }
 
-        /*
-         * 12. Tratamiento y receta.
-         * El tratamiento representa la indicacion medica posterior a la cita.
-         * La receta queda asociada al codigo del tratamiento.
-         */
-
-        System.out.println("\n==== TRATAMIENTO Y RECETA MEDICA ====");
-
-        Tratamiento tratamiento1 = new Tratamiento("TRA-001", paciente2.getCodigo(), "Reposo y control por fiebre", 3);
-        Receta receta1 = new Receta("REC-001", tratamiento1.getCodigo(), "Paracetamol 500 mg", "Tomar cada 8 horas por 3 dias");
-
-        tratamiento1.mostrarDatos();
+    private static void demostrarTratamientoReceta(DatosSistema datos) {
+        datos.consola.mostrarTitulo("TRATAMIENTO, RECETA E HISTORIAL CLINICO");
+        datos.tratamiento1.mostrarDatos();
         System.out.println();
-        receta1.mostrarDatos();
+        datos.receta1.mostrarDatos();
+        System.out.println();
+        datos.historialCita1.mostrarDatos();
+    }
 
-        /*
-         * 13. Pagos, herencia y MergeSort.
-         * Boleta y Factura heredan de Pago; el servicio los trata como Pago.
-         * Luego MergeSort divide el arreglo y fusiona los tramos ordenados por monto.
-         */
-
-        System.out.println("\n==== REGISTRO Y ORDENAMIENTO DE PAGOS (MERGESORT) ====");
-
-        // Polimorfismo: se declaran como Pago, pero el objeto real es Boleta o Factura.
-        Pago pago1 = new Boleta("PAG-001", cita1.getCodigo(), 120.00, TipoPago.EFECTIVO, LocalDate.now(), paciente1.getDni());
-        Pago pago2 = new Factura("PAG-002", cita2.getCodigo(), 85.50, TipoPago.TARJETA, LocalDate.now(), "20601234567");
-        Pago pago3 = new Pago("PAG-003", cita3.getCodigo(), 160.00, TipoPago.TRANSFERENCIA, LocalDate.now());
-        Pago pago4 = new Boleta("PAG-004", cita4.getCodigo(), 70.00, TipoPago.EFECTIVO, LocalDate.now(), paciente4.getDni());
-        Pago pago5 = new Factura("PAG-005", cita5.getCodigo(), 140.00, TipoPago.TARJETA, LocalDate.now(), "20607654321");
-
-        PagoService pagoService = new PagoService();
-        Pagable procesadorPago = pagoService;
-
-        procesadorPago.procesarPago(pago1);
-        procesadorPago.procesarPago(pago2);
-        procesadorPago.procesarPago(pago3);
-        procesadorPago.procesarPago(pago4);
-        procesadorPago.procesarPago(pago5);
+    private static void demostrarPagos(DatosSistema datos) {
+        datos.consola.mostrarTitulo("PAGOS, HERENCIA Y MERGESORT");
 
         System.out.println("\nPagos antes de ordenar por monto:");
-        pagoService.mostrarPagos();
+        datos.pagoService.mostrarPagos();
 
         MergeSortPagos mergeSortPagos = new MergeSortPagos();
-        mergeSortPagos.ordenarPorMonto(pagoService.getPagos(), 0, pagoService.getTotalPagos() - 1);
+        mergeSortPagos.ordenarPorMonto(datos.pagoService.getPagos(), 0, datos.pagoService.getTotalPagos() - 1);
 
         System.out.println("\nPagos despues de ordenar por monto:");
-        pagoService.mostrarPagos();
+        datos.pagoService.mostrarPagos();
+    }
 
-        /*
-         * 14. Persistencia y reportes.
-         * Se guardan arreglos en archivos CSV y se muestra un resumen general.
-         */
-
-        Consola consola = new Consola();
-        consola.mostrarTitulo("PERSISTENCIA EN ARCHIVOS CSV");
+    private static void demostrarPersistenciaYReportes(DatosSistema datos) {
+        datos.consola.mostrarTitulo("PERSISTENCIA CSV Y REPORTES");
 
         ArchivoPaciente archivoPaciente = new ArchivoPaciente();
         ArchivoCita archivoCita = new ArchivoCita();
         ArchivoPago archivoPago = new ArchivoPago();
 
-        archivoPaciente.guardarPacientes("out/pacientes.csv", pacienteService.getPacientes(), pacienteService.getTotalPacientes());
-        archivoCita.guardarCitas("out/citas.csv", citaService.getCitas(), citaService.getTotalCitas());
-        archivoPago.guardarPagos("out/pagos.csv", pagoService.getPagos(), pagoService.getTotalPagos());
+        archivoPaciente.guardarPacientes("out/pacientes.csv", datos.pacienteService.getPacientes(), datos.pacienteService.getTotalPacientes());
+        archivoCita.guardarCitas("out/citas.csv", datos.citaService.getCitas(), datos.citaService.getTotalCitas());
+        archivoPago.guardarPagos("out/pagos.csv", datos.pagoService.getPagos(), datos.pagoService.getTotalPagos());
 
         System.out.println("Archivos CSV generados en la carpeta out");
 
         ReporteService reporteService = new ReporteService();
         Reportable reporteAED = reporteService;
         reporteService.mostrarResumenGeneral(
-                pacienteService.getTotalPacientes(),
-                citaService.getTotalCitas(),
-                pagoService.getTotalPagos()
+                datos.pacienteService.getTotalPacientes(),
+                datos.citaService.getTotalCitas(),
+                datos.pagoService.getTotalPagos()
         );
         reporteAED.generarReporte();
+    }
 
-        /*
-         * 15. Utilidades generales.
-         * Se validan datos, se generan codigos y se formatean fechas.
-         */
-
-        consola.mostrarTitulo("UTILIDADES DEL SISTEMA");
+    private static void demostrarUtilidades(DatosSistema datos) {
+        datos.consola.mostrarTitulo("UTILIDADES Y DATOS ADMINISTRATIVOS");
 
         Validador validador = new Validador();
         GeneradorCodigo generadorCodigo = new GeneradorCodigo();
         UtilidadesFecha utilidadesFecha = new UtilidadesFecha();
 
-        System.out.println("DNI valido: " + validador.esDniValido(paciente2.getDni()));
-        System.out.println("Monto valido: " + validador.esMontoValido(pago1.getMonto()));
+        System.out.println("DNI valido: " + validador.esDniValido(datos.paciente2.getDni()));
+        System.out.println("Monto valido: " + validador.esMontoValido(datos.pago1.getMonto()));
+        System.out.println("Texto valido: " + validador.esTextoValido(datos.paciente2.getNombres()));
         System.out.println("Codigo generado: " + generadorCodigo.generar("PAC", 6));
         System.out.println("Fecha formateada: " + utilidadesFecha.formatearFecha(LocalDate.now()));
+        System.out.println();
+        datos.administrador.mostrarDatos();
+    }
 
+    private static void ejecutarDemostracionCompleta(DatosSistema datos) {
+        mostrarPacientes(datos);
+        demostrarBusquedaActualizacionEliminacion(datos);
+        demostrarListasEnlazadas(datos);
+        demostrarMatrizYCitas(datos);
+        demostrarBusquedaDoctores(datos);
+        demostrarCola(datos);
+        demostrarPila(datos);
+        demostrarBubbleSort(datos);
+        demostrarArbol(datos);
+        demostrarRecursividad(datos);
+        demostrarQuickSort(datos);
+        demostrarTratamientoReceta(datos);
+        demostrarPagos(datos);
+        demostrarPersistenciaYReportes(datos);
+        demostrarUtilidades(datos);
+    }
+
+    /*
+     * Datos base del sistema.
+     * Centraliza objetos y estructuras para que el menu trabaje sobre el mismo estado.
+     */
+    private static class DatosSistema {
+
+        private final Consola consola = new Consola();
+
+        private final Paciente paciente1 = new Paciente("PAC-001", "73748381", "Adrian", "Pisco", "945834043", "adrian.pisco@gmail.com", 28);
+        private final Paciente paciente2 = new Paciente("PAC-002", "25830900", "Wilmer", "Soto", "985000677", "wilmer.soto@gmail.com", 20);
+        private final Paciente paciente3 = new Paciente("PAC-003", "20005900", "Yenifer", "Alcantara", "983330677", "yenifer.nera@gmail.com", 17);
+        private final Paciente paciente4 = new Paciente("PAC-004", "21001010", "Xiomara", "Rojas", "983741677", "xiomara.nera@gmail.com", 21);
+        private final Paciente paciente5 = new Paciente("PAC-005", "80701010", "Jorge", "Flores", "999652000", "jorge.flores@gmail.com", 35);
+
+        private final Doctor doctor1 = new Doctor("DOC-001", "25413651", "Juan Carlos", "Lozano Leon", "925587412", "000555", "doctor1@gmail.com", Especialidad.MEDICINA_GENERAL, TurnoConsultaAmbulatoria.MANANA);
+        private final Doctor doctor2 = new Doctor("DOC-002", "02578933", "Carlos Elvis", "Tapia Silva", "925587412", "000556", "doctor2@gmail.com", Especialidad.DERMATOLOGIA, TurnoConsultaAmbulatoria.TARDE);
+        private final Doctor doctor3 = new Doctor("DOC-003", "73740025", "David", "Moncada Teran", "925357891", "000557", "doctor3@gmail.com", Especialidad.TRAUMATOLOGIA, TurnoConsultaAmbulatoria.MANANA);
+        private final Doctor[] doctores = {doctor1, doctor2, doctor3};
+
+        private final Administrador administrador = new Administrador("ADM-001", "46667777", "Lucia", "Ramirez", "987654321", "lucia.ramirez@saludvital.com", "Coordinadora de admision");
+
+        private final Cita cita1 = new Cita("CIT-001", paciente2, doctor1, LocalDate.now(), LocalTime.now(), EstadoCita.PROGRAMADA, "Dolor de cuello");
+        private final Cita cita2 = new Cita("CIT-002", paciente2, doctor2, LocalDate.now(), LocalTime.now(), EstadoCita.PROGRAMADA, "Presencia de fiebre");
+        private final Cita cita3 = new Cita("CIT-003", paciente3, doctor3, LocalDate.now(), LocalTime.now(), EstadoCita.PROGRAMADA, "Control medico");
+        private final Cita cita4 = new Cita("CIT-004", paciente4, doctor2, LocalDate.now(), LocalTime.now(), EstadoCita.PROGRAMADA, "Control medico");
+        private final Cita cita5 = new Cita("CIT-005", paciente5, doctor1, LocalDate.now(), LocalTime.now(), EstadoCita.PROGRAMADA, "Control medico");
+
+        private final Pago pago1 = new Boleta("PAG-001", cita1.getCodigo(), 120.00, TipoPago.EFECTIVO, LocalDate.now(), paciente1.getDni());
+        private final Pago pago2 = new Factura("PAG-002", cita2.getCodigo(), 85.50, TipoPago.TARJETA, LocalDate.now(), "20601234567");
+        private final Pago pago3 = new Pago("PAG-003", cita3.getCodigo(), 160.00, TipoPago.TRANSFERENCIA, LocalDate.now());
+        private final Pago pago4 = new Boleta("PAG-004", cita4.getCodigo(), 70.00, TipoPago.EFECTIVO, LocalDate.now(), paciente4.getDni());
+        private final Pago pago5 = new Factura("PAG-005", cita5.getCodigo(), 140.00, TipoPago.TARJETA, LocalDate.now(), "20607654321");
+
+        private final Tratamiento tratamiento1 = new Tratamiento("TRA-001", paciente2.getCodigo(), "Reposo y control por fiebre", 3);
+        private final Receta receta1 = new Receta("REC-001", tratamiento1.getCodigo(), "Paracetamol 500 mg", "Tomar cada 8 horas por 3 dias");
+        private final HistorialCita historialCita1 = new HistorialCita("HIS-001", paciente2.getCodigo(), "Paciente atendido por fiebre y derivado a tratamiento ambulatorio.");
+
+        private final PacienteService pacienteService = new PacienteService();
+        private final MatrizHorarios matrizHorarios = new MatrizHorarios(doctor1, doctor2, doctor3);
+        private final CitaService citaService = new CitaService(matrizHorarios);
+        private final PagoService pagoService = new PagoService();
+
+        private final ListaPacientes listaPacientes = new ListaPacientes();
+        private final ListaCitas listaCitas = new ListaCitas();
+        private final ColaPacientes colaPacientes = new ColaPacientes();
+        private final PilaHistorialCitas pilaHistorialCitas = new PilaHistorialCitas();
+        private final ArbolDoctoresBusqueda arbolDoctores = new ArbolDoctoresBusqueda();
+
+        private DatosSistema() {
+            cargarPacientes();
+            cargarCitas();
+            cargarPagos();
+            cargarEstructurasDinamicas();
+        }
+
+        private void cargarPacientes() {
+            Registrable<Paciente> registroPacientes = pacienteService;
+            registroPacientes.registrar(paciente1);
+            registroPacientes.registrar(paciente2);
+            registroPacientes.registrar(paciente3);
+            registroPacientes.registrar(paciente4);
+            registroPacientes.registrar(paciente5);
+        }
+
+        private void cargarCitas() {
+            citaService.registrarCita(cita1, 1);
+            citaService.registrarCita(cita2, 5);
+            citaService.registrarCita(cita3, 1);
+            citaService.registrarCita(cita4, 2);
+            citaService.registrarCita(cita5, 3);
+        }
+
+        private void cargarPagos() {
+            Pagable procesadorPago = pagoService;
+            procesadorPago.procesarPago(pago1);
+            procesadorPago.procesarPago(pago2);
+            procesadorPago.procesarPago(pago3);
+            procesadorPago.procesarPago(pago4);
+            procesadorPago.procesarPago(pago5);
+        }
+
+        private void cargarEstructurasDinamicas() {
+            listaPacientes.insertarPaciente(paciente1);
+            listaPacientes.insertarPaciente(paciente2);
+            listaPacientes.insertarPaciente(paciente3);
+            listaPacientes.insertarPaciente(paciente4);
+            listaPacientes.insertarPaciente(paciente5);
+
+            listaCitas.insertarCita(cita1);
+            listaCitas.insertarCita(cita2);
+            listaCitas.insertarCita(cita3);
+            listaCitas.insertarCita(cita4);
+            listaCitas.insertarCita(cita5);
+
+            colaPacientes.encolar(paciente2);
+            colaPacientes.encolar(paciente3);
+
+            pilaHistorialCitas.apilar(cita1);
+            pilaHistorialCitas.apilar(cita2);
+            pilaHistorialCitas.apilar(cita3);
+
+            arbolDoctores.insertarDoctor(doctor2);
+            arbolDoctores.insertarDoctor(doctor1);
+            arbolDoctores.insertarDoctor(doctor3);
+        }
     }
 }
