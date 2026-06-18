@@ -1,6 +1,8 @@
 package pe.com.utp.app;
 
 import pe.com.utp.algoritmos.ordenamiento.BubbleSortPacientes;
+import pe.com.utp.algoritmos.ordenamiento.QuickSort;
+import pe.com.utp.algoritmos.recursividad.ReporteRecursivo;
 import pe.com.utp.estructuras.arboles.ArbolDoctoresBusqueda;
 import pe.com.utp.estructuras.colas.ColaPacientes;
 import pe.com.utp.estructuras.listas.ListaPacientes;
@@ -283,6 +285,54 @@ public class Main {
 
         System.out.println("\nArbol despues de eliminar:");
         arbolDoctores.recorrerInOrden();
+
+        /*
+         * 10. Recursividad.
+         * El reporte avanza posicion por posicion hasta llegar al caso base.
+         */
+
+        System.out.println("\n==== REPORTE RECURSIVO ====");
+
+        ReporteRecursivo reporteRecursivo = new ReporteRecursivo();
+
+        System.out.println("\nPacientes mostrados con recursion:");
+        reporteRecursivo.mostrarPacientes(pacienteService.getPacientes(), 0, pacienteService.getTotalPacientes());
+
+        System.out.println("\nCitas mostradas con recursion:");
+        reporteRecursivo.mostrarCitas(citaService.getCitas(), 0, citaService.getTotalCitas());
+
+        int totalPacientesRecursivo = reporteRecursivo.contarElementos(0, pacienteService.getTotalPacientes());
+        int totalCitasRecursivo = reporteRecursivo.contarElementos(0, citaService.getTotalCitas());
+
+        System.out.println("\nTotal de pacientes contado con recursion: " + totalPacientesRecursivo);
+        System.out.println("Total de citas contado con recursion: " + totalCitasRecursivo);
+
+        /*
+         * 11. QuickSort generico.
+         * El algoritmo ordena arreglos usando el criterio enviado por Comparator.
+         */
+
+        System.out.println("\n==== ORDENAMIENTO DE CITAS (QUICKSORT) ====");
+
+        Cita[] citasParaOrdenar = {cita3, cita1, cita5, cita2, cita4};
+        QuickSort quickSort = new QuickSort();
+
+        System.out.println("\nCitas antes de ordenar por codigo:");
+        for (int i = 0; i < citasParaOrdenar.length; i++) {
+            System.out.println(citasParaOrdenar[i].getCodigo());
+        }
+
+        quickSort.ordenar(
+                citasParaOrdenar,
+                0,
+                citasParaOrdenar.length - 1,
+                (citaActual, citaPivote) -> citaActual.getCodigo().compareToIgnoreCase(citaPivote.getCodigo())
+        );
+
+        System.out.println("\nCitas despues de ordenar por codigo:");
+        for (int i = 0; i < citasParaOrdenar.length; i++) {
+            System.out.println(citasParaOrdenar[i].getCodigo());
+        }
 
     }
 }

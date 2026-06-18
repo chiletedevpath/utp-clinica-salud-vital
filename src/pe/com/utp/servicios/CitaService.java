@@ -110,4 +110,13 @@ public class CitaService {
     public void mostrarTotalCitasPorDia() {
         matrizHorarios.mostrarTotalPorDia();
     }
+
+    public Cita[] getCitas() {
+        return citas;
+    }
+
+    // Permite trabajar solo con las posiciones ocupadas del arreglo.
+    public int getTotalCitas() {
+        return totalCitas;
+    }
 }
