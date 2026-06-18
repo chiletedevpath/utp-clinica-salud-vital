@@ -2,9 +2,16 @@ package pe.com.utp.modelo.tratamiento;
 
 public class Tratamiento {
 
+    // Codigo que identifica el tratamiento dentro del sistema.
     private String codigo;
+
+    // Codigo del paciente al que pertenece la indicacion medica.
     private String codigoPaciente;
+
+    // Descripcion breve del tratamiento indicado.
     private String descripcion;
+
+    // Cantidad de dias que dura el tratamiento.
     private int duracionDias;
 
     public Tratamiento(String codigo, String codigoPaciente, String descripcion, int duracionDias) {

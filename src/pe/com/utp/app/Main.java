@@ -19,6 +19,8 @@ import pe.com.utp.modelo.pago.Factura;
 import pe.com.utp.modelo.pago.Pago;
 import pe.com.utp.modelo.persona.Doctor;
 import pe.com.utp.modelo.persona.Paciente;
+import pe.com.utp.modelo.tratamiento.Receta;
+import pe.com.utp.modelo.tratamiento.Tratamiento;
 import pe.com.utp.persistencia.ArchivoCita;
 import pe.com.utp.persistencia.ArchivoPaciente;
 import pe.com.utp.persistencia.ArchivoPago;
@@ -57,7 +59,7 @@ public class Main {
         Paciente paciente2 = new Paciente("PAC-002", "25830900", "Wilmer", "Soto", "985000677", "wilmer.soto@gmail.com", 20);
         Paciente paciente3 = new Paciente("PAC-003", "20005900", "Yenifer", "Alcantara", "983330677", "yenifer.nera@gmail.com", 17);
         Paciente paciente4 = new Paciente("PAC-004", "21001010", "Xiomara", "Rojas", "983741677", "xiomara.nera@gmail.com", 21);
-        Paciente paciente5 = new Paciente("PAC-005", "807001010", "Jorge", "Flores", "999652000", "jorge.flores@gmail.com", 35);
+        Paciente paciente5 = new Paciente("PAC-005", "80701010", "Jorge", "Flores", "999652000", "jorge.flores@gmail.com", 35);
 
         // Cada registro ocupa la siguiente posicion disponible del arreglo.
         System.out.println("\n==== REGISTRO DE PACIENTES =====");
@@ -349,7 +351,22 @@ public class Main {
         }
 
         /*
-         * 12. Pagos, herencia y MergeSort.
+         * 12. Tratamiento y receta.
+         * El tratamiento representa la indicacion medica posterior a la cita.
+         * La receta queda asociada al codigo del tratamiento.
+         */
+
+        System.out.println("\n==== TRATAMIENTO Y RECETA MEDICA ====");
+
+        Tratamiento tratamiento1 = new Tratamiento("TRA-001", paciente2.getCodigo(), "Reposo y control por fiebre", 3);
+        Receta receta1 = new Receta("REC-001", tratamiento1.getCodigo(), "Paracetamol 500 mg", "Tomar cada 8 horas por 3 dias");
+
+        tratamiento1.mostrarDatos();
+        System.out.println();
+        receta1.mostrarDatos();
+
+        /*
+         * 13. Pagos, herencia y MergeSort.
          * Boleta y Factura heredan de Pago; el servicio los trata como Pago.
          * Luego MergeSort divide el arreglo y fusiona los tramos ordenados por monto.
          */
@@ -381,7 +398,7 @@ public class Main {
         pagoService.mostrarPagos();
 
         /*
-         * 13. Persistencia y reportes.
+         * 14. Persistencia y reportes.
          * Se guardan arreglos en archivos CSV y se muestra un resumen general.
          */
 
@@ -407,7 +424,7 @@ public class Main {
         reporteService.mostrarAvanceAED();
 
         /*
-         * 14. Utilidades generales.
+         * 15. Utilidades generales.
          * Se validan datos, se generan codigos y se formatean fechas.
          */
 

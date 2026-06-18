@@ -2,9 +2,16 @@ package pe.com.utp.modelo.tratamiento;
 
 public class Receta {
 
+    // Codigo que identifica la receta emitida.
     private String codigo;
+
+    // Codigo del tratamiento al que pertenece la receta.
     private String codigoTratamiento;
+
+    // Medicamento indicado al paciente.
     private String medicamento;
+
+    // Forma de uso o indicacion medica.
     private String indicacion;
 
     public Receta(String codigo, String codigoTratamiento, String medicamento, String indicacion) {
