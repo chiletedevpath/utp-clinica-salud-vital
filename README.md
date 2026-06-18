@@ -1,76 +1,113 @@
 # UTP Clinica Salud Vital
 
-Sistema academico en Java para gestionar pacientes, citas, pagos, horarios y reportes dentro de una clinica.
+Sistema academico desarrollado en Java para simular procesos basicos de una clinica y demostrar la aplicacion de estructuras de datos, algoritmos y Programacion Orientada a Objetos.
 
-## Autor
-
-- Chilete DevPath
-- Estudiante de Ingenieria de Sistemas e Informatica
+El proyecto corresponde al curso **Algoritmos y Estructuras de Datos** de la UTP y se ejecuta mediante un menu por consola orientado a sustentacion.
 
 ## Contexto academico
 
-- Institucion: UTP
-- Ciclo: 05
+- Institucion: Universidad Tecnologica del Peru
 - Curso: Algoritmos y Estructuras de Datos
-- Tipo: Proyecto academico
+- Ciclo: V
+- Tipo: Proyecto final academico
+- Caso de estudio: Clinica Salud Vital
 
-## Por que se hizo
+## Objetivo
 
-Este proyecto se desarrollo para aplicar programacion orientada a objetos, estructuras de datos, algoritmos de busqueda y ordenamiento, matrices, pilas, colas, listas y persistencia mediante archivos.
+Desarrollar una aplicacion en Java que permita representar procesos clinicos y administrativos, como gestion de pacientes, citas medicas, sala de espera, historial reciente, doctores, tratamientos, pagos, reportes y exportacion CSV.
 
-El caso trabajado simula operaciones de una clinica: pacientes, doctores, citas, horarios, pagos y reportes.
+El objetivo principal no es reemplazar un sistema clinico real, sino demostrar de forma practica los temas del curso mediante un caso aplicado.
 
-## Tecnologias usadas
+## Temas aplicados
 
-- Java
-- Programacion orientada a objetos
-- Listas enlazadas
-- Colas
-- Pilas
+- Programacion Orientada a Objetos
+- Encapsulamiento, herencia, abstraccion, interfaces y polimorfismo
+- Arreglos unidimensionales
 - Matrices
+- Listas enlazadas
+- Colas FIFO
+- Pilas LIFO
+- Arbol binario de busqueda
 - Busqueda lineal
-- Algoritmos de ordenamiento
-- Persistencia mediante archivos
+- Recursividad
+- Bubble Sort
+- QuickSort generico con `Comparator`
+- MergeSort
+- Persistencia simple mediante archivos CSV
 
-## Que contiene el repositorio
+## Estructura del proyecto
 
 ```txt
 utp-clinica-salud-vital/
 |-- src/pe/com/utp/
-|   |-- algoritmos/
 |   |-- app/
+|   |-- algoritmos/
+|   |   |-- busqueda/
+|   |   |-- ordenamiento/
+|   |   `-- recursividad/
 |   |-- estructuras/
+|   |   |-- arboles/
+|   |   |-- colas/
+|   |   |-- listas/
+|   |   |-- matrices/
+|   |   `-- pilas/
 |   |-- interfaces/
 |   |-- modelo/
+|   |   |-- cita/
+|   |   |-- enums/
+|   |   |-- pago/
+|   |   |-- persona/
+|   |   `-- tratamiento/
 |   |-- persistencia/
 |   |-- servicios/
 |   `-- util/
-|-- .gitignore
-`-- README.md
+|-- README.md
+`-- .gitignore
 ```
 
-## Funcionalidades principales
+## Modulos principales
 
-- Registro de pacientes.
-- Registro y busqueda de citas.
-- Gestion de matriz de horarios por doctor y dia.
-- Reporte de citas por dia.
-- Reporte de citas por doctor.
-- Modelado de pagos con boleta y factura.
-- Uso de estructuras de datos propias.
-- Aplicacion de busqueda y ordenamiento.
+| Modulo | Descripcion |
+|---|---|
+| Pacientes | Registra, muestra, busca, actualiza y elimina pacientes usando arreglos y busqueda lineal. |
+| Citas y horarios | Registra citas y contabiliza horarios mediante una matriz de doctores por dias. |
+| Sala de espera | Usa una cola de pacientes para demostrar FIFO mediante `encolar`, `verFrente` y `desencolar`. |
+| Historial reciente | Usa una pila de citas para demostrar LIFO mediante `apilar`, `verCima` y `desapilar`. |
+| Doctores | Organiza doctores mediante un arbol binario de busqueda con insercion, busqueda, eliminacion y recorridos. |
+| Ordenamientos | Aplica Bubble Sort, QuickSort y MergeSort sobre datos del sistema. |
+| Recursividad | Recorre arreglos y cuenta elementos mediante llamadas recursivas. |
+| Pagos | Modela pagos, boletas y facturas aplicando herencia y polimorfismo. |
+| Persistencia | Exporta pacientes, citas y pagos a archivos CSV. |
 
-## Punto de entrada
+## Menu de sustentacion
+
+El punto de entrada del sistema es:
 
 ```txt
 src/pe/com/utp/app/Main.java
 ```
 
-El `Main` actual ejecuta un flujo academico de demostracion con pacientes, doctores, citas, matriz de horarios y busqueda de cita por codigo.
+Al ejecutar el programa se muestra un menu por consola:
+
+```txt
+1. Presentacion del sistema y datos base
+2. Gestion de pacientes
+3. Gestion de citas y horarios
+4. Sala de espera de pacientes
+5. Historial reciente y seguimiento clinico
+6. Busquedas y ordenamientos
+7. Arbol binario de doctores
+8. Tratamientos, recetas y pagos
+9. Persistencia, reportes y utilidades
+10. Demostracion completa AED
+0. Salir
+```
+
+Cada opcion muestra el concepto aplicado antes de ejecutar el proceso, lo que facilita la sustentacion oral del proyecto.
 
 ## Ejecucion local
 
-Desde la raiz del repositorio, compilar los archivos Java hacia una carpeta de salida:
+Desde la raiz del repositorio, compilar los archivos Java:
 
 ```powershell
 javac -encoding UTF-8 -d out (Get-ChildItem -Recurse -Filter *.java).FullName
@@ -82,33 +119,48 @@ Ejecutar la clase principal:
 java -cp out pe.com.utp.app.Main
 ```
 
+Para ejecutar la demostracion completa, seleccionar la opcion `10` en el menu.
+
 ## Estado del proyecto
 
 | Punto | Estado |
 |---|---|
-| Modelo de pacientes, doctores y citas | Implementado |
-| Matriz de horarios | Implementada |
-| Servicios de citas, pacientes, pagos y reportes | Implementados |
-| Estructuras de datos academicas | Implementadas |
-| Flujo demostrativo en consola | Implementado |
-| Documentacion de casos de uso | Pendiente |
-| Pruebas automatizadas | Pendiente |
+| Modelos principales | Implementado |
+| Servicios de pacientes, citas, pagos y reportes | Implementado |
+| Menu por consola | Implementado |
+| Arreglos y matrices | Implementado |
+| Listas enlazadas | Implementado |
+| Cola de pacientes | Implementado |
+| Pila de historial de citas | Implementado |
+| Arbol binario de doctores | Implementado |
+| Busqueda lineal | Implementado |
+| Bubble Sort, QuickSort y MergeSort | Implementado |
+| Recursividad | Implementado |
+| Interfaces y TAD | Implementado |
+| Exportacion CSV | Implementado |
+| Validacion manual por menu | Implementado |
+
+## Alcance
+
+El sistema trabaja con datos base cargados en memoria al iniciar la aplicacion. La persistencia implementada es basica y consiste en exportar informacion a archivos CSV.
+
+El proyecto no incluye base de datos, interfaz grafica ni autenticacion de usuarios, porque su alcance esta centrado en demostrar estructuras de datos y algoritmos del curso.
 
 ## Aprendizajes aplicados
 
-- Diseno de clases y paquetes en Java.
-- Herencia, abstraccion e interfaces.
-- Uso de estructuras de datos propias.
-- Relacion entre objetos de dominio y servicios.
-- Aplicacion de algoritmos de busqueda y ordenamiento.
-- Organizacion de un proyecto Java academico por capas.
+- Organizacion de un proyecto Java por paquetes.
+- Separacion entre modelos, servicios, estructuras, algoritmos, interfaces, persistencia y utilidades.
+- Aplicacion de TAD mediante interfaces.
+- Uso de estructuras lineales y no lineales.
+- Relacion entre procesos clinicos y estructuras de datos.
+- Explicacion tecnica de algoritmos para sustentacion academica.
 
-## Pendientes
+## Mejoras futuras opcionales
 
-- Documentar todos los casos de uso del sistema.
-- Agregar ejemplos de ejecucion en consola.
-- Confirmar version de Java usada en clase.
-- Agregar pruebas o escenarios de validacion.
+- Agregar pruebas automatizadas si el alcance del curso lo permite.
+- Permitir ingreso de datos por consola en lugar de trabajar solo con datos base.
+- Incorporar lectura de archivos CSV para recuperar informacion exportada.
+- Ampliar validaciones de datos en registros de pacientes, citas y pagos.
 
 ## Relacion con Chilete DevPath
 
