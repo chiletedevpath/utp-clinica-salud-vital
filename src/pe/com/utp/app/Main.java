@@ -17,9 +17,17 @@ import pe.com.utp.modelo.enums.TurnoConsultaAmbulatoria;
 import pe.com.utp.modelo.pago.Pago;
 import pe.com.utp.modelo.persona.Doctor;
 import pe.com.utp.modelo.persona.Paciente;
+import pe.com.utp.persistencia.ArchivoCita;
+import pe.com.utp.persistencia.ArchivoPaciente;
+import pe.com.utp.persistencia.ArchivoPago;
 import pe.com.utp.servicios.CitaService;
 import pe.com.utp.servicios.PagoService;
 import pe.com.utp.servicios.PacienteService;
+import pe.com.utp.servicios.ReporteService;
+import pe.com.utp.util.Consola;
+import pe.com.utp.util.GeneradorCodigo;
+import pe.com.utp.util.UtilidadesFecha;
+import pe.com.utp.util.Validador;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -367,6 +375,48 @@ public class Main {
 
         System.out.println("\nPagos despues de ordenar por monto:");
         pagoService.mostrarPagos();
+
+        /*
+         * 13. Persistencia y reportes.
+         * Se guardan arreglos en archivos CSV y se muestra un resumen general.
+         */
+
+        Consola consola = new Consola();
+        consola.mostrarTitulo("PERSISTENCIA EN ARCHIVOS CSV");
+
+        ArchivoPaciente archivoPaciente = new ArchivoPaciente();
+        ArchivoCita archivoCita = new ArchivoCita();
+        ArchivoPago archivoPago = new ArchivoPago();
+
+        archivoPaciente.guardarPacientes("out/pacientes.csv", pacienteService.getPacientes(), pacienteService.getTotalPacientes());
+        archivoCita.guardarCitas("out/citas.csv", citaService.getCitas(), citaService.getTotalCitas());
+        archivoPago.guardarPagos("out/pagos.csv", pagoService.getPagos(), pagoService.getTotalPagos());
+
+        System.out.println("Archivos CSV generados en la carpeta out");
+
+        ReporteService reporteService = new ReporteService();
+        reporteService.mostrarResumenGeneral(
+                pacienteService.getTotalPacientes(),
+                citaService.getTotalCitas(),
+                pagoService.getTotalPagos()
+        );
+        reporteService.mostrarAvanceAED();
+
+        /*
+         * 14. Utilidades generales.
+         * Se validan datos, se generan codigos y se formatean fechas.
+         */
+
+        consola.mostrarTitulo("UTILIDADES DEL SISTEMA");
+
+        Validador validador = new Validador();
+        GeneradorCodigo generadorCodigo = new GeneradorCodigo();
+        UtilidadesFecha utilidadesFecha = new UtilidadesFecha();
+
+        System.out.println("DNI valido: " + validador.esDniValido(paciente2.getDni()));
+        System.out.println("Monto valido: " + validador.esMontoValido(pago1.getMonto()));
+        System.out.println("Codigo generado: " + generadorCodigo.generar("PAC", 6));
+        System.out.println("Fecha formateada: " + utilidadesFecha.formatearFecha(LocalDate.now()));
 
     }
 }
