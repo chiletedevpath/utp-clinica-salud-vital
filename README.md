@@ -55,7 +55,7 @@ El objetivo principal no es reemplazar un sistema clinico real, sino demostrar c
 - MergeSort.
 - Persistencia simple mediante archivos CSV.
 
-Para una explicacion breve de cada concepto aplicado, revisar el [glosario tecnico](GLOSARIO.md).
+Para estudiar los conceptos desde el enfoque de Chilete DevPath, revisar el [glosario tecnico](GLOSARIO.md).
 
 ## Arquitectura del proyecto
 

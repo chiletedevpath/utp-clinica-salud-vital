@@ -1,42 +1,51 @@
-# Glosario Tecnico
+# Glosario Tecnico | Chilete DevPath
 
-Este glosario resume los conceptos principales aplicados en el proyecto **Clinica Salud Vital**. Su objetivo es apoyar la sustentacion academica y facilitar la lectura tecnica del codigo.
+Este glosario forma parte del enfoque de **Chilete DevPath**: documentar el aprendizaje con ejemplos reales, lenguaje claro y relacion directa con el codigo.
+
+El objetivo no es repetir teoria de memoria, sino explicar los conceptos que se aplican en **Clinica Salud Vital** para que cualquier estudiante pueda entender que problema resuelve cada estructura, donde aparece en el proyecto y como defenderla tecnicamente.
+
+## Como usar este glosario
+
+- Si estas aprendiendo, revisa primero la explicacion y luego ubica la clase relacionada.
+- Si estas sustentando, usa la columna de aplicacion para conectar teoria con codigo.
+- Si estas revisando el proyecto, compara cada concepto con el modulo donde se implementa.
+- Si quieres practicar, intenta explicar cada concepto con tus propias palabras antes de leer la aplicacion.
 
 ## Conceptos de Programacion Orientada a Objetos
 
 | Concepto | Explicacion | Aplicacion en el proyecto |
 |---|---|---|
-| Clase | Plantilla que define atributos y comportamientos de un objeto. | `Paciente`, `Doctor`, `Cita`, `Pago`, `Tratamiento`. |
-| Objeto | Instancia concreta de una clase. | Cada paciente, cita, doctor o pago cargado en memoria. |
-| Encapsulamiento | Protege los atributos y permite acceder a ellos mediante metodos. | Modelos con atributos privados y metodos `get` / `set`. |
-| Herencia | Permite que una clase reutilice atributos y comportamientos de otra. | `Paciente`, `Doctor` y `Administrador` heredan de `Persona`. |
-| Abstraccion | Representa lo esencial de una entidad sin exponer todos sus detalles internos. | `Persona` concentra datos comunes de las personas del sistema. |
-| Polimorfismo | Permite tratar objetos relacionados mediante una misma referencia o comportamiento comun. | `Boleta` y `Factura` especializan el comportamiento de `Pago`. |
-| Interfaz | Contrato que define operaciones que una clase debe implementar. | `Registrable`, `Pagable`, `Reportable` y los TAD del proyecto. |
+| Clase | Molde que define datos y comportamientos de una entidad. | `Paciente`, `Doctor`, `Cita`, `Pago`, `Tratamiento`. |
+| Objeto | Elemento concreto creado a partir de una clase. | Cada paciente, cita, doctor o pago cargado durante la ejecucion. |
+| Encapsulamiento | Protege los datos internos y controla el acceso mediante metodos. | Modelos con atributos privados y metodos de acceso. |
+| Herencia | Reutiliza atributos y comportamientos comunes desde una clase base. | `Paciente`, `Doctor` y `Administrador` heredan de `Persona`. |
+| Abstraccion | Representa lo esencial de una entidad sin cargar detalles innecesarios. | `Persona` concentra datos comunes de las personas del sistema. |
+| Polimorfismo | Permite manejar objetos relacionados mediante comportamientos compatibles. | `Boleta` y `Factura` especializan el comportamiento de `Pago`. |
+| Interfaz | Contrato que define operaciones que una clase debe cumplir. | `Registrable`, `Pagable`, `Reportable` y los TAD del proyecto. |
 
 ## Estructuras de datos
 
 | Concepto | Explicacion | Aplicacion en el proyecto |
 |---|---|---|
-| Arreglo | Estructura de tamano fijo que almacena elementos en posiciones contiguas. | Base de pacientes, citas y pagos en los servicios principales. |
+| Arreglo | Estructura de tamano fijo que guarda elementos por posicion. | Base de pacientes, citas y pagos en los servicios principales. |
 | Matriz | Arreglo bidimensional organizado en filas y columnas. | `MatrizHorarios` relaciona doctores con dias de atencion. |
-| Nodo | Unidad que almacena un dato y una referencia hacia otro elemento. | `NodoPaciente`, `NodoCita` y `NodoDoctor`. |
+| Nodo | Unidad que guarda un dato y una referencia hacia otro elemento. | `NodoPaciente`, `NodoCita` y `NodoDoctor`. |
 | Lista enlazada | Estructura dinamica formada por nodos conectados. | `ListaPacientes` y `ListaCitas`. |
-| Cola | Estructura FIFO: el primero en entrar es el primero en salir. | `ColaPacientes` simula la sala de espera. |
-| Pila | Estructura LIFO: el ultimo en entrar es el primero en salir. | `PilaHistorialCitas` gestiona citas recientes. |
-| Arbol binario de busqueda | Estructura no lineal que organiza datos para facilitar busquedas. | `ArbolDoctoresBusqueda` organiza doctores por criterio de busqueda. |
-| TAD | Tipo Abstracto de Datos que define operaciones sin imponer una implementacion concreta. | Interfaces `TADListaPacientes`, `TADColaPacientes`, `TADPilaHistorialCitas` y `TADArbolDoctores`. |
+| Cola | Estructura FIFO: atiende primero al dato que ingreso primero. | `ColaPacientes` simula la sala de espera. |
+| Pila | Estructura LIFO: atiende primero al dato que ingreso ultimo. | `PilaHistorialCitas` gestiona citas recientes. |
+| Arbol binario de busqueda | Estructura no lineal que organiza datos para insertar, buscar y recorrer con criterio. | `ArbolDoctoresBusqueda` organiza doctores. |
+| TAD | Tipo Abstracto de Datos que define operaciones sin depender de una implementacion unica. | Interfaces `TADListaPacientes`, `TADColaPacientes`, `TADPilaHistorialCitas` y `TADArbolDoctores`. |
 
 ## Algoritmos
 
 | Concepto | Explicacion | Aplicacion en el proyecto |
 |---|---|---|
 | Busqueda lineal | Recorre elementos uno por uno hasta encontrar una coincidencia. | Busqueda de pacientes y doctores. |
-| Recursividad | Tecnica donde un metodo se llama a si mismo para resolver una tarea. | `ReporteRecursivo` recorre y cuenta elementos. |
-| Bubble Sort | Ordenamiento por comparacion de elementos vecinos. | `BubbleSortPacientes` ordena pacientes. |
-| QuickSort | Ordenamiento que usa pivote y divide el problema en partes menores. | `QuickSort` ordena datos usando `Comparator`. |
-| MergeSort | Ordenamiento que divide, ordena y fusiona subconjuntos. | `MergeSortPagos` ordena pagos por monto. |
-| Comparator | Interfaz de Java que define el criterio de comparacion entre objetos. | Permite ordenar objetos por atributos especificos. |
+| Recursividad | Resuelve una tarea dividiendola en llamadas mas pequenas del mismo metodo. | `ReporteRecursivo` recorre y cuenta elementos. |
+| Bubble Sort | Ordena comparando elementos vecinos e intercambiandolos si corresponde. | `BubbleSortPacientes` ordena pacientes. |
+| QuickSort | Ordena usando un pivote y dividiendo el problema en partes menores. | `QuickSort` ordena datos usando `Comparator`. |
+| MergeSort | Ordena dividiendo, resolviendo y fusionando subconjuntos. | `MergeSortPagos` ordena pagos por monto. |
+| Comparator | Interfaz de Java que define como comparar dos objetos. | Permite ordenar objetos por atributos especificos. |
 
 ## Conceptos del dominio clinico
 
@@ -61,3 +70,14 @@ Este glosario resume los conceptos principales aplicados en el proyecto **Clinic
 | Consola | Interfaz textual para interactuar con el programa. | Menu principal de sustentacion. |
 | Datos en memoria | Informacion que existe mientras el programa esta en ejecucion. | Datos base cargados al iniciar el sistema. |
 | Fuera de alcance | Elementos que el proyecto no implementa por decision academica. | Base de datos, interfaz grafica, autenticacion y lectura completa desde archivos. |
+
+## Para seguir practicando
+
+Estas preguntas sirven para repasar el proyecto desde una mirada Chilete DevPath:
+
+- Que estructura conviene usar si necesito atender pacientes por orden de llegada?
+- Por que una pila funciona para revisar el historial reciente?
+- Que diferencia practica hay entre un arreglo, una lista enlazada y un arbol?
+- Que ventaja tiene separar una interfaz TAD de su implementacion concreta?
+- Que algoritmo de ordenamiento seria mas facil de explicar en una sustentacion y cual seria mas eficiente?
+- Que parte del sistema demuestra mejor la relacion entre problema real y estructura de datos?
