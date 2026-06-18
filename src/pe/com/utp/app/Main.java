@@ -40,22 +40,24 @@ import pe.com.utp.util.GeneradorCodigo;
 import pe.com.utp.util.UtilidadesFecha;
 import pe.com.utp.util.Validador;
 
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Scanner;
 
 /*
  * Clase principal del sistema.
- * Presenta un menu por consola para ejecutar las estructuras y algoritmos AED.
+ * Menu de sustentacion: cada opcion muestra un proceso clinico y el tema AED/POO aplicado.
  */
 public class Main {
 
     public static void main(String[] args) {
-        System.out.println("\nCargando datos base del sistema...");
-        DatosSistema datos = new DatosSistema();
+        DatosSistema datos = crearDatosSilenciosos();
         Scanner scanner = new Scanner(System.in);
         int opcion;
 
+        System.out.println("\nDatos base cargados correctamente.");
         do {
             mostrarMenu();
             opcion = leerOpcion(scanner);
@@ -67,22 +69,16 @@ public class Main {
 
     private static void mostrarMenu() {
         System.out.println("\n========== CLINICA SALUD VITAL ==========");
-        System.out.println("1. Gestion de pacientes con arreglo");
-        System.out.println("2. Busqueda, actualizacion y eliminacion");
-        System.out.println("3. Listas enlazadas de pacientes y citas");
-        System.out.println("4. Matriz de horarios y citas medicas");
-        System.out.println("5. Busqueda lineal de doctores");
-        System.out.println("6. Cola de pacientes");
-        System.out.println("7. Pila e historial reciente de citas");
-        System.out.println("8. Bubble Sort de pacientes");
-        System.out.println("9. Arbol binario de doctores");
-        System.out.println("10. Reporte recursivo");
-        System.out.println("11. QuickSort de citas");
-        System.out.println("12. Tratamiento, receta e historial clinico");
-        System.out.println("13. Pagos, herencia y MergeSort");
-        System.out.println("14. Persistencia CSV y reportes");
-        System.out.println("15. Utilidades y datos administrativos");
-        System.out.println("16. Ejecutar demostracion completa");
+        System.out.println("1. Presentacion del sistema y datos base");
+        System.out.println("2. Gestion de pacientes");
+        System.out.println("3. Gestion de citas y horarios");
+        System.out.println("4. Sala de espera de pacientes");
+        System.out.println("5. Historial reciente y seguimiento clinico");
+        System.out.println("6. Busquedas y ordenamientos");
+        System.out.println("7. Arbol binario de doctores");
+        System.out.println("8. Tratamientos, recetas y pagos");
+        System.out.println("9. Persistencia, reportes y utilidades");
+        System.out.println("10. Demostracion completa AED");
         System.out.println("0. Salir");
         System.out.print("Seleccione una opcion: ");
     }
@@ -98,51 +94,41 @@ public class Main {
     private static void ejecutarOpcion(int opcion, DatosSistema datos) {
         switch (opcion) {
             case 1:
-                mostrarPacientes(datos);
+                presentarSistema(datos);
                 break;
             case 2:
+                mostrarPacientes(datos);
                 demostrarBusquedaActualizacionEliminacion(datos);
-                break;
-            case 3:
                 demostrarListasEnlazadas(datos);
                 break;
-            case 4:
+            case 3:
                 demostrarMatrizYCitas(datos);
                 break;
-            case 5:
-                demostrarBusquedaDoctores(datos);
-                break;
-            case 6:
+            case 4:
                 demostrarCola(datos);
                 break;
-            case 7:
+            case 5:
                 demostrarPila(datos);
-                break;
-            case 8:
-                demostrarBubbleSort(datos);
-                break;
-            case 9:
-                demostrarArbol(datos);
-                break;
-            case 10:
-                demostrarRecursividad(datos);
-                break;
-            case 11:
-                demostrarQuickSort(datos);
-                break;
-            case 12:
                 demostrarTratamientoReceta(datos);
                 break;
-            case 13:
+            case 6:
+                demostrarBusquedaDoctores(datos);
+                demostrarBubbleSort(datos);
+                demostrarQuickSort(datos);
+                demostrarRecursividad(datos);
+                break;
+            case 7:
+                demostrarArbol(datos);
+                break;
+            case 8:
+                demostrarTratamientoReceta(datos);
                 demostrarPagos(datos);
                 break;
-            case 14:
+            case 9:
                 demostrarPersistenciaYReportes(datos);
-                break;
-            case 15:
                 demostrarUtilidades(datos);
                 break;
-            case 16:
+            case 10:
                 ejecutarDemostracionCompleta(datos);
                 break;
             case 0:
@@ -154,20 +140,44 @@ public class Main {
         }
     }
 
+    private static DatosSistema crearDatosSilenciosos() {
+        PrintStream salidaOriginal = System.out;
+
+        try {
+            // Consola: se silencia la carga inicial para que el menu sea limpio al exponer.
+            System.setOut(new PrintStream(OutputStream.nullOutputStream()));
+            return new DatosSistema();
+        } finally {
+            System.setOut(salidaOriginal);
+        }
+    }
+
+    private static void mostrarConcepto(String concepto) {
+        System.out.println("Concepto aplicado: " + concepto);
+    }
+
+    private static void presentarSistema(DatosSistema datos) {
+        datos.consola.mostrarTitulo("PRESENTACION DEL SISTEMA");
+        mostrarConcepto("POO organiza el sistema en modelos, servicios, interfaces y estructuras AED.");
+        System.out.println("Sistema academico: Clinica Salud Vital");
+        System.out.println("Pacientes cargados: " + datos.pacienteService.getTotalPacientes());
+        System.out.println("Citas cargadas: " + datos.citaService.getTotalCitas());
+        System.out.println("Pagos cargados: " + datos.pagoService.getTotalPagos());
+        System.out.println("La opcion 10 ejecuta la demostracion completa para capturas del informe.");
+    }
+
     private static void mostrarPacientes(DatosSistema datos) {
         datos.consola.mostrarTitulo("GESTION DE PACIENTES CON ARREGLO");
+        mostrarConcepto("AED usa arreglo unidimensional para guardar pacientes en posiciones consecutivas.");
         datos.pacienteService.mostrarPacientes();
     }
 
     private static void demostrarBusquedaActualizacionEliminacion(DatosSistema datos) {
         datos.consola.mostrarTitulo("BUSQUEDA, ACTUALIZACION Y ELIMINACION");
+        mostrarConcepto("Busqueda lineal recorre el arreglo hasta encontrar el DNI o llegar al final.");
 
-        // Se usa una copia temporal para no alterar los datos base del menu.
-        PacienteService servicioTemporal = new PacienteService();
-        Registrable<Paciente> registroTemporal = servicioTemporal;
-        registroTemporal.registrar(datos.paciente1);
-        registroTemporal.registrar(datos.paciente2);
-        registroTemporal.registrar(datos.paciente3);
+        // AED: se usa una copia temporal para demostrar eliminacion sin afectar el estado base del menu.
+        PacienteService servicioTemporal = crearServicioTemporalPacientes(datos);
 
         String dniABuscar = "73748381";
         Paciente pacienteEncontrado = servicioTemporal.buscarPacientePorDni(dniABuscar);
@@ -184,8 +194,27 @@ public class Main {
         servicioTemporal.mostrarPacientes();
     }
 
+    private static PacienteService crearServicioTemporalPacientes(DatosSistema datos) {
+        PrintStream salidaOriginal = System.out;
+
+        try {
+            // Consola: se ocultan mensajes de carga porque aqui solo interesa la demostracion.
+            System.setOut(new PrintStream(OutputStream.nullOutputStream()));
+            PacienteService servicioTemporal = new PacienteService();
+            // POO: se programa contra la interfaz Registrable para separar contrato e implementacion.
+            Registrable<Paciente> registroTemporal = servicioTemporal;
+            registroTemporal.registrar(datos.paciente1);
+            registroTemporal.registrar(datos.paciente2);
+            registroTemporal.registrar(datos.paciente3);
+            return servicioTemporal;
+        } finally {
+            System.setOut(salidaOriginal);
+        }
+    }
+
     private static void demostrarListasEnlazadas(DatosSistema datos) {
         datos.consola.mostrarTitulo("LISTAS ENLAZADAS");
+        mostrarConcepto("AED usa nodos enlazados para insertar y recorrer datos sin depender de posiciones fijas.");
 
         System.out.println("\nLista enlazada de pacientes:");
         datos.listaPacientes.mostrarPacientes();
@@ -204,6 +233,7 @@ public class Main {
 
     private static void demostrarMatrizYCitas(DatosSistema datos) {
         datos.consola.mostrarTitulo("MATRIZ DE HORARIOS Y CITAS");
+        mostrarConcepto("AED usa matriz para cruzar doctores por fila y dias de atencion por columna.");
         datos.citaService.mostrarCitas();
         datos.citaService.mostrarMatrizHorarios();
         datos.citaService.mostrarTotalCitasPorDoctor();
@@ -212,6 +242,7 @@ public class Main {
 
     private static void demostrarBusquedaDoctores(DatosSistema datos) {
         datos.consola.mostrarTitulo("BUSQUEDA LINEAL DE DOCTORES");
+        mostrarConcepto("Busqueda lineal compara codigos de doctor desde la primera hasta la ultima posicion.");
         BusquedaDoctor busquedaDoctor = new BusquedaDoctor();
         Doctor doctorEncontrado = busquedaDoctor.buscarPorCodigo(datos.doctores, datos.doctores.length, "DOC-002");
 
@@ -225,6 +256,7 @@ public class Main {
 
     private static void demostrarCola(DatosSistema datos) {
         datos.consola.mostrarTitulo("SALA DE ESPERA DE PACIENTES");
+        mostrarConcepto("AED usa cola FIFO porque el primer paciente que llega debe ser atendido primero.");
 
         System.out.println("\nPacientes en espera:");
         datos.colaPacientes.mostrarCola();
@@ -238,6 +270,7 @@ public class Main {
 
     private static void demostrarPila(DatosSistema datos) {
         datos.consola.mostrarTitulo("HISTORIAL RECIENTE DE CITAS");
+        mostrarConcepto("AED usa pila LIFO para consultar primero la cita registrada mas recientemente.");
 
         System.out.println("\nCitas apiladas desde la mas reciente:");
         datos.pilaHistorialCitas.mostrarPila();
@@ -251,6 +284,7 @@ public class Main {
 
     private static void demostrarBubbleSort(DatosSistema datos) {
         datos.consola.mostrarTitulo("ORDENAMIENTO POR APELLIDO - BUBBLE SORT");
+        mostrarConcepto("Bubble Sort compara vecinos e intercambia pacientes hasta ordenar por apellido.");
 
         System.out.println("\nPacientes antes de ordenar:");
         datos.pacienteService.mostrarPacientes();
@@ -264,6 +298,7 @@ public class Main {
 
     private static void demostrarArbol(DatosSistema datos) {
         datos.consola.mostrarTitulo("ARBOL BINARIO DE BUSQUEDA DE DOCTORES");
+        mostrarConcepto("AED usa arbol binario para reducir la busqueda comparando codigos hacia izquierda o derecha.");
 
         System.out.println("\nRecorrido preorden:");
         datos.arbolDoctores.recorrerPreOrden();
@@ -283,6 +318,7 @@ public class Main {
 
     private static void demostrarRecursividad(DatosSistema datos) {
         datos.consola.mostrarTitulo("REPORTE RECURSIVO");
+        mostrarConcepto("Recursividad divide el recorrido en caso base y llamada sobre la siguiente posicion.");
 
         ReporteRecursivo reporteRecursivo = new ReporteRecursivo();
 
@@ -300,6 +336,7 @@ public class Main {
 
     private static void demostrarQuickSort(DatosSistema datos) {
         datos.consola.mostrarTitulo("ORDENAMIENTO DE CITAS - QUICKSORT");
+        mostrarConcepto("QuickSort usa pivote y recursion; Comparator define que dato se compara.");
 
         Cita[] citasParaOrdenar = {
                 datos.cita3,
@@ -313,6 +350,7 @@ public class Main {
         mostrarCodigosCitas(citasParaOrdenar);
 
         QuickSort quickSort = new QuickSort();
+        // Java: Comparator evita modificar Cita; aqui se ordena por codigo usando una expresion lambda.
         quickSort.ordenar(
                 citasParaOrdenar,
                 0,
@@ -332,6 +370,7 @@ public class Main {
 
     private static void demostrarTratamientoReceta(DatosSistema datos) {
         datos.consola.mostrarTitulo("TRATAMIENTO, RECETA E HISTORIAL CLINICO");
+        mostrarConcepto("POO relaciona objetos clinicos: tratamiento, receta e historial comparten codigos de referencia.");
         datos.tratamiento1.mostrarDatos();
         System.out.println();
         datos.receta1.mostrarDatos();
@@ -341,11 +380,13 @@ public class Main {
 
     private static void demostrarPagos(DatosSistema datos) {
         datos.consola.mostrarTitulo("PAGOS, HERENCIA Y MERGESORT");
+        mostrarConcepto("POO aplica polimorfismo: PagoService procesa Pago, Boleta y Factura con el mismo contrato.");
 
         System.out.println("\nPagos antes de ordenar por monto:");
         datos.pagoService.mostrarPagos();
 
         MergeSortPagos mergeSortPagos = new MergeSortPagos();
+        // AED: MergeSort divide el arreglo de pagos y fusiona tramos ordenados por monto.
         mergeSortPagos.ordenarPorMonto(datos.pagoService.getPagos(), 0, datos.pagoService.getTotalPagos() - 1);
 
         System.out.println("\nPagos despues de ordenar por monto:");
@@ -354,6 +395,7 @@ public class Main {
 
     private static void demostrarPersistenciaYReportes(DatosSistema datos) {
         datos.consola.mostrarTitulo("PERSISTENCIA CSV Y REPORTES");
+        mostrarConcepto("Persistencia simple exporta arreglos a CSV; no recupera datos desde archivo.");
 
         ArchivoPaciente archivoPaciente = new ArchivoPaciente();
         ArchivoCita archivoCita = new ArchivoCita();
@@ -366,6 +408,7 @@ public class Main {
         System.out.println("Archivos CSV generados en la carpeta out");
 
         ReporteService reporteService = new ReporteService();
+        // POO: Reportable permite generar reportes mediante una interfaz comun.
         Reportable reporteAED = reporteService;
         reporteService.mostrarResumenGeneral(
                 datos.pacienteService.getTotalPacientes(),
@@ -377,6 +420,7 @@ public class Main {
 
     private static void demostrarUtilidades(DatosSistema datos) {
         datos.consola.mostrarTitulo("UTILIDADES Y DATOS ADMINISTRATIVOS");
+        mostrarConcepto("POO reutiliza clases auxiliares para validacion, codigos y fechas sin mezclar logica en Main.");
 
         Validador validador = new Validador();
         GeneradorCodigo generadorCodigo = new GeneradorCodigo();
@@ -392,6 +436,7 @@ public class Main {
     }
 
     private static void ejecutarDemostracionCompleta(DatosSistema datos) {
+        presentarSistema(datos);
         mostrarPacientes(datos);
         demostrarBusquedaActualizacionEliminacion(datos);
         demostrarListasEnlazadas(datos);

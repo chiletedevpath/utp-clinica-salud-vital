@@ -25,11 +25,13 @@ public class ReporteService implements Reportable {
         System.out.println("Recursividad");
         System.out.println("Ordenamientos BubbleSort, QuickSort y MergeSort");
         System.out.println("Arbol binario de busqueda");
+        System.out.println("POO: encapsulamiento, herencia, polimorfismo e interfaces");
         System.out.println("Persistencia simple en archivos CSV");
     }
 
     @Override
     public void generarReporte() {
+        // POO: Reportable permite llamar el reporte mediante un contrato comun.
         mostrarAvanceAED();
     }
 }

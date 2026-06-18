@@ -7,13 +7,16 @@ public class MergeSortPagos {
     /*
      * MergeSort aplicado a pagos.
      * Divide el arreglo y luego fusiona los pagos ordenados por monto.
+     * Es util cuando se quiere explicar divide y venceras con arreglos.
      */
 
     public void ordenarPorMonto(Pago[] pagos, int inicio, int fin) {
         if (pagos == null || inicio >= fin) {
+            // Caso base: si el tramo tiene cero o un elemento, ya esta ordenado.
             return;
         }
 
+        // La mitad separa el arreglo en dos subproblemas mas pequenos.
         int mitad = (inicio + fin) / 2;
 
         ordenarPorMonto(pagos, inicio, mitad);
@@ -25,6 +28,7 @@ public class MergeSortPagos {
         int tamanioIzquierda = mitad - inicio + 1;
         int tamanioDerecha = fin - mitad;
 
+        // Arreglos auxiliares: permiten mezclar dos mitades ya ordenadas.
         Pago[] izquierda = new Pago[tamanioIzquierda];
         Pago[] derecha = new Pago[tamanioDerecha];
 
@@ -41,6 +45,7 @@ public class MergeSortPagos {
         int indiceArreglo = inicio;
 
         while (indiceIzquierda < tamanioIzquierda && indiceDerecha < tamanioDerecha) {
+            // Criterio de ordenamiento: menor monto queda primero.
             if (izquierda[indiceIzquierda].getMonto() <= derecha[indiceDerecha].getMonto()) {
                 pagos[indiceArreglo] = izquierda[indiceIzquierda];
                 indiceIzquierda++;

@@ -31,14 +31,18 @@ public class ArbolDoctoresBusqueda implements TADArbolDoctores {
 
     private NodoDoctor insertarRecursivo(NodoDoctor actual, Doctor doctor) {
         if (actual == null) {
+            // Caso base: se encontro el lugar donde debe crearse el nuevo nodo.
             return new NodoDoctor(doctor);
         }
 
+        // compareToIgnoreCase compara codigos sin distinguir mayusculas y minusculas.
         int comparacion = doctor.getCodigo().compareToIgnoreCase(actual.getDoctor().getCodigo());
 
         if (comparacion < 0) {
+            // Codigo menor: el doctor pertenece al subarbol izquierdo.
             actual.setIzquierdo(insertarRecursivo(actual.getIzquierdo(), doctor));
         } else if (comparacion > 0) {
+            // Codigo mayor: el doctor pertenece al subarbol derecho.
             actual.setDerecho(insertarRecursivo(actual.getDerecho(), doctor));
         }
 
@@ -59,6 +63,7 @@ public class ArbolDoctoresBusqueda implements TADArbolDoctores {
 
     private NodoDoctor buscarRecursivo(NodoDoctor actual, String codigoDoctor) {
         if (actual == null || codigoDoctor == null) {
+            // return null indica que no existe coincidencia en esta rama.
             return null;
         }
 
@@ -69,9 +74,11 @@ public class ArbolDoctoresBusqueda implements TADArbolDoctores {
         }
 
         if (comparacion < 0) {
+            // Si el codigo buscado es menor, no hace falta revisar el lado derecho.
             return buscarRecursivo(actual.getIzquierdo(), codigoDoctor);
         }
 
+        // Si el codigo buscado es mayor, se continua por el subarbol derecho.
         return buscarRecursivo(actual.getDerecho(), codigoDoctor);
     }
 
@@ -100,13 +107,16 @@ public class ArbolDoctoresBusqueda implements TADArbolDoctores {
             actual.setDerecho(eliminarRecursivo(actual.getDerecho(), codigoDoctor));
         } else {
             if (actual.getIzquierdo() == null) {
+                // Caso 1: sin hijo izquierdo, el hijo derecho reemplaza al nodo.
                 return actual.getDerecho();
             }
 
             if (actual.getDerecho() == null) {
+                // Caso 2: sin hijo derecho, el hijo izquierdo reemplaza al nodo.
                 return actual.getIzquierdo();
             }
 
+            // Caso 3: dos hijos, se reemplaza por el menor del subarbol derecho.
             NodoDoctor sucesor = buscarMenor(actual.getDerecho());
             actual.setDoctor(sucesor.getDoctor());
             actual.setDerecho(eliminarRecursivo(actual.getDerecho(), sucesor.getDoctor().getCodigo()));

@@ -41,6 +41,7 @@ public class PacienteService implements Registrable<Paciente> {
 
     @Override
     public void registrar(Paciente paciente) {
+        // POO: Registrable define el contrato y este servicio implementa el registro real.
         registrarPaciente(paciente);
     }
 
@@ -63,7 +64,7 @@ public class PacienteService implements Registrable<Paciente> {
 
     // Busca un paciente por DNI usando recorrido lineal.
     public Paciente buscarPacientePorDni(String dni) {
-        // Se delega el algoritmo para separar servicio y busqueda lineal.
+        // POO: el servicio delega el algoritmo para no mezclar gestion con busqueda.
         BusquedaPaciente busquedaPaciente = new BusquedaPaciente();
         return busquedaPaciente.buscarPorDni(pacientes, totalPacientes, dni);
     }
@@ -107,6 +108,7 @@ public class PacienteService implements Registrable<Paciente> {
 
         // Los elementos posteriores avanzan una posicion hacia la izquierda.
         for (int i = posicion; i < totalPacientes - 1; i++) {
+            // AED: compactacion del arreglo para no dejar espacios logicos vacios.
             pacientes[i] = pacientes[i + 1];
         }
 

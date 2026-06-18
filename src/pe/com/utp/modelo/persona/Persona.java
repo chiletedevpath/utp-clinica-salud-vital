@@ -3,6 +3,7 @@ package pe.com.utp.modelo.persona;
 /*
  * Clase base para las personas del sistema.
  * Centraliza los datos comunes de pacientes, doctores y administradores.
+ * POO: se usa abstraccion para evitar repetir atributos en cada clase hija.
  */
 public abstract class Persona {
 
@@ -31,10 +32,11 @@ public abstract class Persona {
     /*
      * Metodo obligatorio para las clases hijas.
      * Cada tipo de persona muestra sus datos segun su propio contexto.
+     * POO: este metodo permite polimorfismo porque cada subclase lo implementa diferente.
      */
     public abstract void mostrarDatos();
 
-    // Metodos de acceso y modificacion usados para aplicar encapsulamiento.
+    // POO: encapsulamiento, los atributos son privados y se accede mediante metodos.
     public String getCodigo() {
         return codigo;
     }

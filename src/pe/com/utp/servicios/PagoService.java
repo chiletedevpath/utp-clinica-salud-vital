@@ -26,6 +26,7 @@ public class PagoService implements Pagable {
             return;
         }
 
+        // POO: polimorfismo, aqui puede llegar Pago, Boleta o Factura.
         pagos[totalPagos] = pago;
         totalPagos++;
 
@@ -34,6 +35,7 @@ public class PagoService implements Pagable {
 
     @Override
     public void procesarPago(Pago pago) {
+        // POO: Pagable define el contrato y PagoService decide como procesarlo.
         registrarPago(pago);
     }
 
@@ -46,6 +48,7 @@ public class PagoService implements Pagable {
 
         for (int i = 0; i < totalPagos; i++) {
             System.out.println();
+            // POO: se ejecuta el mostrarDatos real del objeto guardado.
             pagos[i].mostrarDatos();
         }
     }
