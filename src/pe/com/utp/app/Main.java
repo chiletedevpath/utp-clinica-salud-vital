@@ -14,6 +14,8 @@ import pe.com.utp.modelo.enums.Especialidad;
 import pe.com.utp.modelo.enums.EstadoCita;
 import pe.com.utp.modelo.enums.TipoPago;
 import pe.com.utp.modelo.enums.TurnoConsultaAmbulatoria;
+import pe.com.utp.modelo.pago.Boleta;
+import pe.com.utp.modelo.pago.Factura;
 import pe.com.utp.modelo.pago.Pago;
 import pe.com.utp.modelo.persona.Doctor;
 import pe.com.utp.modelo.persona.Paciente;
@@ -347,17 +349,19 @@ public class Main {
         }
 
         /*
-         * 12. MergeSort de pagos.
-         * Divide el arreglo de pagos y fusiona los tramos ordenados por monto.
+         * 12. Pagos, herencia y MergeSort.
+         * Boleta y Factura heredan de Pago; el servicio los trata como Pago.
+         * Luego MergeSort divide el arreglo y fusiona los tramos ordenados por monto.
          */
 
         System.out.println("\n==== REGISTRO Y ORDENAMIENTO DE PAGOS (MERGESORT) ====");
 
-        Pago pago1 = new Pago("PAG-001", cita1.getCodigo(), 120.00, TipoPago.EFECTIVO, LocalDate.now());
-        Pago pago2 = new Pago("PAG-002", cita2.getCodigo(), 85.50, TipoPago.TARJETA, LocalDate.now());
+        // Polimorfismo: se declaran como Pago, pero el objeto real es Boleta o Factura.
+        Pago pago1 = new Boleta("PAG-001", cita1.getCodigo(), 120.00, TipoPago.EFECTIVO, LocalDate.now(), paciente1.getDni());
+        Pago pago2 = new Factura("PAG-002", cita2.getCodigo(), 85.50, TipoPago.TARJETA, LocalDate.now(), "20601234567");
         Pago pago3 = new Pago("PAG-003", cita3.getCodigo(), 160.00, TipoPago.TRANSFERENCIA, LocalDate.now());
-        Pago pago4 = new Pago("PAG-004", cita4.getCodigo(), 70.00, TipoPago.EFECTIVO, LocalDate.now());
-        Pago pago5 = new Pago("PAG-005", cita5.getCodigo(), 140.00, TipoPago.TARJETA, LocalDate.now());
+        Pago pago4 = new Boleta("PAG-004", cita4.getCodigo(), 70.00, TipoPago.EFECTIVO, LocalDate.now(), paciente4.getDni());
+        Pago pago5 = new Factura("PAG-005", cita5.getCodigo(), 140.00, TipoPago.TARJETA, LocalDate.now(), "20607654321");
 
         PagoService pagoService = new PagoService();
 
