@@ -1,5 +1,6 @@
 package pe.com.utp.app;
 
+import pe.com.utp.algoritmos.busqueda.BusquedaDoctor;
 import pe.com.utp.algoritmos.ordenamiento.BubbleSortPacientes;
 import pe.com.utp.algoritmos.ordenamiento.MergeSortPagos;
 import pe.com.utp.algoritmos.ordenamiento.QuickSort;
@@ -167,6 +168,7 @@ public class Main {
         Doctor doctor1 = new Doctor("DOC-001", "25413651", "Juan Carlos", "Lozano Leon", "925587412", "000555", "doctor1@gmail.com", Especialidad.MEDICINA_GENERAL, TurnoConsultaAmbulatoria.MANANA);
         Doctor doctor2 = new Doctor("DOC-002", "02578933", "Carlos Elvis", "Tapia Silva", "925587412", "000556", "doctor2@gmail.com", Especialidad.DERMATOLOGIA, TurnoConsultaAmbulatoria.TARDE);
         Doctor doctor3 = new Doctor("DOC-003", "73740025", "David", "Moncada Teran", "925357891", "000557", "doctor3@gmail.com", Especialidad.TRAUMATOLOGIA, TurnoConsultaAmbulatoria.MANANA);
+        Doctor[] doctores = {doctor1, doctor2, doctor3};
 
         // La matriz trabaja con 3 doctores y 5 dias de atencion.
         MatrizHorarios matrizHorarios = new MatrizHorarios(doctor1, doctor2, doctor3);
@@ -193,6 +195,18 @@ public class Main {
 
         System.out.println("\n==== MAPA BIDIMENSIONAL DE DISPONIBILIDAD ====");
         matrizHorarios.mostrarMatriz();
+
+        // Busqueda lineal en arreglo de doctores usando el codigo como clave.
+        System.out.println("\n==== BUSQUEDA LINEAL DE DOCTORES ====");
+        BusquedaDoctor busquedaDoctor = new BusquedaDoctor();
+        Doctor doctorEncontrado = busquedaDoctor.buscarPorCodigo(doctores, doctores.length, "DOC-002");
+
+        if (doctorEncontrado != null) {
+            System.out.println("Doctor encontrado con exito");
+            doctorEncontrado.mostrarDatos();
+        } else {
+            System.out.println("Doctor no encontrado");
+        }
 
         /*
          * 6. Cola dinamica.

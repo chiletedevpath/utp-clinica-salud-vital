@@ -1,5 +1,6 @@
 package pe.com.utp.servicios;
 
+import pe.com.utp.algoritmos.busqueda.BusquedaPaciente;
 import pe.com.utp.modelo.persona.Paciente;
 
 // Servicio que administra pacientes usando un arreglo unidimensional de tamanio fijo.
@@ -56,18 +57,9 @@ public class PacienteService {
 
     // Busca un paciente por DNI usando recorrido lineal.
     public Paciente buscarPacientePorDni(String dni) {
-
-        // Solo se revisan las posiciones ocupadas.
-        for (int i = 0; i < totalPacientes; i++) {
-
-            // El DNI permite identificar al paciente dentro del arreglo.
-            if (pacientes[i].getDni().equals(dni)) {
-                return pacientes[i];
-            }
-        }
-
-        // null indica que no se encontro ninguna coincidencia.
-        return null;
+        // Se delega el algoritmo para separar servicio y busqueda lineal.
+        BusquedaPaciente busquedaPaciente = new BusquedaPaciente();
+        return busquedaPaciente.buscarPorDni(pacientes, totalPacientes, dni);
     }
 
     // Actualiza telefono y correo despues de ubicar al paciente por DNI.
