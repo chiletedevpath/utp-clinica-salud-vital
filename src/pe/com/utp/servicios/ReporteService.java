@@ -1,6 +1,8 @@
 package pe.com.utp.servicios;
 
-public class ReporteService {
+import pe.com.utp.interfaces.Reportable;
+
+public class ReporteService implements Reportable {
 
     /*
      * Servicio de reportes generales.
@@ -24,5 +26,10 @@ public class ReporteService {
         System.out.println("Ordenamientos BubbleSort, QuickSort y MergeSort");
         System.out.println("Arbol binario de busqueda");
         System.out.println("Persistencia simple en archivos CSV");
+    }
+
+    @Override
+    public void generarReporte() {
+        mostrarAvanceAED();
     }
 }

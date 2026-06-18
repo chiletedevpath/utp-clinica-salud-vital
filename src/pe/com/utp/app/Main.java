@@ -10,6 +10,9 @@ import pe.com.utp.estructuras.colas.ColaPacientes;
 import pe.com.utp.estructuras.listas.ListaPacientes;
 import pe.com.utp.estructuras.matrices.MatrizHorarios;
 import pe.com.utp.estructuras.pilas.PilaHistorialCitas;
+import pe.com.utp.interfaces.Pagable;
+import pe.com.utp.interfaces.Registrable;
+import pe.com.utp.interfaces.Reportable;
 import pe.com.utp.modelo.cita.Cita;
 import pe.com.utp.modelo.enums.Especialidad;
 import pe.com.utp.modelo.enums.EstadoCita;
@@ -54,6 +57,7 @@ public class Main {
 
         // Servicio que guarda pacientes en un arreglo unidimensional.
         PacienteService pacienteService = new PacienteService();
+        Registrable<Paciente> registroPacientes = pacienteService;
 
         // Datos de prueba usados durante la ejecucion del sistema.
         Paciente paciente1 = new Paciente("PAC-001", "73748381", "Adrian", "Pisco", "945834043", "adrian.pisco@gmail.com", 28);
@@ -64,11 +68,11 @@ public class Main {
 
         // Cada registro ocupa la siguiente posicion disponible del arreglo.
         System.out.println("\n==== REGISTRO DE PACIENTES =====");
-        pacienteService.registrarPaciente(paciente1);
-        pacienteService.registrarPaciente(paciente2);
-        pacienteService.registrarPaciente(paciente3);
-        pacienteService.registrarPaciente(paciente4);
-        pacienteService.registrarPaciente(paciente5);
+        registroPacientes.registrar(paciente1);
+        registroPacientes.registrar(paciente2);
+        registroPacientes.registrar(paciente3);
+        registroPacientes.registrar(paciente4);
+        registroPacientes.registrar(paciente5);
         System.out.println("=======================\n");
 
         // Recorrido del arreglo hasta la cantidad real de pacientes registrados.
@@ -395,12 +399,13 @@ public class Main {
         Pago pago5 = new Factura("PAG-005", cita5.getCodigo(), 140.00, TipoPago.TARJETA, LocalDate.now(), "20607654321");
 
         PagoService pagoService = new PagoService();
+        Pagable procesadorPago = pagoService;
 
-        pagoService.registrarPago(pago1);
-        pagoService.registrarPago(pago2);
-        pagoService.registrarPago(pago3);
-        pagoService.registrarPago(pago4);
-        pagoService.registrarPago(pago5);
+        procesadorPago.procesarPago(pago1);
+        procesadorPago.procesarPago(pago2);
+        procesadorPago.procesarPago(pago3);
+        procesadorPago.procesarPago(pago4);
+        procesadorPago.procesarPago(pago5);
 
         System.out.println("\nPagos antes de ordenar por monto:");
         pagoService.mostrarPagos();
@@ -430,12 +435,13 @@ public class Main {
         System.out.println("Archivos CSV generados en la carpeta out");
 
         ReporteService reporteService = new ReporteService();
+        Reportable reporteAED = reporteService;
         reporteService.mostrarResumenGeneral(
                 pacienteService.getTotalPacientes(),
                 citaService.getTotalCitas(),
                 pagoService.getTotalPagos()
         );
-        reporteService.mostrarAvanceAED();
+        reporteAED.generarReporte();
 
         /*
          * 15. Utilidades generales.

@@ -1,10 +1,11 @@
 package pe.com.utp.servicios;
 
 import pe.com.utp.algoritmos.busqueda.BusquedaPaciente;
+import pe.com.utp.interfaces.Registrable;
 import pe.com.utp.modelo.persona.Paciente;
 
 // Servicio que administra pacientes usando un arreglo unidimensional de tamanio fijo.
-public class PacienteService {
+public class PacienteService implements Registrable<Paciente> {
 
     // Limite maximo de pacientes que se pueden guardar en memoria.
     private static final int CAPACIDAD_MAXIMA_PACIENTES = 100;
@@ -36,6 +37,11 @@ public class PacienteService {
         totalPacientes++;
 
         System.out.println("Paciente registrado correctamente");
+    }
+
+    @Override
+    public void registrar(Paciente paciente) {
+        registrarPaciente(paciente);
     }
 
     // Muestra solo las posiciones que tienen pacientes registrados.

@@ -1,8 +1,9 @@
 package pe.com.utp.servicios;
 
+import pe.com.utp.interfaces.Pagable;
 import pe.com.utp.modelo.pago.Pago;
 
-public class PagoService {
+public class PagoService implements Pagable {
 
     // Capacidad estatica del arreglo unidimensional de pagos.
     private static final int CAPACIDAD_MAXIMA_PAGOS = 50;
@@ -29,6 +30,11 @@ public class PagoService {
         totalPagos++;
 
         System.out.println("Pago registrado correctamente");
+    }
+
+    @Override
+    public void procesarPago(Pago pago) {
+        registrarPago(pago);
     }
 
     // Muestra solo las posiciones ocupadas del arreglo.
