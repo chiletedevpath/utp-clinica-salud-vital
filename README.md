@@ -1,87 +1,97 @@
 # UTP Clinica Salud Vital
 
-Sistema academico desarrollado en Java para simular procesos basicos de una clinica y demostrar la aplicacion de estructuras de datos, algoritmos y Programacion Orientada a Objetos.
+Sistema academico en Java para simular la gestion basica de una clinica y demostrar la aplicacion de estructuras de datos, algoritmos y Programacion Orientada a Objetos.
 
-El proyecto corresponde al curso **Algoritmos y Estructuras de Datos** de la UTP y se ejecuta mediante un menu por consola orientado a sustentacion.
+El proyecto corresponde al curso **Algoritmos y Estructuras de Datos** de la Universidad Tecnologica del Peru. Esta desarrollado como una aplicacion por consola orientada a sustentacion academica.
 
 ## Contexto academico
 
-- Institucion: Universidad Tecnologica del Peru
-- Curso: Algoritmos y Estructuras de Datos
-- Ciclo: V
-- Tipo: Proyecto final academico
-- Caso de estudio: Clinica Salud Vital
+| Dato | Detalle |
+|---|---|
+| Institucion | Universidad Tecnologica del Peru |
+| Curso | Algoritmos y Estructuras de Datos |
+| Ciclo | V |
+| Tipo | Proyecto final academico |
+| Caso de estudio | Clinica Salud Vital |
+| Lenguaje | Java |
+| Interfaz | Consola |
 
-## Objetivo
+## Objetivo del proyecto
 
-Desarrollar una aplicacion en Java que permita representar procesos clinicos y administrativos, como gestion de pacientes, citas medicas, sala de espera, historial reciente, doctores, tratamientos, pagos, reportes y exportacion CSV.
+Representar procesos clinicos y administrativos mediante estructuras de datos vistas en el curso. El sistema permite trabajar con pacientes, doctores, citas, horarios, sala de espera, historial reciente, pagos, tratamientos, reportes y exportacion CSV.
 
-El objetivo principal no es reemplazar un sistema clinico real, sino demostrar de forma practica los temas del curso mediante un caso aplicado.
+El objetivo principal no es reemplazar un sistema clinico real, sino demostrar criterio tecnico al seleccionar y aplicar estructuras de datos dentro de un caso practico.
 
-## Temas aplicados
+## Alcance funcional
 
-- Programacion Orientada a Objetos
-- Encapsulamiento, herencia, abstraccion, interfaces y polimorfismo
-- Arreglos unidimensionales
-- Matrices
-- Listas enlazadas
-- Colas FIFO
-- Pilas LIFO
-- Arbol binario de busqueda
-- Busqueda lineal
-- Recursividad
-- Bubble Sort
-- QuickSort generico con `Comparator`
-- MergeSort
-- Persistencia simple mediante archivos CSV
+| Modulo | Responsabilidad |
+|---|---|
+| Pacientes | Registrar, mostrar, buscar, actualizar y eliminar pacientes. |
+| Citas y horarios | Registrar citas y contabilizar horarios disponibles por doctor y dia. |
+| Sala de espera | Simular atencion de pacientes mediante una cola FIFO. |
+| Historial reciente | Registrar seguimiento de citas mediante una pila LIFO. |
+| Doctores | Organizar doctores mediante un arbol binario de busqueda. |
+| Busquedas | Aplicar busqueda lineal sobre arreglos y colecciones del sistema. |
+| Ordenamientos | Aplicar Bubble Sort, QuickSort y MergeSort sobre datos del dominio. |
+| Tratamientos y pagos | Modelar recetas, tratamientos, boletas y facturas. |
+| Reportes | Mostrar informacion consolidada para sustentacion. |
+| Persistencia | Exportar pacientes, citas y pagos a archivos CSV. |
 
-## Estructura del proyecto
+## Conceptos aplicados
+
+- Programacion Orientada a Objetos.
+- Encapsulamiento, herencia, abstraccion, interfaces y polimorfismo.
+- Arreglos unidimensionales.
+- Matrices.
+- Tipos abstractos de datos.
+- Listas enlazadas.
+- Colas FIFO.
+- Pilas LIFO.
+- Arbol binario de busqueda.
+- Busqueda lineal.
+- Recursividad.
+- Bubble Sort.
+- QuickSort generico con `Comparator`.
+- MergeSort.
+- Persistencia simple mediante archivos CSV.
+
+## Arquitectura del proyecto
+
+El codigo se organiza por responsabilidad para separar dominio, estructuras, algoritmos, servicios, persistencia y utilidades.
 
 ```txt
 utp-clinica-salud-vital/
 |-- src/pe/com/utp/
-|   |-- app/
-|   |-- algoritmos/
-|   |   |-- busqueda/
-|   |   |-- ordenamiento/
-|   |   `-- recursividad/
-|   |-- estructuras/
-|   |   |-- arboles/
-|   |   |-- colas/
-|   |   |-- listas/
-|   |   |-- matrices/
-|   |   `-- pilas/
-|   |-- interfaces/
-|   |-- modelo/
-|   |   |-- cita/
-|   |   |-- enums/
-|   |   |-- pago/
-|   |   |-- persona/
-|   |   `-- tratamiento/
-|   |-- persistencia/
-|   |-- servicios/
-|   `-- util/
+|   |-- app/              # Punto de entrada y menu de sustentacion
+|   |-- algoritmos/       # Busqueda, ordenamiento y recursividad
+|   |-- estructuras/      # Listas, colas, pilas, matrices y arboles
+|   |-- interfaces/       # Contratos y TAD usados por las estructuras
+|   |-- modelo/           # Entidades del dominio clinico
+|   |-- persistencia/     # Exportacion simple a CSV
+|   |-- servicios/        # Logica de aplicacion
+|   `-- util/             # Apoyo para consola, fechas, codigos y validaciones
 |-- README.md
 `-- .gitignore
 ```
 
-## Modulos principales
+## Componentes principales
 
-| Modulo | Descripcion |
+| Componente | Descripcion tecnica |
 |---|---|
-| Pacientes | Registra, muestra, busca, actualiza y elimina pacientes usando arreglos y busqueda lineal. |
-| Citas y horarios | Registra citas y contabiliza horarios mediante una matriz de doctores por dias. |
-| Sala de espera | Usa una cola de pacientes para demostrar FIFO mediante `encolar`, `verFrente` y `desencolar`. |
-| Historial reciente | Usa una pila de citas para demostrar LIFO mediante `apilar`, `verCima` y `desapilar`. |
-| Doctores | Organiza doctores mediante un arbol binario de busqueda con insercion, busqueda, eliminacion y recorridos. |
-| Ordenamientos | Aplica Bubble Sort, QuickSort y MergeSort sobre datos del sistema. |
-| Recursividad | Recorre arreglos y cuenta elementos mediante llamadas recursivas. |
-| Pagos | Modela pagos, boletas y facturas aplicando herencia y polimorfismo. |
-| Persistencia | Exporta pacientes, citas y pagos a archivos CSV. |
+| `Main` | Coordina el menu por consola y la demostracion completa del sistema. |
+| `PacienteService` | Administra pacientes y operaciones principales sobre el arreglo base. |
+| `CitaService` | Gestiona citas medicas usando almacenamiento en memoria. |
+| `MatrizHorarios` | Representa disponibilidad o carga de citas por doctor y dia. |
+| `ListaPacientes` / `ListaCitas` | Implementan listas enlazadas simples para datos del dominio. |
+| `ColaPacientes` | Implementa la sala de espera con comportamiento FIFO. |
+| `PilaHistorialCitas` | Implementa seguimiento reciente con comportamiento LIFO. |
+| `ArbolDoctoresBusqueda` | Implementa insercion, busqueda, eliminacion y recorridos de doctores. |
+| `QuickSort`, `BubbleSortPacientes`, `MergeSortPagos` | Demuestran algoritmos de ordenamiento aplicados al caso clinico. |
+| `ArchivoPaciente`, `ArchivoCita`, `ArchivoPago` | Exportan datos del sistema a archivos CSV. |
 
 ## Menu de sustentacion
 
-El punto de entrada del sistema es:
+El punto de entrada es:
 
 ```txt
 src/pe/com/utp/app/Main.java
@@ -103,7 +113,7 @@ Al ejecutar el programa se muestra un menu por consola:
 0. Salir
 ```
 
-Cada opcion muestra el concepto aplicado antes de ejecutar el proceso, lo que facilita la sustentacion oral del proyecto.
+Cada opcion explica el concepto aplicado antes de ejecutar la demostracion, lo que facilita la exposicion oral del proyecto.
 
 ## Ejecucion local
 
@@ -119,9 +129,23 @@ Ejecutar la clase principal:
 java -cp out pe.com.utp.app.Main
 ```
 
-Para ejecutar la demostracion completa, seleccionar la opcion `10` en el menu.
+Para revisar todo el flujo academico, seleccionar la opcion `10`.
 
-## Estado del proyecto
+## Evidencia esperada
+
+Durante la ejecucion deben poder observarse:
+
+- Datos base cargados en memoria.
+- Operaciones sobre pacientes y citas.
+- Uso de matriz para horarios.
+- Cola de sala de espera.
+- Pila de historial reciente.
+- Arbol binario de busqueda de doctores.
+- Busquedas y ordenamientos.
+- Reportes por consola.
+- Archivos CSV generados en `out`.
+
+## Estado actual
 
 | Punto | Estado |
 |---|---|
@@ -140,31 +164,20 @@ Para ejecutar la demostracion completa, seleccionar la opcion `10` en el menu.
 | Exportacion CSV | Implementado |
 | Validacion manual por menu | Implementado |
 
-## Alcance
+## Fuera de alcance
 
-El sistema trabaja con datos base cargados en memoria al iniciar la aplicacion. La persistencia implementada es basica y consiste en exportar informacion a archivos CSV.
+Este proyecto no incluye base de datos, interfaz grafica, autenticacion de usuarios ni persistencia completa con lectura desde archivos. La informacion trabaja principalmente en memoria y la exportacion CSV se usa como evidencia academica.
 
-El proyecto no incluye base de datos, interfaz grafica ni autenticacion de usuarios, porque su alcance esta centrado en demostrar estructuras de datos y algoritmos del curso.
-
-## Aprendizajes aplicados
-
-- Organizacion de un proyecto Java por paquetes.
-- Separacion entre modelos, servicios, estructuras, algoritmos, interfaces, persistencia y utilidades.
-- Aplicacion de TAD mediante interfaces.
-- Uso de estructuras lineales y no lineales.
-- Relacion entre procesos clinicos y estructuras de datos.
-- Explicacion tecnica de algoritmos para sustentacion academica.
-
-## Mejoras futuras opcionales
+## Mejoras futuras
 
 - Agregar pruebas automatizadas si el alcance del curso lo permite.
-- Permitir ingreso de datos por consola en lugar de trabajar solo con datos base.
-- Incorporar lectura de archivos CSV para recuperar informacion exportada.
-- Ampliar validaciones de datos en registros de pacientes, citas y pagos.
+- Permitir carga de datos desde archivos CSV.
+- Fortalecer validaciones de entrada para pacientes, citas y pagos.
+- Documentar capturas o evidencias finales de ejecucion cuando se cierre la entrega.
 
 ## Relacion con Chilete DevPath
 
-Este proyecto forma parte del registro academico de Chilete DevPath:
+Este repositorio forma parte del ecosistema academico de **Chilete DevPath**. Su proposito es conservar evidencia tecnica de aprendizaje y mostrar la evolucion del proyecto dentro de la ruta de formacion en desarrollo de software.
 
 - [academia](https://github.com/chiletedevpath/academia)
 - [aprendizaje](https://github.com/chiletedevpath/aprendizaje)
