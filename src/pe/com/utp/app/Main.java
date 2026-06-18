@@ -1,6 +1,7 @@
 package pe.com.utp.app;
 
 import pe.com.utp.algoritmos.ordenamiento.BubbleSortPacientes;
+import pe.com.utp.algoritmos.ordenamiento.MergeSortPagos;
 import pe.com.utp.algoritmos.ordenamiento.QuickSort;
 import pe.com.utp.algoritmos.recursividad.ReporteRecursivo;
 import pe.com.utp.estructuras.arboles.ArbolDoctoresBusqueda;
@@ -11,10 +12,13 @@ import pe.com.utp.estructuras.pilas.PilaHistorialCitas;
 import pe.com.utp.modelo.cita.Cita;
 import pe.com.utp.modelo.enums.Especialidad;
 import pe.com.utp.modelo.enums.EstadoCita;
+import pe.com.utp.modelo.enums.TipoPago;
 import pe.com.utp.modelo.enums.TurnoConsultaAmbulatoria;
+import pe.com.utp.modelo.pago.Pago;
 import pe.com.utp.modelo.persona.Doctor;
 import pe.com.utp.modelo.persona.Paciente;
 import pe.com.utp.servicios.CitaService;
+import pe.com.utp.servicios.PagoService;
 import pe.com.utp.servicios.PacienteService;
 
 import java.time.LocalDate;
@@ -333,6 +337,36 @@ public class Main {
         for (int i = 0; i < citasParaOrdenar.length; i++) {
             System.out.println(citasParaOrdenar[i].getCodigo());
         }
+
+        /*
+         * 12. MergeSort de pagos.
+         * Divide el arreglo de pagos y fusiona los tramos ordenados por monto.
+         */
+
+        System.out.println("\n==== REGISTRO Y ORDENAMIENTO DE PAGOS (MERGESORT) ====");
+
+        Pago pago1 = new Pago("PAG-001", cita1.getCodigo(), 120.00, TipoPago.EFECTIVO, LocalDate.now());
+        Pago pago2 = new Pago("PAG-002", cita2.getCodigo(), 85.50, TipoPago.TARJETA, LocalDate.now());
+        Pago pago3 = new Pago("PAG-003", cita3.getCodigo(), 160.00, TipoPago.TRANSFERENCIA, LocalDate.now());
+        Pago pago4 = new Pago("PAG-004", cita4.getCodigo(), 70.00, TipoPago.EFECTIVO, LocalDate.now());
+        Pago pago5 = new Pago("PAG-005", cita5.getCodigo(), 140.00, TipoPago.TARJETA, LocalDate.now());
+
+        PagoService pagoService = new PagoService();
+
+        pagoService.registrarPago(pago1);
+        pagoService.registrarPago(pago2);
+        pagoService.registrarPago(pago3);
+        pagoService.registrarPago(pago4);
+        pagoService.registrarPago(pago5);
+
+        System.out.println("\nPagos antes de ordenar por monto:");
+        pagoService.mostrarPagos();
+
+        MergeSortPagos mergeSortPagos = new MergeSortPagos();
+        mergeSortPagos.ordenarPorMonto(pagoService.getPagos(), 0, pagoService.getTotalPagos() - 1);
+
+        System.out.println("\nPagos despues de ordenar por monto:");
+        pagoService.mostrarPagos();
 
     }
 }
