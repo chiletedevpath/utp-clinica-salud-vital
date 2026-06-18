@@ -163,7 +163,7 @@ public class Main {
         System.out.println("Pacientes cargados: " + datos.pacienteService.getTotalPacientes());
         System.out.println("Citas cargadas: " + datos.citaService.getTotalCitas());
         System.out.println("Pagos cargados: " + datos.pagoService.getTotalPagos());
-        System.out.println("La opcion 10 ejecuta la demostracion completa para capturas del informe.");
+        System.out.println("La opcion 10 ejecuta la demostracion completa.");
     }
 
     private static void mostrarPacientes(DatosSistema datos) {
@@ -203,13 +203,29 @@ public class Main {
             PacienteService servicioTemporal = new PacienteService();
             // POO: se programa contra la interfaz Registrable para separar contrato e implementacion.
             Registrable<Paciente> registroTemporal = servicioTemporal;
-            registroTemporal.registrar(datos.paciente1);
-            registroTemporal.registrar(datos.paciente2);
-            registroTemporal.registrar(datos.paciente3);
+            registroTemporal.registrar(copiarPaciente(datos.paciente1));
+            registroTemporal.registrar(copiarPaciente(datos.paciente2));
+            registroTemporal.registrar(copiarPaciente(datos.paciente3));
             return servicioTemporal;
         } finally {
             System.setOut(salidaOriginal);
         }
+    }
+
+    private static Paciente copiarPaciente(Paciente paciente) {
+        /*
+         * POO: se crea una copia para que la demo de actualizacion no cambie
+         * los objetos base que tambien usan listas, citas, cola y reportes.
+         */
+        return new Paciente(
+                paciente.getCodigo(),
+                paciente.getDni(),
+                paciente.getNombres(),
+                paciente.getApellidos(),
+                paciente.getTelefono(),
+                paciente.getCorreo(),
+                paciente.getEdad()
+        );
     }
 
     private static void demostrarListasEnlazadas(DatosSistema datos) {
@@ -258,28 +274,50 @@ public class Main {
         datos.consola.mostrarTitulo("SALA DE ESPERA DE PACIENTES");
         mostrarConcepto("AED usa cola FIFO porque el primer paciente que llega debe ser atendido primero.");
 
+        ColaPacientes colaTemporal = crearColaTemporalPacientes(datos);
+
         System.out.println("\nPacientes en espera:");
-        datos.colaPacientes.mostrarCola();
+        colaTemporal.mostrarCola();
 
         System.out.println("\nPaciente ubicado al frente:");
-        Paciente pacienteFrente = datos.colaPacientes.verFrente();
+        Paciente pacienteFrente = colaTemporal.verFrente();
         if (pacienteFrente != null) {
             pacienteFrente.mostrarDatos();
         }
+
+        System.out.println("\nPaciente atendido mediante desencolar():");
+        Paciente pacienteAtendido = colaTemporal.desencolar();
+        if (pacienteAtendido != null) {
+            pacienteAtendido.mostrarDatos();
+        }
+
+        System.out.println("\nCola despues de atender al primer paciente:");
+        colaTemporal.mostrarCola();
     }
 
     private static void demostrarPila(DatosSistema datos) {
         datos.consola.mostrarTitulo("HISTORIAL RECIENTE DE CITAS");
         mostrarConcepto("AED usa pila LIFO para consultar primero la cita registrada mas recientemente.");
 
+        PilaHistorialCitas pilaTemporal = crearPilaTemporalCitas(datos);
+
         System.out.println("\nCitas apiladas desde la mas reciente:");
-        datos.pilaHistorialCitas.mostrarPila();
+        pilaTemporal.mostrarPila();
 
         System.out.println("\nCita ubicada en la cima:");
-        Cita citaEnLaCima = datos.pilaHistorialCitas.verCima();
+        Cita citaEnLaCima = pilaTemporal.verCima();
         if (citaEnLaCima != null) {
             citaEnLaCima.mostrarDatos();
         }
+
+        System.out.println("\nCita retirada mediante desapilar():");
+        Cita citaRetirada = pilaTemporal.desapilar();
+        if (citaRetirada != null) {
+            citaRetirada.mostrarDatos();
+        }
+
+        System.out.println("\nPila despues de retirar la cita mas reciente:");
+        pilaTemporal.mostrarPila();
     }
 
     private static void demostrarBubbleSort(DatosSistema datos) {
@@ -313,6 +351,59 @@ public class Main {
         Doctor doctorEncontrado = datos.arbolDoctores.buscarDoctorPorCodigo("DOC-002");
         if (doctorEncontrado != null) {
             doctorEncontrado.mostrarDatos();
+        }
+
+        System.out.println("\nEliminacion demostrativa en arbol temporal:");
+        ArbolDoctoresBusqueda arbolTemporal = crearArbolTemporalDoctores(datos);
+        arbolTemporal.eliminarDoctorPorCodigo("DOC-002");
+        System.out.println("Recorrido inorden despues de eliminar DOC-002:");
+        arbolTemporal.recorrerInOrden();
+    }
+
+    private static ColaPacientes crearColaTemporalPacientes(DatosSistema datos) {
+        PrintStream salidaOriginal = System.out;
+
+        try {
+            // AED: la cola temporal permite demostrar salida FIFO sin alterar la sala base.
+            System.setOut(new PrintStream(OutputStream.nullOutputStream()));
+            ColaPacientes colaTemporal = new ColaPacientes();
+            colaTemporal.encolar(datos.paciente2);
+            colaTemporal.encolar(datos.paciente3);
+            return colaTemporal;
+        } finally {
+            System.setOut(salidaOriginal);
+        }
+    }
+
+    private static PilaHistorialCitas crearPilaTemporalCitas(DatosSistema datos) {
+        PrintStream salidaOriginal = System.out;
+
+        try {
+            // AED: la pila temporal permite demostrar pop sin perder el historial base.
+            System.setOut(new PrintStream(OutputStream.nullOutputStream()));
+            PilaHistorialCitas pilaTemporal = new PilaHistorialCitas();
+            pilaTemporal.apilar(datos.cita1);
+            pilaTemporal.apilar(datos.cita2);
+            pilaTemporal.apilar(datos.cita3);
+            return pilaTemporal;
+        } finally {
+            System.setOut(salidaOriginal);
+        }
+    }
+
+    private static ArbolDoctoresBusqueda crearArbolTemporalDoctores(DatosSistema datos) {
+        PrintStream salidaOriginal = System.out;
+
+        try {
+            // AED: se usa otro arbol para explicar eliminacion sin modificar el arbol principal.
+            System.setOut(new PrintStream(OutputStream.nullOutputStream()));
+            ArbolDoctoresBusqueda arbolTemporal = new ArbolDoctoresBusqueda();
+            arbolTemporal.insertarDoctor(datos.doctor2);
+            arbolTemporal.insertarDoctor(datos.doctor1);
+            arbolTemporal.insertarDoctor(datos.doctor3);
+            return arbolTemporal;
+        } finally {
+            System.setOut(salidaOriginal);
         }
     }
 
@@ -481,7 +572,7 @@ public class Main {
         private final Cita cita4 = new Cita("CIT-004", paciente4, doctor2, LocalDate.now(), LocalTime.now(), EstadoCita.PROGRAMADA, "Control medico");
         private final Cita cita5 = new Cita("CIT-005", paciente5, doctor1, LocalDate.now(), LocalTime.now(), EstadoCita.PROGRAMADA, "Control medico");
 
-        private final Pago pago1 = new Boleta("PAG-001", cita1.getCodigo(), 120.00, TipoPago.EFECTIVO, LocalDate.now(), paciente1.getDni());
+        private final Pago pago1 = new Boleta("PAG-001", cita1.getCodigo(), 120.00, TipoPago.EFECTIVO, LocalDate.now(), cita1.getPaciente().getDni());
         private final Pago pago2 = new Factura("PAG-002", cita2.getCodigo(), 85.50, TipoPago.TARJETA, LocalDate.now(), "20601234567");
         private final Pago pago3 = new Pago("PAG-003", cita3.getCodigo(), 160.00, TipoPago.TRANSFERENCIA, LocalDate.now());
         private final Pago pago4 = new Boleta("PAG-004", cita4.getCodigo(), 70.00, TipoPago.EFECTIVO, LocalDate.now(), paciente4.getDni());

@@ -1,9 +1,10 @@
 package pe.com.utp.estructuras.listas;
 
 import pe.com.utp.estructuras.pilas.NodoCita;
+import pe.com.utp.interfaces.TADListaCitas;
 import pe.com.utp.modelo.cita.Cita;
 
-public class ListaCitas {
+public class ListaCitas implements TADListaCitas {
 
     /*
      * Lista enlazada simple de citas.
@@ -19,6 +20,7 @@ public class ListaCitas {
     }
 
     // Inserta una cita al final de la lista.
+    @Override
     public void insertarCita(Cita cita) {
         NodoCita nuevoNodo = new NodoCita(cita);
 
@@ -38,6 +40,7 @@ public class ListaCitas {
     }
 
     // Busca una cita por codigo mediante recorrido lineal de nodos.
+    @Override
     public Cita buscarCitaPorCodigo(String codigo) {
         NodoCita actual = inicio;
 
@@ -52,6 +55,7 @@ public class ListaCitas {
         return null;
     }
 
+    @Override
     public void mostrarCitas() {
         if (inicio == null) {
             System.out.println("La lista de citas esta vacia");
@@ -67,6 +71,7 @@ public class ListaCitas {
         }
     }
 
+    @Override
     public int contarCitas() {
         return totalCitas;
     }
