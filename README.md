@@ -4,6 +4,12 @@ Sistema academico en Java para simular la gestion basica de una clinica y demost
 
 El proyecto corresponde al curso **Algoritmos y Estructuras de Datos** de la Universidad Tecnologica del Peru. Esta desarrollado como una aplicacion por consola orientada a sustentacion academica.
 
+## Aviso de publicacion
+
+Este repositorio documenta una practica academica desarrollada por Adrian Pisco como parte de su proceso formativo. No representa una publicacion oficial de la Universidad Tecnologica del Peru ni de una institucion de salud.
+
+Los datos usados en el sistema son ficticios y se mantienen solo para demostrar estructuras de datos, algoritmos y Programacion Orientada a Objetos. No deben interpretarse como informacion clinica real.
+
 ## Contexto academico
 
 | Dato | Detalle |
@@ -170,6 +176,8 @@ Durante la ejecucion deben poder observarse:
 ## Fuera de alcance
 
 Este proyecto no incluye base de datos, interfaz grafica, autenticacion de usuarios ni persistencia completa con lectura desde archivos. La informacion trabaja principalmente en memoria y la exportacion CSV se usa como evidencia academica.
+
+No debe usarse para registrar, procesar o almacenar informacion real de pacientes, doctores, pagos o atenciones medicas.
 
 ## Mejoras futuras
 
