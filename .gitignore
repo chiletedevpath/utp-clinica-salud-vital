@@ -11,5 +11,9 @@ out/
 .env.*
 !.env.example
 *.local.sql
+*.docx
+*.pdf
+*.xlsx
+*.pptx
 .DS_Store
 Thumbs.db

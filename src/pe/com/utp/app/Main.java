@@ -179,13 +179,13 @@ public class Main {
         // AED: se usa una copia temporal para demostrar eliminacion sin afectar el estado base del menu.
         PacienteService servicioTemporal = crearServicioTemporalPacientes(datos);
 
-        String dniABuscar = "73748381";
+        String dniABuscar = "00000001";
         Paciente pacienteEncontrado = servicioTemporal.buscarPacientePorDni(dniABuscar);
 
         if (pacienteEncontrado != null) {
             System.out.println("Paciente encontrado con exito");
             pacienteEncontrado.mostrarDatos();
-            servicioTemporal.actualizarPaciente(dniABuscar, "111222333", "nuevo.correo@gmail.com");
+            servicioTemporal.actualizarPaciente(dniABuscar, "900000099", "paciente.actualizado@chiletedevpath.test");
         } else {
             System.out.println("No se encontro ningun paciente con el DNI: " + dniABuscar);
         }
@@ -553,18 +553,18 @@ public class Main {
 
         private final Consola consola = new Consola();
 
-        private final Paciente paciente1 = new Paciente("PAC-001", "73748381", "Adrian", "Pisco", "945834043", "adrian.pisco@gmail.com", 28);
-        private final Paciente paciente2 = new Paciente("PAC-002", "25830900", "Wilmer", "Soto", "985000677", "wilmer.soto@gmail.com", 20);
-        private final Paciente paciente3 = new Paciente("PAC-003", "20005900", "Yenifer", "Alcantara", "983330677", "yenifer.nera@gmail.com", 17);
-        private final Paciente paciente4 = new Paciente("PAC-004", "21001010", "Xiomara", "Rojas", "983741677", "xiomara.nera@gmail.com", 21);
-        private final Paciente paciente5 = new Paciente("PAC-005", "80701010", "Jorge", "Flores", "999652000", "jorge.flores@gmail.com", 35);
+        private final Paciente paciente1 = new Paciente("PAC-001", "00000001", "Paciente", "DevPath Uno", "900000001", "paciente.uno@chiletedevpath.test", 28);
+        private final Paciente paciente2 = new Paciente("PAC-002", "00000002", "Paciente", "DevPath Dos", "900000002", "paciente.dos@chiletedevpath.test", 20);
+        private final Paciente paciente3 = new Paciente("PAC-003", "00000003", "Paciente", "DevPath Tres", "900000003", "paciente.tres@chiletedevpath.test", 17);
+        private final Paciente paciente4 = new Paciente("PAC-004", "00000004", "Paciente", "DevPath Cuatro", "900000004", "paciente.cuatro@chiletedevpath.test", 21);
+        private final Paciente paciente5 = new Paciente("PAC-005", "00000005", "Paciente", "DevPath Cinco", "900000005", "paciente.cinco@chiletedevpath.test", 35);
 
-        private final Doctor doctor1 = new Doctor("DOC-001", "25413651", "Juan Carlos", "Lozano Leon", "925587412", "000555", "doctor1@gmail.com", Especialidad.MEDICINA_GENERAL, TurnoConsultaAmbulatoria.MANANA);
-        private final Doctor doctor2 = new Doctor("DOC-002", "02578933", "Carlos Elvis", "Tapia Silva", "925587412", "000556", "doctor2@gmail.com", Especialidad.DERMATOLOGIA, TurnoConsultaAmbulatoria.TARDE);
-        private final Doctor doctor3 = new Doctor("DOC-003", "73740025", "David", "Moncada Teran", "925357891", "000557", "doctor3@gmail.com", Especialidad.TRAUMATOLOGIA, TurnoConsultaAmbulatoria.MANANA);
+        private final Doctor doctor1 = new Doctor("DOC-001", "10000001", "Doctor", "DevPath Uno", "910000001", "000555", "doctor.uno@chiletedevpath.test", Especialidad.MEDICINA_GENERAL, TurnoConsultaAmbulatoria.MANANA);
+        private final Doctor doctor2 = new Doctor("DOC-002", "10000002", "Doctor", "DevPath Dos", "910000002", "000556", "doctor.dos@chiletedevpath.test", Especialidad.DERMATOLOGIA, TurnoConsultaAmbulatoria.TARDE);
+        private final Doctor doctor3 = new Doctor("DOC-003", "10000003", "Doctor", "DevPath Tres", "910000003", "000557", "doctor.tres@chiletedevpath.test", Especialidad.TRAUMATOLOGIA, TurnoConsultaAmbulatoria.MANANA);
         private final Doctor[] doctores = {doctor1, doctor2, doctor3};
 
-        private final Administrador administrador = new Administrador("ADM-001", "46667777", "Lucia", "Ramirez", "987654321", "lucia.ramirez@saludvital.com", "Coordinadora de admision");
+        private final Administrador administrador = new Administrador("ADM-001", "20000001", "Administrador", "DevPath", "920000001", "admin@chiletedevpath.test", "Coordinadora de admision");
 
         private final Cita cita1 = new Cita("CIT-001", paciente2, doctor1, LocalDate.now(), LocalTime.now(), EstadoCita.PROGRAMADA, "Dolor de cuello");
         private final Cita cita2 = new Cita("CIT-002", paciente2, doctor2, LocalDate.now(), LocalTime.now(), EstadoCita.PROGRAMADA, "Presencia de fiebre");
@@ -573,10 +573,10 @@ public class Main {
         private final Cita cita5 = new Cita("CIT-005", paciente5, doctor1, LocalDate.now(), LocalTime.now(), EstadoCita.PROGRAMADA, "Control medico");
 
         private final Pago pago1 = new Boleta("PAG-001", cita1.getCodigo(), 120.00, TipoPago.EFECTIVO, LocalDate.now(), cita1.getPaciente().getDni());
-        private final Pago pago2 = new Factura("PAG-002", cita2.getCodigo(), 85.50, TipoPago.TARJETA, LocalDate.now(), "20601234567");
+        private final Pago pago2 = new Factura("PAG-002", cita2.getCodigo(), 85.50, TipoPago.TARJETA, LocalDate.now(), "20111111111");
         private final Pago pago3 = new Pago("PAG-003", cita3.getCodigo(), 160.00, TipoPago.TRANSFERENCIA, LocalDate.now());
         private final Pago pago4 = new Boleta("PAG-004", cita4.getCodigo(), 70.00, TipoPago.EFECTIVO, LocalDate.now(), paciente4.getDni());
-        private final Pago pago5 = new Factura("PAG-005", cita5.getCodigo(), 140.00, TipoPago.TARJETA, LocalDate.now(), "20607654321");
+        private final Pago pago5 = new Factura("PAG-005", cita5.getCodigo(), 140.00, TipoPago.TARJETA, LocalDate.now(), "20222222222");
 
         private final Tratamiento tratamiento1 = new Tratamiento("TRA-001", paciente2.getCodigo(), "Reposo y control por fiebre", 3);
         private final Receta receta1 = new Receta("REC-001", tratamiento1.getCodigo(), "Paracetamol 500 mg", "Tomar cada 8 horas por 3 dias");
