@@ -184,7 +184,6 @@ No debe usarse para registrar, procesar o almacenar informacion real de paciente
 - Agregar pruebas automatizadas si el alcance del curso lo permite.
 - Permitir carga de datos desde archivos CSV.
 - Fortalecer validaciones de entrada para pacientes, citas y pagos.
-- Documentar capturas o evidencias finales de ejecucion cuando se cierre la entrega.
 
 ## Relacion con Chilete DevPath
 

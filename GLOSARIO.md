@@ -34,7 +34,7 @@ El objetivo no es repetir teoria de memoria, sino explicar los conceptos que se 
 | Cola | Estructura FIFO: atiende primero al dato que ingreso primero. | `ColaPacientes` simula la sala de espera. |
 | Pila | Estructura LIFO: atiende primero al dato que ingreso ultimo. | `PilaHistorialCitas` gestiona citas recientes. |
 | Arbol binario de busqueda | Estructura no lineal que organiza datos para insertar, buscar y recorrer con criterio. | `ArbolDoctoresBusqueda` organiza doctores. |
-| TAD | Tipo Abstracto de Datos que define operaciones sin depender de una implementacion unica. | Interfaces `TADListaPacientes`, `TADColaPacientes`, `TADPilaHistorialCitas` y `TADArbolDoctores`. |
+| TAD | Tipo Abstracto de Datos que define operaciones sin depender de una implementacion unica. | Interfaces `TADListaPacientes`, `TADListaCitas`, `TADColaPacientes`, `TADPilaHistorialCitas` y `TADArbolDoctores`. |
 
 ## Algoritmos
 
